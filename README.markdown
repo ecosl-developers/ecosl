@@ -30,5 +30,5 @@ This project is Free Software under [GPL version 3](http://www.gnu.org/licenses/
 
 #### History
 
-The original *ecosl* was developed for Nokia N900 phone and the mailinglist, subversion repositories and [home page](http://ecosl.garage.maemo.org/) were hosted at (http://garage.maemo.org/). 
+The original ecosl was developed for Nokia N900 phone and the mailinglist, subversion repositories and [home page](http://ecosl.garage.maemo.org/) were hosted at http://garage.maemo.org/.
 This project is discontinued at this point, but who knows if we get a client for the legendary N900 aswell!
