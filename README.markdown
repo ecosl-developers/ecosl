@@ -8,8 +8,8 @@ system on Earth. Ecosl will consist of three main blocks:
 * Phone client that will make your shopping easier.
 * Involving people, to help other people.
 
-This project is Free Software under [[http://www.gnu.org/licenses/gpl.txt|GPL version 3]] and
-[[http://www.gnu.org/licenses/lgpl.txt|LGPL version 3]].
+This project is Free Software under [GPL version 3](http://www.gnu.org/licenses/gpl.txt) and
+[LGPL version 3](http://www.gnu.org/licenses/lgpl.txt).
 
 
 #### Status of the project
@@ -21,5 +21,8 @@ This project is Free Software under [[http://www.gnu.org/licenses/gpl.txt|GPL ve
 #### Getting involved
 
 * Developers
-  * Create [github.net](https://github.com) account.
-  * Email <mika.tapojarvi@embelin.com>
+  * Create [github.net](https://github.com/account) account.
+  * Join the [mailinglist](https://sse.fi/mailman/listinfo/ecosl) and let we know about you so that we can add you as a member of [ecosl-developers]https://github.com/organizations/ecosl-developers) team.
+
+* ecosl users and followers
+  * At this point we only have one [mailinglist](https://sse.fi/mailman/listinfo/ecosl), please join there.
