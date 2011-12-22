@@ -21,5 +21,5 @@ This project is Free Software under [[http://www.gnu.org/licenses/gpl.txt|GPL ve
 #### Getting involved
 
 * Developers
-  * Create [[https://github.com|github.net]] account.
-  * Email [[
+  * Create [github.net](https://github.com) account.
+  * Email <mika.tapojarvi@embelin.com>
