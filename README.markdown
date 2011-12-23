@@ -22,7 +22,7 @@ This project is Free Software under [GPL version 3](http://www.gnu.org/licenses/
 
 * Developers
   * Create [github.net](https://github.com/account) account.
-  * Join the [mailinglist](https://sse.fi/mailman/listinfo/ecosl) and let we know about you so that we can add you as a member of [ecosl-developers]https://github.com/organizations/ecosl-developers) team.
+  * Join the [mailinglist](https://sse.fi/mailman/listinfo/ecosl) and let we know about you so that we can add you as a member of [ecosl-developers](https://github.com/organizations/ecosl-developers) team.
 
 * ecosl users and followers
   * At this point we only have one [mailinglist](https://sse.fi/mailman/listinfo/ecosl), please join there.
