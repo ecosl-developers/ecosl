@@ -17,6 +17,6 @@ This project is Free Software under [GPL version 3](http://www.gnu.org/licenses/
 * Initial planning going on on all fronts.
 * Getting developers on board! You are welcome too.
 
-#### Check the wiki!
+#### Check out the wiki!
 
-* Please check out our development [https://github.com/mtapoja/ecosl/wiki wiki] for more information.
+* Please check out our development [wiki](https://github.com/mtapoja/ecosl/wiki) for more information.
