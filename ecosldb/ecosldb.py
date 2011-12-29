@@ -21,9 +21,11 @@
 
 # http://benspaulding.com/weblog/2008/jun/13/brief-python-sqlite-example/
 # http://docs.python.org/library/sqlite3.html
+# http://docs.python.org/library/argparse.html
 
 
 import sys
+import os.path
 import argparse
 import sqlite3
 
@@ -35,10 +37,50 @@ class EcoDB:
 
 
     def __init__(self, db_path):
-        """Open ecosl database"""
-        #self.connection = sqlite3.connect('srv1.db')
-        self.connection = sqlite3.connect(db_path)
-        self.cursor = self.connection.cursor()
+        """Open ecosl database, if it exists."""
+        self.connection = False;
+        self.db_path = db_path
+        if os.path.exists(self.db_path) and os.path.isfile(self.db_path):
+            self.connection = sqlite3.connect(self.db_path)
+            self.cursor = self.connection.cursor()
+            #print 'db opened' #  debug
+        #else:
+            #print 'db does not exist' #  debug
+
+    def create(self):
+        """Create new database."""
+        if self.connection:
+            print 'Database already open! Please choose another file name.'
+        else:
+            sql=['CREATE TABLE item (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, shoppinglistid INTEGER);',
+                'CREATE UNIQUE INDEX itidname ON item (id, shoppinglistid);',
+                'CREATE TABLE itemlanguage (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT);',
+                'CREATE UNIQUE INDEX idlanguage ON itemlanguage (id, language ASC);',
+                'CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemlanguageid INTEGER, translation TEXT);',
+                'CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC);',
+                'CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT);',
+                'CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC);',
+                'CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER, itemid INTEGER, amount INTEGER);',
+                'CREATE UNIQUE INDEX idshoppinglistid ON shoppinglistitems (id, shoppinglistid ASC);',
+                'CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);',
+                'CREATE UNIQUE INDEX stidname ON store (id, name ASC);',
+                'CREATE TABLE price (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, storeid INTEGER, price REAL);',
+                'CREATE UNIQUE INDEX pridstoreid ON price (id, storeid ASC);',
+                'CREATE TABLE shoppingorder (id INTEGER PRIMARY KEY AUTOINCREMENT, storeid INTEGER, itemid INTEGER, shorder INTEGER);',
+                'CREATE UNIQUE INDEX soidstoreid ON shoppingorder (id, storeid ASC);',
+                ]
+
+            #print 'Creating new database.' #  debug
+
+            self.connection = sqlite3.connect(self.db_path)
+            self.cursor = self.connection.cursor()
+
+            for sql_clause in sql:
+                self.cursor.execute(sql_clause)
+                self.connection.commit()
+
+            #self.cursor.close()
+
 
     def get_all_items(self):
         """"Get all available items"""
@@ -189,20 +231,20 @@ Note: this library does not work yet!'
 if __name__ == '__main__':
     """"Main function, to be used for creating the database, developing and testing."""
 
-
-    # http://docs.python.org/library/argparse.html
     ap = argparse.ArgumentParser(epilog='Note: this library does not work yet!')
     ap.add_argument('-d', '--database', nargs=1, metavar='path/file.db', required=True, help='the path to the database')
     ap.add_argument('-c', '--create', action='store_true', help='create a new database')
     args = ap.parse_args()
-    print args
+
+    #print args #  debug
+
+    db = EcoDB(args.database[0])
 
     if args.create:
-        print 'Creating new database.'
+        db.create();
 
     sys.exit(0)
 
-    #db = EcoDB('srv1.db')
 
     #try:
     if True:
