@@ -158,6 +158,7 @@ class EcoDB:
 
 
 def helptext():
+    '''DEPRECATED! Remember to remove'''
     print 'Known parameters:\n\
     help, --help                         FIX THIS    this help\n\
     list                                 FIX THIS    list contents of all tables\n\
@@ -179,23 +180,25 @@ def helptext():
     notin storeind                       FIX THIS    list all items that are not in the store'
 
 def shorthelptext():
+    '''DEPRECATED! Remember to remove'''
     print 'Ecological Shopping List II database functions:\n\
 usage: ' + sys.argv[0] + ' [ -h | --help | <function> [parameters]]\n\n\
 Note: this library does not work yet!'
 
 
 if __name__ == '__main__':
-    """"Main function, search and modify all tables and print the results"""
+    """"Main function, to be used for creating the database, developing and testing."""
 
-    #if len(sys.argv) == 1:
-    #    shorthelptext()
-    #    sys.exit(0)
 
     # http://docs.python.org/library/argparse.html
-    ap = argparse.ArgumentParser()
-    #ap.add_argument('--foo', help='foo help')
-    ap.add_argument('list', help='list contents of all tables')
+    ap = argparse.ArgumentParser(epilog='Note: this library does not work yet!')
+    ap.add_argument('-d', '--database', nargs=1, metavar='path/file.db', required=True, help='the path to the database')
+    ap.add_argument('-c', '--create', action='store_true', help='create a new database')
     args = ap.parse_args()
+    print args
+
+    if args.create:
+        print 'Creating new database.'
 
     sys.exit(0)
 
