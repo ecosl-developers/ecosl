@@ -24,6 +24,7 @@
 
 
 import sys
+import argparse
 import sqlite3
 
 
@@ -186,9 +187,17 @@ Note: this library does not work yet!'
 if __name__ == '__main__':
     """"Main function, search and modify all tables and print the results"""
 
-    if len(sys.argv) == 1:
-        shorthelptext()
-        sys.exit(0)
+    #if len(sys.argv) == 1:
+    #    shorthelptext()
+    #    sys.exit(0)
+
+    # http://docs.python.org/library/argparse.html
+    ap = argparse.ArgumentParser()
+    #ap.add_argument('--foo', help='foo help')
+    ap.add_argument('list', help='list contents of all tables')
+    args = ap.parse_args()
+
+    sys.exit(0)
 
     #db = EcoDB('srv1.db')
 

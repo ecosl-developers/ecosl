@@ -3,7 +3,7 @@
     <note priority="high" time="1325167761">
         db: Create the database (https://github.com/mtapoja/ecosl/issues/1)
         <note priority="medium" time="1325167805">
-            implement better argument parser for command line use
+            implement better argument parser for command line use (in progress)
         </note>
         <note priority="medium" time="1325167833">
             add method for creating the database
