@@ -14,7 +14,7 @@ This project is Free Software under [GPL version 3](http://www.gnu.org/licenses/
 
 #### Status of the project
 
-* Initial planning going on on all fronts.
+* Planning for first milestone almost done, database library development started.
 * Getting developers on board! You are welcome too.
 
 #### Check out the wiki!
