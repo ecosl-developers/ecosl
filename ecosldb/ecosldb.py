@@ -94,7 +94,7 @@ class EcoDB:
     # Adding, modifying and removing items to database
 
     def add_item(self, item):
-        """"Add new items"""
+        """"Add new item."""
         if self.connection:
             self.cursor.execute('insert into item (name, shoppinglistid) values ("%s", "%s")' % (item[0], item[1]))
             self.connection.commit()
@@ -110,6 +110,11 @@ class EcoDB:
         r = self.cursor.execute('delete from items where itemname = "%s"' % item)
         self.connection.commit()
 
+    def add_language(self, language):
+        """"Add new language for item translations."""
+        if self.connection:
+            self.cursor.execute('insert into itemlanguage (language) values ("%s")' % language[0])
+            self.connection.commit()
     #
     # Adding, modifying and removing shopping lists
 
@@ -231,12 +236,13 @@ if __name__ == '__main__':
     """"Main function, to be used for creating the database, developing and testing."""
 
     ap = argparse.ArgumentParser(epilog='Note: this library does not work yet!')
-    ap.add_argument('-d', '--database', nargs=1, metavar='<path/file.db>', required=True, help='the path to the database')
-    ap.add_argument('-a', '--add', nargs=2, metavar='"<name>" <list id>', help='add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
-    ap.add_argument('-c', '--create', action='store_true', help='create a new database')
+    ap.add_argument('-d', '--database', nargs=1, metavar='<path/file.db>', required=True, help='The path to the database')
+    ap.add_argument('-a', '--add', nargs=2, metavar='"<name>" <list id>', help='Add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
+    ap.add_argument('-c', '--create', action='store_true', help='Create a new database.')
+    ap.add_argument('-l', '--lang', nargs=1, metavar='<language>', help='Add new language.')
     args = ap.parse_args()
 
-    #print(args) #  debug
+    print(args) #  debug
 
     db = EcoDB(args.database[0])
 
@@ -246,8 +252,11 @@ if __name__ == '__main__':
         db.create();
 
     if args.add:
-        index = db.add_item(args.add)
+        db.add_item(args.add)
         #print('new item: %u %s %u' % (index[0], index[1], index[2]))
+
+    if args.lang:
+        db.add_language(args.lang)
 
     sys.exit(0)
 

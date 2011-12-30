@@ -24,8 +24,11 @@
     <note priority="medium" time="1325255233">
         dblib: Add new translations. (https://github.com/mtapoja/ecosl/issues/18)
     </note>
-    <note priority="medium" time="1325255277">
-        dblib: Add new languages for translations. (https://github.com/mtapoja/ecosl/issues/12) in progress
+    <note priority="medium" time="1325255277" done="1325256828">
+        dblib: Add new languages for translations. (https://github.com/mtapoja/ecosl/issues/12)
+        <comment>
+            Implemented.
+        </comment>
     </note>
     <note priority="low" time="1325193346">
         db: Import database contents (https://github.com/mtapoja/ecosl/issues/2)
