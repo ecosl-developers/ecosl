@@ -43,14 +43,14 @@ class EcoDB:
         if os.path.exists(self.db_path) and os.path.isfile(self.db_path):
             self.connection = sqlite3.connect(self.db_path)
             self.cursor = self.connection.cursor()
-            #print 'db opened' #  debug
-        #else:
-            #print 'db does not exist' #  debug
+            #print('db opened') #  debug
+        else:
+            print('db does not exist') #  debug
 
     def create(self):
         """Create new database."""
         if self.connection:
-            print 'Database already open! Please choose another file name.'
+            print('Database already open! Please choose another file name.')
         else:
             sql=['CREATE TABLE item (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, shoppinglistid INTEGER);',
                 'CREATE UNIQUE INDEX itidname ON item (id, shoppinglistid);',
@@ -70,7 +70,7 @@ class EcoDB:
                 'CREATE UNIQUE INDEX soidstoreid ON shoppingorder (id, storeid ASC);',
                 ]
 
-            #print 'Creating new database.' #  debug
+            #print('Creating new database.') #  debug
 
             self.connection = sqlite3.connect(self.db_path)
             self.cursor = self.connection.cursor()
@@ -95,11 +95,10 @@ class EcoDB:
 
     def add_item(self, item):
         """"Add new items"""
-        t = (item, )
-        self.cursor.execute('insert into items (itemname) values (?)', t)
-        self.connection.commit()
-        r = self.cursor.execute('select itemid, itemname from items where itemname = "%s"' % item).fetchall()[0]
-        return r
+        if self.connection:
+            self.cursor.execute('insert into item (name, shoppinglistid) values ("%s", "%s")' % (item[0], item[1]))
+            self.connection.commit()
+            #r = self.cursor.execute('select id, name, shoppinglistid from item where name = "%s"' % item[0]).fetchall()[0]
 
     def update_item(self, itemid, itemname):
         """Update the name of an item"""
@@ -140,7 +139,7 @@ class EcoDB:
         """"Remove an item from a shopping list"""
         # get list id
         listid = self.cursor.execute('select listid from lists where listhash = "%s"' % listhash).fetchall()[0]
-        print u'removing itemind, listid: %s, %s' % (itemind, listid[0])
+        print('removing itemind, listid: %s, %s' % (itemind, listid[0]))
         r = self.cursor.execute('delete from listitems where (itemid = "%s" and listid = "%s")' % (itemind, listid[0]))
         self.connection.commit()
 
@@ -193,7 +192,7 @@ class EcoDB:
 
     def list_items_not_in_store(self, storeind):
         """"List items that do not exist in store"""
-	r = self.cursor.execute('select items.itemid, items.itemname from items where items.itemid not in (select shoppingorder.itemid from shoppingorder, store where store.storeid = "%s" and store.storeid = shoppingorder.storeid) order by items.itemname' % storeind).fetchall()
+        r = self.cursor.execute('select items.itemid, items.itemname from items where items.itemid not in (select shoppingorder.itemid from shoppingorder, store where store.storeid = "%s" and store.storeid = shoppingorder.storeid) order by items.itemname' % storeind).fetchall()
         return r
 
 
@@ -201,7 +200,7 @@ class EcoDB:
 
 def helptext():
     '''DEPRECATED! Remember to remove'''
-    print 'Known parameters:\n\
+    print('Known parameters:\n\
     help, --help                         FIX THIS    this help\n\
     list                                 FIX THIS    list contents of all tables\n\
     list [items, stores, lists]          FIX THIS    list contents of one table\n\
@@ -219,34 +218,40 @@ def helptext():
     getprice itemid storeid              NOT IMPLE   get price of an item from a store\n\
     getprices listid storeid             NOT IMPLE   get prices for a list for a store\n\
     order storeind                       FIX THIS    list all items in order for the store\n\
-    notin storeind                       FIX THIS    list all items that are not in the store'
+    notin storeind                       FIX THIS    list all items that are not in the store')
 
 def shorthelptext():
     '''DEPRECATED! Remember to remove'''
-    print 'Ecological Shopping List II database functions:\n\
+    print('Ecological Shopping List II database functions:\n\
 usage: ' + sys.argv[0] + ' [ -h | --help | <function> [parameters]]\n\n\
-Note: this library does not work yet!'
+Note: this library does not work yet!')
 
 
 if __name__ == '__main__':
     """"Main function, to be used for creating the database, developing and testing."""
 
     ap = argparse.ArgumentParser(epilog='Note: this library does not work yet!')
-    ap.add_argument('-d', '--database', nargs=1, metavar='path/file.db', required=True, help='the path to the database')
+    ap.add_argument('-d', '--database', nargs=1, metavar='<path/file.db>', required=True, help='the path to the database')
+    ap.add_argument('-a', '--add', nargs=2, metavar='"<name>" <list id>', help='add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
     ap.add_argument('-c', '--create', action='store_true', help='create a new database')
     args = ap.parse_args()
 
-    #print args #  debug
+    #print(args) #  debug
 
     db = EcoDB(args.database[0])
+
+    # Arguments are parsed, do the required tasks.
 
     if args.create:
         db.create();
 
+    if args.add:
+        index = db.add_item(args.add)
+        #print('new item: %u %s %u' % (index[0], index[1], index[2]))
+
     sys.exit(0)
 
 
-    #try:
     if True:
         #print sys.argv[1]
         #print 'parameter count: %g' % (len(sys.argv) - 1)
@@ -258,68 +263,62 @@ if __name__ == '__main__':
 
             if sys.argv[1] == 'list':
                 index = 1
-                print '\nall items:\n------------------------------------------------------------'
+                #print '\nall items:\n------------------------------------------------------------'
                 for an_item in db.get_all_items():
                     #print u'{0:3}:  {1:4}   {2}'.format(index, an_item[0], an_item[1])
-                    print u'%u:  %u   %s' % (index, an_item[0], an_item[1])
+                    #print u'%u:  %u   %s' % (index, an_item[0], an_item[1])
                     index = index + 1
 
-                print '\nall stores:\n------------------------------------------------------------'
+                #print '\nall stores:\n------------------------------------------------------------'
                 index = 1
                 for a_store in db.get_all_stores():
                     #print u'{0:3}:  {1:4}   {2}'.format(index, a_store[0], a_store[1])
-                    print u'%u:  %u   %s' % (index, a_store[0], a_store[1])
+                    #print u'%u:  %u   %s' % (index, a_store[0], a_store[1])
                     index = index + 1
 
                 index = 1
-                print '\nall lists:\n------------------------------------------------------------'
+                #print '\nall lists:\n------------------------------------------------------------'
                 for a_list in db.get_all_shoppinglists():
                     #print u'{0:3}:  {1:4}   {2}'.format(index, a_list[0], a_list[1])
-                    print u'%u:  %u   %s' % (index, a_list[0], a_list[1])
+                    #print u'%u:  %u   %s' % (index, a_list[0], a_list[1])
                     index = index + 1
 
             else:
-                print 'Unknown parameter'
+                print('Unknown parameter')
 
         elif sys.argv[1] == 'list':
             if sys.argv[2] == 'items':
                 index = 1
                 for an_item in db.get_all_items():
                     #print u'{0:3}:  {1:4}   {2}'.format(index, an_item[0], an_item[1])
-                    print u'%u:  %u   %s' % (index, an_item[0], an_item[1])
+                    #print u'%u:  %u   %s' % (index, an_item[0], an_item[1])
                     index = index + 1
 
             elif sys.argv[2] == 'stores':
                 index = 1
                 for a_store in db.get_all_stores():
                     #print u'{0:3}:  {1:4}   {2}'.format(index, a_store[0], a_store[1])
-                    print u'%u:  %u   %s' % (index, a_store[0], a_store[1])
+                    #print u'%u:  %u   %s' % (index, a_store[0], a_store[1])
                     index = index + 1
 
             elif sys.argv[2] == 'lists':
                 index = 1
                 for a_list in db.get_all_shoppinglists():
                     #print u'{0:3}:  {1:15}   {2}'.format(index, a_list[0], a_list[1])
-                    print u'%u:  %u   %s' % (index, a_list[0], a_list[1])
+                    #print u'%u:  %u   %s' % (index, a_list[0], a_list[1])
                     index = index + 1
 
 
         elif sys.argv[1] == 'showlist':
             index = 1
-            print u'ind    id   amount  item'
-            print u'------------------------------------------------'
+            #print u'ind    id   amount  item'
+            #print u'------------------------------------------------'
             for an_item in db.get_list_items(sys.argv[2]):
                 # itemid, amount, itemname
                 #    0       1       2
                 #print u'{0:3}: {1:4} {2:4}      {3:25}'.format(index, an_item[0], an_item[1], an_item[2])
-                print u'%u: %u %u      %s' % (index, an_item[0], an_item[1], an_item[2])
+                #print u'%u: %u %u      %s' % (index, an_item[0], an_item[1], an_item[2])
                 index = index + 1
-
-
-        elif sys.argv[1] == 'additem':
-            index = db.add_item(sys.argv[2])
-            #print u'new item: {0} {1}'.format(index[0], index[1])
-            print u'new item: %u %s' %s (index[0], index[1])
 
         elif sys.argv[1] == 'updateitem':
             #print u'update item: %s %s' % (sys.argv[2], sys.argv[3])
@@ -329,12 +328,12 @@ if __name__ == '__main__':
             #print 'add ' + sys.argv[4] + ' pcs of ' + sys.argv[3] + ' to list ' + sys.argv[2]
             added_item = db.addtolist(sys.argv[2], sys.argv[3], sys.argv[4])
             #print added_item
-            print u'listitemsid: %u  listid: %s  itemid: %u  amount: %u' % (added_item[0], added_item[1], added_item[2], added_item[3])
+            #print u'listitemsid: %u  listid: %s  itemid: %u  amount: %u' % (added_item[0], added_item[1], added_item[2], added_item[3])
 
         elif sys.argv[1] == 'addstore':
             index = db.add_store(sys.argv[2])
             #print u'new store: {0} {1}'.format(index[0], index[1])
-            print u'new store: %u %s' % (index[0], index[1])
+            #print u'new store: %u %s' % (index[0], index[1])
 
         elif sys.argv[1] == 'updatestore':
             #print u'update store: %s %s' % (sys.argv[2], sys.argv[3])
@@ -343,7 +342,7 @@ if __name__ == '__main__':
         elif sys.argv[1] == 'addlist':
             index = db.add_shoppinglist(sys.argv[2])
             #print u'new shoppinglist: {0} {1}'.format(index[0], index[1])
-            print u'new shoppinglist: %u %s' % (index[0], index[1])
+            #print u'new shoppinglist: %u %s' % (index[0], index[1])
 
         elif sys.argv[1] == 'updatelist':
             db.update_shoppinglist(sys.argv[2], sys.argv[3])
@@ -356,36 +355,33 @@ if __name__ == '__main__':
             r = db.add_price(sys.argv[2], sys.argv[3], sys.argv[4]) 
 
         elif sys.argv[1] == 'rmprice':
-            print u'rmprice: not yet implemented'
+            print('rmprice: not yet implemented')
 
         elif sys.argv[1] == 'getprice':
-            print u'getprice: not yet implemented'
+            print('getprice: not yet implemented')
 
         elif sys.argv[1] == 'getprices':
-            print u'getprices: not yet implemented'
+            print('getprices: not yet implemented')
 
         elif sys.argv[1] == 'order':
             index = 1
-            print u'ind  order  item                       store'
-            print u'----------------------------------------------------------'
+            #print u'ind  order  item                       store'
+            #print u'----------------------------------------------------------'
             for an_item in db.list_items_in_order(sys.argv[2]):
                 # sorder, storeid, itemid, storeid, storename, itemid, itemname
                 #    0       1       2       3         4         5         6
-		#print u'{0:3}: {1:4}   {2:25}  {3}'.format(index, an_item[0], an_item[6], an_item[4])
-		print u'%u: %u   %s  %s' % (index, an_item[0], an_item[6], an_item[4])
-		index = index + 1
+                #print u'{0:3}: {1:4}   {2:25}  {3}'.format(index, an_item[0], an_item[6], an_item[4])
+                #print u'%u: %u   %s  %s' % (index, an_item[0], an_item[6], an_item[4])
+                index = index + 1
 
         elif sys.argv[1] == 'notin':
             index = 1
-            print u'ind    id  item'
-            print u'-------------------------------------------'
+            #print u'ind    id  item'
+            #print u'-------------------------------------------'
             for an_item in db.list_items_not_in_store(sys.argv[2]):
                 #print u'{0:3}: {1:4}   {2:25}'.format(index, an_item[0], an_item[1])
-                print u'%u: %u   %s' % (index, an_item[0], an_item[1])
-		index = index + 1
+                #print u'%u: %u   %s' % (index, an_item[0], an_item[1])
+                index = index + 1
 
-
-    #except:
-        #print 'exception...'
 
 
