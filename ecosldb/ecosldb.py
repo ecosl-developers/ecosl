@@ -56,7 +56,7 @@ class EcoDB:
                 'CREATE UNIQUE INDEX itidname ON item (id, shoppinglistid);',
                 'CREATE TABLE itemlanguage (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT);',
                 'CREATE UNIQUE INDEX idlanguage ON itemlanguage (id, language ASC);',
-                'CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemlanguageid INTEGER, translation TEXT);',
+                'CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, itemlanguageid INTEGER, translation TEXT);',
                 'CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC);',
                 'CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT);',
                 'CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC);',
@@ -115,6 +115,13 @@ class EcoDB:
         if self.connection:
             self.cursor.execute('insert into itemlanguage (language) values ("%s")' % language[0])
             self.connection.commit()
+
+    def add_translation(self, tr):
+        """Add new translation for an item."""
+        if self.connection:
+            self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values ("%s", "%s", "%s")' % (tr[0], tr[1], tr[2]))
+            self.connection.commit()
+
     #
     # Adding, modifying and removing shopping lists
 
@@ -235,28 +242,54 @@ Note: this library does not work yet!')
 if __name__ == '__main__':
     """"Main function, to be used for creating the database, developing and testing."""
 
+    # Main parser
     ap = argparse.ArgumentParser(epilog='Note: this library does not work yet!')
     ap.add_argument('-d', '--database', nargs=1, metavar='<path/file.db>', required=True, help='The path to the database')
-    ap.add_argument('-a', '--add', nargs=2, metavar='"<name>" <list id>', help='Add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
-    ap.add_argument('-c', '--create', action='store_true', help='Create a new database.')
-    ap.add_argument('-l', '--lang', nargs=1, metavar='<language>', help='Add new language.')
+    
+    subparsers = ap.add_subparsers(title='Subcommands')
+
+    # Subparser for creating the database
+    create_parser = subparsers.add_parser('create', help='subcommand to create a new database');
+    create_parser.add_argument('-e', '--empty', action='store_true', help='Create a new, empty database.')
+    create_parser.add_argument('-f', '--file', nargs=1, metavar='<path/file.sql>', help='Create a new database and import contents from <path/file.sql> NOT IMPLEMENTED YET.')
+
+    # Subparser for adding items
+    add_parser = subparsers.add_parser('add', help='subcommands to add items to tables');
+    add_parser.add_argument('--item', nargs=2, metavar=('"<name>"', '<list id>'), help='Add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
+    add_parser.add_argument('--lang', nargs=1, metavar='"<language>"', help='Add new language for item translations.')
+    add_parser.add_argument('--tr', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translation', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
+
+    # Subparser for listing table items
+    list_parser = subparsers.add_parser('list', help='subcommands to list database items');
+    list_parser.add_argument('--items', help='List all available items and their translations.')
+
     args = ap.parse_args()
 
     print(args) #  debug
 
     db = EcoDB(args.database[0])
 
+
     # Arguments are parsed, do the required tasks.
 
-    if args.create:
-        db.create();
+    # create new, empty database
+    if hasattr(args, 'empty'):
+        if args.empty:
+            db.create();
 
-    if args.add:
-        db.add_item(args.add)
-        #print('new item: %u %s %u' % (index[0], index[1], index[2]))
+    
+    if hasattr(args, 'item'):
+        if args.item:
+            db.add_item(args.item)
+            #print('new item: %u %s %u' % (index[0], index[1], index[2]))
 
-    if args.lang:
-        db.add_language(args.lang)
+    if hasattr(args, 'lang'):
+        if args.lang:
+            db.add_language(args.lang)
+
+    if hasattr(args, 'translation'):
+        if args.translation:
+            db.add_translation(args.translation)
 
     sys.exit(0)
 
