@@ -18,7 +18,10 @@
     <note priority="high" time="1325193385">
         db: Export database contents (https://github.com/mtapoja/ecosl/issues/3)
     </note>
-    <note priority="high" time="1325193437">
-        dblib: Add new items (https://github.com/mtapoja/ecosl/issues/4) in progress
+    <note priority="high" time="1325193437" done="1325254995">
+        dblib: Add new items (https://github.com/mtapoja/ecosl/issues/4)
+        <comment>
+            Implemented.
+        </comment>
     </note>
 </todo>
