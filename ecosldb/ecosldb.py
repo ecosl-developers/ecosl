@@ -48,39 +48,45 @@ class EcoDB:
         else:
             print('db does not exist') #  debug
 
-    def create(self):
-        """Create new database."""
+    def create_empty_database(self):
+        """Create a new, empty database."""
         if self.connection:
             print('Database already open! Please choose another file name.')
         else:
-            sql=['CREATE TABLE item (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, shoppinglistid INTEGER);',
-                'CREATE UNIQUE INDEX itidname ON item (id, shoppinglistid);',
-                'CREATE TABLE itemlanguage (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT);',
-                'CREATE UNIQUE INDEX idlanguage ON itemlanguage (id, language ASC);',
-                'CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, itemlanguageid INTEGER, translation TEXT);',
-                'CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC);',
-                'CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT);',
-                'CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC);',
-                'CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER, itemid INTEGER, amount INTEGER);',
-                'CREATE UNIQUE INDEX idshoppinglistid ON shoppinglistitems (id, shoppinglistid ASC);',
-                'CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);',
-                'CREATE UNIQUE INDEX stidname ON store (id, name ASC);',
-                'CREATE TABLE price (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, storeid INTEGER, price REAL);',
-                'CREATE UNIQUE INDEX pridstoreid ON price (id, storeid ASC);',
-                'CREATE TABLE shoppingorder (id INTEGER PRIMARY KEY AUTOINCREMENT, storeid INTEGER, itemid INTEGER, shorder INTEGER);',
-                'CREATE UNIQUE INDEX soidstoreid ON shoppingorder (id, storeid ASC);',
-                ]
-
-            #print('Creating new database.') #  debug
+            sql='BEGIN TRANSACTION; \
+                CREATE TABLE item (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, shoppinglistid INTEGER); \
+                CREATE UNIQUE INDEX itidname ON item (id, shoppinglistid); \
+                CREATE TABLE itemlanguage (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT); \
+                CREATE UNIQUE INDEX idlanguage ON itemlanguage (id, language ASC); \
+                CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, itemlanguageid INTEGER, translation TEXT); \
+                CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC); \
+                CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT); \
+                CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC); \
+                CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER, itemid INTEGER, amount INTEGER); \
+                CREATE UNIQUE INDEX idshoppinglistid ON shoppinglistitems (id, shoppinglistid ASC); \
+                CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT); \
+                CREATE UNIQUE INDEX stidname ON store (id, name ASC); \
+                CREATE TABLE price (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, storeid INTEGER, price REAL); \
+                CREATE UNIQUE INDEX pridstoreid ON price (id, storeid ASC); \
+                CREATE TABLE shoppingorder (id INTEGER PRIMARY KEY AUTOINCREMENT, storeid INTEGER, itemid INTEGER, shorder INTEGER); \
+                CREATE UNIQUE INDEX soidstoreid ON shoppingorder (id, storeid ASC); \
+                COMMIT;'
 
             self.connection = sqlite3.connect(self.db_path)
             self.cursor = self.connection.cursor()
+            self.cursor.executescript(sql)
 
-            for sql_clause in sql:
-                self.cursor.execute(sql_clause)
-                self.connection.commit()
 
-            #self.cursor.close()
+
+    def import_database(self, sqlfile):
+        """Create new database and import contents of an sql file to it."""
+        self.connection = sqlite3.connect(self.db_path)
+        self.cursor = self.connection.cursor()
+        if self.connection:
+            f = codecs.open(sqlfile[0], encoding='utf-8', mode='r')
+            sql = f.read()
+            self.cursor.executescript(sql)
+            print('db created and contents imported from %s' % sqlfile[0])
 
     def dump_database(self, sqlfile):
         """Dump contents of the database to a file."""
@@ -259,7 +265,7 @@ if __name__ == '__main__':
     # Subparser for creating the database
     create_parser = subparsers.add_parser('create', help='subcommand to create a new database or dump the contents to a file.');
     create_parser.add_argument('-e', '--empty', action='store_true', help='Create a new, empty database.')
-    create_parser.add_argument('-f', '--file', nargs=1, metavar='<path/file.sql>', help='Create a new database and import contents from <path/file.sql> NOT IMPLEMENTED YET.')
+    create_parser.add_argument('-f', '--file', nargs=1, metavar='<path/file.sql>', dest='inputfile', help='Create a new database and import contents from <path/file.sql>.')
     create_parser.add_argument('-d', '--dump', nargs=1, metavar='<path/file.sql>', dest='dumpfile', help='Create a dump of database contents to <path/file.sql>.')
 
     # Subparser for adding items
@@ -284,12 +290,17 @@ if __name__ == '__main__':
     # create new, empty database
     if hasattr(args, 'empty'):
         if args.empty:
-            db.create();
+            db.create_empty_database();
 
     # dump contents of the database
     if hasattr(args, 'dumpfile'):
         if args.dumpfile:
             db.dump_database(args.dumpfile);
+
+    # create and input contents of the database according to an sql file
+    if hasattr(args, 'inputfile'):
+        if args.inputfile:
+            db.import_database(args.inputfile);
 
     # add new item
     if hasattr(args, 'item'):
@@ -306,140 +317,6 @@ if __name__ == '__main__':
     if hasattr(args, 'translation'):
         if args.translation:
             db.add_translation(args.translation)
-
-    sys.exit(0)
-
-
-    if True:
-        #print sys.argv[1]
-        #print 'parameter count: %g' % (len(sys.argv) - 1)
-        if (sys.argv[1] == '-h') or (sys.argv[1] == '--help') or (sys.argv[1] == 'help'):
-            helptext()
-
-        # only one parameter, sys.argv length = 2
-        elif len(sys.argv) == 2:
-
-            if sys.argv[1] == 'list':
-                index = 1
-                #print '\nall items:\n------------------------------------------------------------'
-                for an_item in db.get_all_items():
-                    #print u'{0:3}:  {1:4}   {2}'.format(index, an_item[0], an_item[1])
-                    #print u'%u:  %u   %s' % (index, an_item[0], an_item[1])
-                    index = index + 1
-
-                #print '\nall stores:\n------------------------------------------------------------'
-                index = 1
-                for a_store in db.get_all_stores():
-                    #print u'{0:3}:  {1:4}   {2}'.format(index, a_store[0], a_store[1])
-                    #print u'%u:  %u   %s' % (index, a_store[0], a_store[1])
-                    index = index + 1
-
-                index = 1
-                #print '\nall lists:\n------------------------------------------------------------'
-                for a_list in db.get_all_shoppinglists():
-                    #print u'{0:3}:  {1:4}   {2}'.format(index, a_list[0], a_list[1])
-                    #print u'%u:  %u   %s' % (index, a_list[0], a_list[1])
-                    index = index + 1
-
-            else:
-                print('Unknown parameter')
-
-        elif sys.argv[1] == 'list':
-            if sys.argv[2] == 'items':
-                index = 1
-                for an_item in db.get_all_items():
-                    #print u'{0:3}:  {1:4}   {2}'.format(index, an_item[0], an_item[1])
-                    #print u'%u:  %u   %s' % (index, an_item[0], an_item[1])
-                    index = index + 1
-
-            elif sys.argv[2] == 'stores':
-                index = 1
-                for a_store in db.get_all_stores():
-                    #print u'{0:3}:  {1:4}   {2}'.format(index, a_store[0], a_store[1])
-                    #print u'%u:  %u   %s' % (index, a_store[0], a_store[1])
-                    index = index + 1
-
-            elif sys.argv[2] == 'lists':
-                index = 1
-                for a_list in db.get_all_shoppinglists():
-                    #print u'{0:3}:  {1:15}   {2}'.format(index, a_list[0], a_list[1])
-                    #print u'%u:  %u   %s' % (index, a_list[0], a_list[1])
-                    index = index + 1
-
-
-        elif sys.argv[1] == 'showlist':
-            index = 1
-            #print u'ind    id   amount  item'
-            #print u'------------------------------------------------'
-            for an_item in db.get_list_items(sys.argv[2]):
-                # itemid, amount, itemname
-                #    0       1       2
-                #print u'{0:3}: {1:4} {2:4}      {3:25}'.format(index, an_item[0], an_item[1], an_item[2])
-                #print u'%u: %u %u      %s' % (index, an_item[0], an_item[1], an_item[2])
-                index = index + 1
-
-        elif sys.argv[1] == 'updateitem':
-            #print u'update item: %s %s' % (sys.argv[2], sys.argv[3])
-            db.update_item(sys.argv[2], sys.argv[3])
-
-        elif sys.argv[1] == 'addtolist':
-            #print 'add ' + sys.argv[4] + ' pcs of ' + sys.argv[3] + ' to list ' + sys.argv[2]
-            added_item = db.addtolist(sys.argv[2], sys.argv[3], sys.argv[4])
-            #print added_item
-            #print u'listitemsid: %u  listid: %s  itemid: %u  amount: %u' % (added_item[0], added_item[1], added_item[2], added_item[3])
-
-        elif sys.argv[1] == 'addstore':
-            index = db.add_store(sys.argv[2])
-            #print u'new store: {0} {1}'.format(index[0], index[1])
-            #print u'new store: %u %s' % (index[0], index[1])
-
-        elif sys.argv[1] == 'updatestore':
-            #print u'update store: %s %s' % (sys.argv[2], sys.argv[3])
-            db.update_store(sys.argv[2], sys.argv[3])
-
-        elif sys.argv[1] == 'addlist':
-            index = db.add_shoppinglist(sys.argv[2])
-            #print u'new shoppinglist: {0} {1}'.format(index[0], index[1])
-            #print u'new shoppinglist: %u %s' % (index[0], index[1])
-
-        elif sys.argv[1] == 'updatelist':
-            db.update_shoppinglist(sys.argv[2], sys.argv[3])
-
-        elif sys.argv[1] == 'rmitems':
-            for ind in range (2, len(sys.argv)):
-                db.remove_item(sys.argv[ind])
-
-        elif sys.argv[1] == 'addprice':
-            r = db.add_price(sys.argv[2], sys.argv[3], sys.argv[4]) 
-
-        elif sys.argv[1] == 'rmprice':
-            print('rmprice: not yet implemented')
-
-        elif sys.argv[1] == 'getprice':
-            print('getprice: not yet implemented')
-
-        elif sys.argv[1] == 'getprices':
-            print('getprices: not yet implemented')
-
-        elif sys.argv[1] == 'order':
-            index = 1
-            #print u'ind  order  item                       store'
-            #print u'----------------------------------------------------------'
-            for an_item in db.list_items_in_order(sys.argv[2]):
-                # sorder, storeid, itemid, storeid, storename, itemid, itemname
-                #    0       1       2       3         4         5         6
-                #print u'{0:3}: {1:4}   {2:25}  {3}'.format(index, an_item[0], an_item[6], an_item[4])
-                #print u'%u: %u   %s  %s' % (index, an_item[0], an_item[6], an_item[4])
-                index = index + 1
-
-        elif sys.argv[1] == 'notin':
-            index = 1
-            #print u'ind    id  item'
-            #print u'-------------------------------------------'
-            for an_item in db.list_items_not_in_store(sys.argv[2]):
-                #print u'{0:3}: {1:4}   {2:25}'.format(index, an_item[0], an_item[1])
-                #print u'%u: %u   %s' % (index, an_item[0], an_item[1])
-                index = index + 1
 
 
 
