@@ -18,19 +18,22 @@
             Implemented.
         </comment>
     </note>
+    <note priority="medium" time="1325255233" done="1325272236">
+        dblib: Add new translations. (https://github.com/mtapoja/ecosl/issues/18)
+        <comment>
+            Implemented
+        </comment>
+    </note>
     <note priority="medium" time="1325255277" done="1325256828">
         dblib: Add new languages for translations. (https://github.com/mtapoja/ecosl/issues/12)
         <comment>
             Implemented.
         </comment>
     </note>
-    <note priority="medium" time="1325193385">
+    <note priority="medium" time="1325193385" done="1325329012">
         db: Export database contents (https://github.com/mtapoja/ecosl/issues/3)
-    </note>
-    <note priority="medium" time="1325255233" done="1325272236">
-        dblib: Add new translations. (https://github.com/mtapoja/ecosl/issues/18)
         <comment>
-            Implemented
+            Dumping db implemented.
         </comment>
     </note>
     <note priority="low" time="1325193346">

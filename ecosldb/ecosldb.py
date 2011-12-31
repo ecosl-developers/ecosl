@@ -28,6 +28,7 @@ import sys
 import os.path
 import argparse
 import sqlite3
+import codecs
 
 
 class EcoDB:
@@ -81,6 +82,13 @@ class EcoDB:
 
             #self.cursor.close()
 
+    def dump_database(self, sqlfile):
+        """Dump contents of the database to a file."""
+        if self.connection:
+            with codecs.open(sqlfile[0], encoding='utf-8', mode='w') as f:
+                for line in self.connection.iterdump():
+                    f.write(u'%s\n' % line)
+            print('db dumped to %s' % sqlfile[0])
 
     def get_all_items(self):
         """"Get all available items"""
@@ -236,7 +244,7 @@ def shorthelptext():
     '''DEPRECATED! Remember to remove'''
     print('Ecological Shopping List II database functions:\n\
 usage: ' + sys.argv[0] + ' [ -h | --help | <function> [parameters]]\n\n\
-Note: this library does not work yet!')
+Note: this library is not fully implemented yet!')
 
 
 if __name__ == '__main__':
@@ -249,9 +257,10 @@ if __name__ == '__main__':
     subparsers = ap.add_subparsers(title='Subcommands')
 
     # Subparser for creating the database
-    create_parser = subparsers.add_parser('create', help='subcommand to create a new database');
+    create_parser = subparsers.add_parser('create', help='subcommand to create a new database or dump the contents to a file.');
     create_parser.add_argument('-e', '--empty', action='store_true', help='Create a new, empty database.')
     create_parser.add_argument('-f', '--file', nargs=1, metavar='<path/file.sql>', help='Create a new database and import contents from <path/file.sql> NOT IMPLEMENTED YET.')
+    create_parser.add_argument('-d', '--dump', nargs=1, metavar='<path/file.sql>', dest='dumpfile', help='Create a dump of database contents to <path/file.sql>.')
 
     # Subparser for adding items
     add_parser = subparsers.add_parser('add', help='subcommands to add items to tables');
@@ -277,16 +286,23 @@ if __name__ == '__main__':
         if args.empty:
             db.create();
 
-    
+    # dump contents of the database
+    if hasattr(args, 'dumpfile'):
+        if args.dumpfile:
+            db.dump_database(args.dumpfile);
+
+    # add new item
     if hasattr(args, 'item'):
         if args.item:
             db.add_item(args.item)
             #print('new item: %u %s %u' % (index[0], index[1], index[2]))
 
+    # add new translation language
     if hasattr(args, 'lang'):
         if args.lang:
             db.add_language(args.lang)
 
+    # add new translation for an item
     if hasattr(args, 'translation'):
         if args.translation:
             db.add_translation(args.translation)
