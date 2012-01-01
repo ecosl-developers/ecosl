@@ -22,77 +22,58 @@
 # http://docs.python.org/library/unittest.html
 
 import sys
-import os.path
+import os
 import argparse
-import ecosldb
+from ecosldb import EcoDB
+import unittest
 
+
+class EcoDBTestSequence(unittest.TestCase):
+
+    self.dbfile='./unittest.db'
+
+    def setUp(self):
+        print('creating a test database')
+        self.db = EcoDB(dbfile)
+        self.db.create_empty_database();
+
+    def tearDown(self):
+        print('removing used database DISABLED')
+        #os.remove(dbfile)
+
+    def test_add_items(self):
+        print('adding items to database')
+        self.db.add_item({'maito,sin', 0})
 
 if __name__ == '__main__':
     """"Main function."""
 
     # Main parser
-    print('NOTE:  not updated yet!!!!')
 
     ap = argparse.ArgumentParser()
-    ap.add_argument('-d', '--database', nargs=1, metavar='<path/file.db>', required=True, help='The path to the database')
+    ap.add_argument('-i', '--items', action='store_true', help='test for adding and modifying items.')
     
-    subparsers = ap.add_subparsers(title='Subcommands')
+    #create_parser = subparsers.add_parser('create', help='subcommand to create a new database or dump the contents to a file.');
+    #create_parser.add_argument('-e', '--empty', action='store_true', help='Create a new, empty database.')
+    #create_parser.add_argument('-f', '--file', nargs=1, metavar='<path/file.sql>', dest='inputfile', help='Create a new database and import contents from <path/file.sql>.')
+    #create_parser.add_argument('-d', '--dump', nargs=1, metavar='<path/file.sql>', dest='dumpfile', help='Create a dump of database contents to <path/file.sql>.')
+    #add_parser.add_argument('--item', nargs=2, metavar=('"<name>"', '<list id>'), help='Add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
+    #add_parser.add_argument('--lang', nargs=1, metavar='"<language>"', help='Add new language for item translations.')
+    #add_parser.add_argument('--tr', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translation', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
 
-    # Subparser for creating the database
-    create_parser = subparsers.add_parser('create', help='subcommand to create a new database or dump the contents to a file.');
-    create_parser.add_argument('-e', '--empty', action='store_true', help='Create a new, empty database.')
-    create_parser.add_argument('-f', '--file', nargs=1, metavar='<path/file.sql>', dest='inputfile', help='Create a new database and import contents from <path/file.sql>.')
-    create_parser.add_argument('-d', '--dump', nargs=1, metavar='<path/file.sql>', dest='dumpfile', help='Create a dump of database contents to <path/file.sql>.')
-
-    # Subparser for adding items
-    add_parser = subparsers.add_parser('add', help='subcommands to add items to tables');
-    add_parser.add_argument('--item', nargs=2, metavar=('"<name>"', '<list id>'), help='Add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
-    add_parser.add_argument('--lang', nargs=1, metavar='"<language>"', help='Add new language for item translations.')
-    add_parser.add_argument('--tr', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translation', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
-
-    # Subparser for listing table items
-    list_parser = subparsers.add_parser('list', help='subcommands to list database items');
-    list_parser.add_argument('--items', help='List all available items and their translations.')
 
     args = ap.parse_args()
 
     print(args) #  debug
 
-    db = EcoDB(args.database[0])
 
 
     # Arguments are parsed, do the required tasks.
 
-    # create new, empty database
-    if hasattr(args, 'empty'):
-        if args.empty:
-            db.create_empty_database();
-
-    # dump contents of the database
-    if hasattr(args, 'dumpfile'):
-        if args.dumpfile:
-            db.dump_database(args.dumpfile);
-
-    # create and input contents of the database according to an sql file
-    if hasattr(args, 'inputfile'):
-        if args.inputfile:
-            db.import_database(args.inputfile);
-
-    # add new item
-    if hasattr(args, 'item'):
-        if args.item:
-            db.add_item(args.item)
-            #print('new item: %u %s %u' % (index[0], index[1], index[2]))
-
-    # add new translation language
-    if hasattr(args, 'lang'):
-        if args.lang:
-            db.add_language(args.lang)
-
-    # add new translation for an item
-    if hasattr(args, 'translation'):
-        if args.translation:
-            db.add_translation(args.translation)
+    # item tests
+    if hasattr(args, 'items'):
+        print('testing items')
+        unittest.main()
 
 
 
