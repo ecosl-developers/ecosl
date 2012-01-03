@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 # 
@@ -43,29 +43,65 @@ class EcoDBTests(unittest.TestCase):
             database.create_empty_database();
 
     def test_02_add_items(self):
-        items = ['täysmaito',
-            'rasvatonmaito',
-            'kevytmaito',
-            'ruisleipä',
-            'ranskanleipä',
-            'paahtoleipä',
-            'Keiju-margariini',
-            'Flora-margariini',
-            'Oivariini',
-            'leivontamargariini',
-            'Pirkka-kahvi',
-            'Saludo-kahvi',
-            'Presidentti-kahvi']
-
         for an_item in items:
-            self.db.add_item([an_item, 0])
+            self.db.add_item([an_item[0], 0])
 
+    def test_03_add_languages(self):
+        for a_lang in languages:
+            self.db.add_language([a_lang])
+
+    def test_04_add_translations(self):
+        for an_item in items:
+            self.db.add_translationname([an_item[0], '1', an_item[1]])
+            self.db.add_translationname([an_item[0], '2', an_item[2]])
+
+    def test_05_find_all_items(self):
+        for an_item in self.db.find_all_items('1'):
+            #print(an_item)
+            pass
+
+        for an_item in self.db.find_all_items('2'):
+            #print(an_item)
+            pass
+
+    def test_06_find_single_items(self):
+        for an_item in self.db.find_item_name(['täysmaito', '0']):
+            #print(an_item)
+            pass
+
+        for an_item in self.db.find_item_name(['täysmaito', '1']):
+            #print(an_item)
+            pass
+
+        for an_item in self.db.find_item_name(['täysmaito', '2']):
+            #print(an_item)
+            pass
 
 if __name__ == '__main__':
     """"Main function."""
 
     dbfile='./unittest.db'
     database = EcoDB(dbfile)
+
+    items = [('täysmaito', 'täysmaito', 'whole milk'),
+        ('rasvatonmaito', 'rasvaton maito', 'skimmed milk'),
+        ('kevytmaito', 'kevytmaito', 'semi-skimmed milk'),
+        ('ruisleipä', 'ruisleipä', 'rye bread'),
+        ('ranskanleipä', 'ranskanleipä', 'French bread'),
+        ('paahtoleipä', 'paahtoleipä', 'toast'),
+        ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine'),
+        ('Flora-margariini', 'Flora-margariini', 'Flora margarine'),
+        ('Oivariini', 'Oivariini', 'Oivariini margarine'),
+        ('leivontamargariini', 'leivontamargariini', 'baking margarine'),
+        ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee'),
+        ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee'),
+        ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee')]
+
+
+    languages= ['Finnish',
+        'English']
+
+
 
     suite = unittest.TestLoader().loadTestsFromTestCase(EcoDBTests)
     unittest.TextTestRunner(verbosity=2).run(suite)

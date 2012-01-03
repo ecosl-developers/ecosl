@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 # 
@@ -93,14 +93,42 @@ class EcoDB:
         if self.connection:
             with codecs.open(sqlfile[0], encoding='utf-8', mode='w') as f:
                 for line in self.connection.iterdump():
-                    f.write(u'%s\n' % line)
+                    f.write('%s\n' % line)
             print('db dumped to %s' % sqlfile[0])
 
-    def get_all_items(self):
-        """"Get all available items"""
-        return self.cursor.execute('select itemid, itemname from items')
+    def find_all_items(self, langid):
+        """"Find all items and their translations for the given language."""
+        if langid[0] == '0': # all items without the translations
+            return self.cursor.execute('select * from item')
+        else:
+            return self.cursor.execute('select item.id, item.shoppinglistid, item.name, \
+                itemtranslation.id, itemtranslation.itemid, itemtranslation.itemlanguageid, \
+                itemtranslation.translation \
+                from item \
+                left join itemtranslation \
+                on itemtranslation.itemlanguageid = "%s" and itemtranslation.itemid = item.id' % langid[0])
 
-    def get_list_items(self, a_list):
+    def find_item_name(self, nameid):
+        """"Find items and translations by their name for the given language."""
+        if nameid[1] == '0':
+            return self.cursor.execute('select * from item \
+                where item.name = "%s"' % nameid[0])
+        else:
+            return self.cursor.execute('select item.id, item.name, item.shoppinglistid, \
+                itemtranslation.id, itemtranslation.itemid, itemtranslation.itemlanguageid, \
+                itemtranslation.translation \
+                from item, itemtranslation \
+                where item.name = "%s" and itemtranslation.itemlanguageid = "%s" and itemtranslation.itemid = item.id' % (nameid[0], nameid[1]))
+
+    def find_item_id(self, idid):
+        """"Find items and translations by their id for the given language."""
+        return self.cursor.execute('select item.id, item.shoppinglistid, item.name, \
+            itemtranslation.id, itemtranslation.itemid, itemtranslation.itemlanguageid, \
+            itemtranslation.translation \
+            from item, itemtranslation \
+            where item.id = "%s" and itemtranslation.itemlanguageid = "%s" and itemtranslation.itemid = item.id' % (idid[0], idid[1]))
+
+    def get_list_items(self, a_list):  # NOT UPDATED FOR ECOSL II
         """"Get all items for a single shopping list"""
         return self.cursor.execute('select items.itemid, listitems.amount, items.itemname from items, listitems, lists where lists.listhash = "%s" and listitems.listid = lists.listid and listitems.itemid = items.itemid' % a_list)
 
@@ -114,12 +142,12 @@ class EcoDB:
             self.connection.commit()
             #r = self.cursor.execute('select id, name, shoppinglistid from item where name = "%s"' % item[0]).fetchall()[0]
 
-    def update_item(self, itemid, itemname):
+    def update_item(self, itemid, itemname):  # NOT UPDATED FOR ECOSL II
         """Update the name of an item"""
         self.cursor.execute('update items set itemname = "%s" where itemid = "%s"' % (itemname, itemid))
         self.connection.commit()
 
-    def remove_item(self, item):
+    def remove_item(self, item):  # NOT UPDATED FOR ECOSL II
         """"Remove an item completely"""
         r = self.cursor.execute('delete from items where itemname = "%s"' % item)
         self.connection.commit()
@@ -130,16 +158,24 @@ class EcoDB:
             self.cursor.execute('insert into itemlanguage (language) values ("%s")' % language[0])
             self.connection.commit()
 
-    def add_translation(self, tr):
-        """Add new translation for an item."""
+    def add_translation(self, trid):
+        """Add new translation by item id for an item."""
         if self.connection:
-            self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values ("%s", "%s", "%s")' % (tr[0], tr[1], tr[2]))
+            self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values ("%s", "%s", "%s")' % (trid[0], trid[1], trid[2]))
             self.connection.commit()
+
+    def add_translationname(self, trname):
+        """Add new translation by item name for an item."""
+        if self.connection:
+            for item in self.find_item_name([trname[0], '0']):
+                self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values ("%s", "%s", "%s")' % (item[0], trname[1], trname[2]))
+            self.connection.commit()
+
 
     #
     # Adding, modifying and removing shopping lists
 
-    def add_shoppinglist(self, slist):
+    def add_shoppinglist(self, slist):  # NOT UPDATED FOR ECOSL II
         """"Add a new shoppinglist"""
         t = (slist, )
         self.cursor.execute('insert into lists (listhash) values (?)', t)
@@ -147,11 +183,11 @@ class EcoDB:
         r = self.cursor.execute('select listid, listhash from lists where listhash = "%s"' % slist).fetchall()[0]
         return r
 
-    def update_shoppinglist(self, slistid, slisthash):
+    def update_shoppinglist(self, slistid, slisthash):  # NOT UPDATED FOR ECOSL II
         self.cursor.execute('update lists set listhash = "%s" where listid = "%s"' % (slisthash, slistid))
         self.connection.commit()
 
-    def addtolist(self, listhash, itemind, amount):
+    def addtolist(self, listhash, itemind, amount):  # NOT UPDATED FOR ECOSL II
         """"Add a given amount of items to shopping list"""
         # get list id
         listid = self.cursor.execute('select listid, listhash from lists where listhash = "%s"' % listhash).fetchall()[0]
@@ -161,7 +197,7 @@ class EcoDB:
         r = self.cursor.execute('select listitemsid, listid, itemid, amount from listitems where listid="%s" and itemid = "%s"' % (listid[0], itemind)).fetchall()[0]
         return r
 
-    def removefromlist(self, listhash, itemind):
+    def removefromlist(self, listhash, itemind):  # NOT UPDATED FOR ECOSL II
         """"Remove an item from a shopping list"""
         # get list id
         listid = self.cursor.execute('select listid from lists where listhash = "%s"' % listhash).fetchall()[0]
@@ -169,7 +205,7 @@ class EcoDB:
         r = self.cursor.execute('delete from listitems where (itemid = "%s" and listid = "%s")' % (itemind, listid[0]))
         self.connection.commit()
 
-    def add_store(self, item):
+    def add_store(self, item):  # NOT UPDATED FOR ECOSL II
         """"Add new stores"""
         t = (item, )
         self.cursor.execute('insert into store (storename) values (?)', t)
@@ -177,19 +213,19 @@ class EcoDB:
         r = self.cursor.execute('select storeid, storename from store where storename = "%s"' % item).fetchall()[0]
         return r
 
-    def update_store(self, storeid, storename):
+    def update_store(self, storeid, storename):  # NOT UPDATED FOR ECOSL II
         self.cursor.execute('update store set storename = "%s" where storeid = "%s"' % (storename, storeid))
         self.connection.commit()
 
-    def get_all_stores(self):
+    def get_all_stores(self):  # NOT UPDATED FOR ECOSL II
         """"Get all stores"""
         return self.cursor.execute('select storeid, storename from store')
 
-    def get_all_shoppinglists(self):
+    def get_all_shoppinglists(self):  # NOT UPDATED FOR ECOSL II
         """"Get all shoppinglists"""
         return self.cursor.execute('select listid, listhash from lists')
 
-    def add_price(self, itemid, storeid, price):
+    def add_price(self, itemid, storeid, price):  # NOT UPDATED FOR ECOSL II
         """"Add a price to an item for a store"""
         r = self.cursor.execute('select priceid, itemid, storeid, price from itemprices where (itemid = %s and storeid = %s)' % (itemid, storeid)).fetchall()
         #print r
@@ -209,14 +245,14 @@ class EcoDB:
             self.connection.commit()
         #return r
 
-    def list_items_in_order(self, storeind):
+    def list_items_in_order(self, storeind):  # NOT UPDATED FOR ECOSL II
         """"List items in correct order for one store"""
         # Currently only thing that connects an item and a store is shoppingorder
         # table.
         r = self.cursor.execute('select shoppingorder.sorder, shoppingorder.storeid, shoppingorder.itemid, store.storeid, store.storename, items.itemid, items.itemname from shoppingorder, store, items where (store.storeid = %s and items.itemid = shoppingorder.itemid and shoppingorder.storeid = store.storeid) order by shoppingorder.sorder' % storeind).fetchall()
         return r
 
-    def list_items_not_in_store(self, storeind):
+    def list_items_not_in_store(self, storeind):  # NOT UPDATED FOR ECOSL II
         """"List items that do not exist in store"""
         r = self.cursor.execute('select items.itemid, items.itemname from items where items.itemid not in (select shoppingorder.itemid from shoppingorder, store where store.storeid = "%s" and store.storeid = shoppingorder.storeid) order by items.itemname' % storeind).fetchall()
         return r
@@ -224,34 +260,9 @@ class EcoDB:
 
 
 
-def helptext():
-    '''DEPRECATED! Remember to remove'''
-    print('Known parameters:\n\
-    help, --help                         FIX THIS    this help\n\
-    list                                 FIX THIS    list contents of all tables\n\
-    list [items, stores, lists]          FIX THIS    list contents of one table\n\
-    showlist "list"                      FIX THIS    show items and amounts for a shopping list\n\
-    additem "new item"                   FIX THIS    add new item\n\
-    updateitem itemid "new itemname"     FIX THIS    update itemname\n\
-    addtolist "list name" itemind amount FIX THIS    add new item and amount to shopping list\n\
-    addstore "new store"                 FIX THIS    add new store\n\
-    updatestore storeid "new storename"  FIX THIS    update storename\n\
-    addlist "new list"                   FIX THIS    add new shopping list\n\
-    updatelist listid "list name"        FIX THIS    update shopping list\n\
-    rmitems "item" ["item2" "itemN"...]  FIX THIS    remove item\n\
-    addprice itemid storeid price        NOT IMPLE   add or update price to an item to a store\n\
-    rmprice itemid storeid               NOT IMPLE   remove price of an item from a store\n\
-    getprice itemid storeid              NOT IMPLE   get price of an item from a store\n\
-    getprices listid storeid             NOT IMPLE   get prices for a list for a store\n\
-    order storeind                       FIX THIS    list all items in order for the store\n\
-    notin storeind                       FIX THIS    list all items that are not in the store')
-
-def shorthelptext():
-    '''DEPRECATED! Remember to remove'''
-    print('Ecological Shopping List II database functions:\n\
-usage: ' + sys.argv[0] + ' [ -h | --help | <function> [parameters]]\n\n\
-Note: this library is not fully implemented yet!')
-
+#
+# main function
+#
 
 if __name__ == '__main__':
     """"Main function, to be used for creating the database, developing and testing."""
@@ -272,11 +283,14 @@ if __name__ == '__main__':
     add_parser = subparsers.add_parser('add', help='subcommands to add items to tables');
     add_parser.add_argument('--item', nargs=2, metavar=('"<name>"', '<list id>'), help='Add new item <name>. <list id> is either a shopping list id or 0, which means the item available for all lists.')
     add_parser.add_argument('--lang', nargs=1, metavar='"<language>"', help='Add new language for item translations.')
-    add_parser.add_argument('--tr', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translation', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
+    add_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translationid', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
+    add_parser.add_argument('--trname', nargs=3, metavar=('"<item name>"', '<language id>', '"<translation>"'), dest='translationname', help='Add new translation for an item "<item name>" to language <language id>. Translated string is "<translation>".')
 
-    # Subparser for listing table items
-    list_parser = subparsers.add_parser('list', help='subcommands to list database items');
-    list_parser.add_argument('--items', help='List all available items and their translations.')
+    # Subparser for finding and listing table items
+    list_parser = subparsers.add_parser('list', help='subcommands for finding and listing database items');
+    list_parser.add_argument('--allitems', nargs=1, metavar='<language id>', help='List all available items and their translations for the given language.')
+    list_parser.add_argument('--itemname', nargs=2, metavar=('"<item name>"', '<language id>'), help='Find items and their translations by their name for the given language.')
+    list_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '<language id>'), help='Find items and their translations by their ids.')
 
     args = ap.parse_args()
 
@@ -313,10 +327,33 @@ if __name__ == '__main__':
         if args.lang:
             db.add_language(args.lang)
 
-    # add new translation for an item
-    if hasattr(args, 'translation'):
-        if args.translation:
-            db.add_translation(args.translation)
+    # add new translation for an item id
+    if hasattr(args, 'translationid'):
+        if args.translationid:
+            db.add_translation(args.translationid)
 
+    # add new translation for an item name
+    if hasattr(args, 'translationname'):
+        if args.translationname:
+            db.add_translationname(args.translationname)
+            
+
+    # list all items and their translations for the given language
+    if hasattr(args, 'allitems'):
+        if args.allitems:
+            for an_item in db.find_all_items(args.allitems):
+                print(an_item)
+
+    # list items and their translations by their name for the given language
+    if hasattr(args, 'itemname'):
+        if args.itemname:
+            for an_item in db.find_item_name(args.itemname):
+                print(an_item)
+
+    # list items and their translations by their id for the given language
+    if hasattr(args, 'itemid'):
+        if args.itemid:
+            for an_item in db.find_item_id(args.itemid):
+                print(an_item)
 
 
