@@ -63,8 +63,11 @@
     <note priority="high" time="1325346654">
         dblib: Add items to shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/7)
     </note>
-    <note priority="high" time="1325346654">
-        dblib: Add new shopping lists + functionality test. (https://github.com/mtapoja/ecosl/issues/6) in progress
+    <note priority="high" time="1325346654" done="1325598878">
+        dblib: Add new shopping lists + functionality test. (https://github.com/mtapoja/ecosl/issues/6)
+        <comment>
+            Implemented.
+        </comment>
     </note>
     <note priority="high" time="1325346655">
         dblib: Add prices for items + functionality test. (https://github.com/mtapoja/ecosl/issues/15)

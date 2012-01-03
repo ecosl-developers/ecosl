@@ -29,6 +29,7 @@ import os.path
 import argparse
 import sqlite3
 import codecs
+import hashlib
 
 
 class EcoDB:
@@ -181,18 +182,15 @@ class EcoDB:
             self.cursor.execute('insert into store (name) values (?)', t)
             self.connection.commit()
 
+    def add_shoppinglist(self, slist):
+        """"Add a new shopping list"""
+        t = (hashlib.md5(slist[0].encode('utf-8')).hexdigest(), )
+        self.cursor.execute('insert into shoppinglist (hash) values (?)', t)
+        self.connection.commit()
 
 
     #
     # Adding, modifying and removing shopping lists
-
-    def add_shoppinglist(self, slist):  # NOT UPDATED FOR ECOSL II
-        """"Add a new shoppinglist"""
-        t = (slist, )
-        self.cursor.execute('insert into lists (listhash) values (?)', t)
-        self.connection.commit()
-        r = self.cursor.execute('select listid, listhash from lists where listhash = "%s"' % slist).fetchall()[0]
-        return r
 
     def update_shoppinglist(self, slistid, slisthash):  # NOT UPDATED FOR ECOSL II
         self.cursor.execute('update lists set listhash = "%s" where listid = "%s"' % (slisthash, slistid))
@@ -289,6 +287,7 @@ if __name__ == '__main__':
     add_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translationid', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
     add_parser.add_argument('--trname', nargs=3, metavar=('"<item name>"', '<language id>', '"<translation>"'), dest='translationname', help='Add new translation for an item "<item name>" to language <language id>. Translated string is "<translation>".')
     add_parser.add_argument('--store', nargs=1, metavar='"<store name>"', help='Add new store <store name>.')
+    add_parser.add_argument('--shoppinglist', nargs=1, metavar='"<shopping list name>"', help='Add new shopping list <shopping list name>.')
 
     # Subparser for finding and listing table items
     list_parser = subparsers.add_parser('list', help='subcommands for finding and listing database items');
@@ -345,6 +344,11 @@ if __name__ == '__main__':
     if hasattr(args, 'store'):
         if args.store:
             db.add_store(args.store)
+
+    # add new shopping list
+    if hasattr(args, 'shoppinglist'):
+        if args.shoppinglist:
+            db.add_shoppinglist(args.shoppinglist)
 
     # list all items and their translations for the given language
     if hasattr(args, 'allitems'):

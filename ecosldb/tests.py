@@ -81,6 +81,10 @@ class EcoDBTests(unittest.TestCase):
         for a_store in stores:
             self.db.add_store([a_store])
 
+    def test_08_add_shoppinglists(self):
+        for a_list in shoppinglists:
+            self.db.add_shoppinglist([a_list])
+
 
 if __name__ == '__main__':
     """"Main function."""
@@ -114,6 +118,8 @@ if __name__ == '__main__':
         'S-Market Koskiseutu',
         'K-Citymarket Kaakkuri']
 
+    shoppinglists = ['Ensimmäinen testilista',
+        'The second testlist']
 
     suite = unittest.TestLoader().loadTestsFromTestCase(EcoDBTests)
     unittest.TextTestRunner(verbosity=2).run(suite)
