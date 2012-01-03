@@ -205,13 +205,11 @@ class EcoDB:
         r = self.cursor.execute('delete from listitems where (itemid = "%s" and listid = "%s")' % (itemind, listid[0]))
         self.connection.commit()
 
-    def add_store(self, item):  # NOT UPDATED FOR ECOSL II
-        """"Add new stores"""
-        t = (item, )
-        self.cursor.execute('insert into store (storename) values (?)', t)
+    def add_store(self, store):
+        """"Add new store"""
+        t = (store[0], )
+        self.cursor.execute('insert into store (name) values (?)', t)
         self.connection.commit()
-        r = self.cursor.execute('select storeid, storename from store where storename = "%s"' % item).fetchall()[0]
-        return r
 
     def update_store(self, storeid, storename):  # NOT UPDATED FOR ECOSL II
         self.cursor.execute('update store set storename = "%s" where storeid = "%s"' % (storename, storeid))
@@ -285,6 +283,7 @@ if __name__ == '__main__':
     add_parser.add_argument('--lang', nargs=1, metavar='"<language>"', help='Add new language for item translations.')
     add_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<language id>', '"<translation>"'), dest='translationid', help='Add new translation for an item <item id> to language <language id>. Translated string is "<translation>".')
     add_parser.add_argument('--trname', nargs=3, metavar=('"<item name>"', '<language id>', '"<translation>"'), dest='translationname', help='Add new translation for an item "<item name>" to language <language id>. Translated string is "<translation>".')
+    add_parser.add_argument('--store', nargs=1, metavar='"<store name>"', help='Add new store <store name>.')
 
     # Subparser for finding and listing table items
     list_parser = subparsers.add_parser('list', help='subcommands for finding and listing database items');
@@ -337,6 +336,10 @@ if __name__ == '__main__':
         if args.translationname:
             db.add_translationname(args.translationname)
             
+    # add new store
+    if hasattr(args, 'store'):
+        if args.store:
+            db.add_store(args.store)
 
     # list all items and their translations for the given language
     if hasattr(args, 'allitems'):

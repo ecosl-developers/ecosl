@@ -24,6 +24,12 @@
             Implemented.
         </comment>
     </note>
+    <note priority="high" time="1325491006" done="1325588655">
+        dblib: Find items + functionality test (https://github.com/mtapoja/ecosl/issues/37)
+        <comment>
+            Finding items implemented.
+        </comment>
+    </note>
     <note priority="medium" time="1325193385" done="1325329012">
         db: Export database contents (https://github.com/mtapoja/ecosl/issues/3)
         <comment>
@@ -54,17 +60,14 @@
     <note priority="high" time="1325346654">
         dblib: Add new shopping lists + functionality test. (https://github.com/mtapoja/ecosl/issues/6)
     </note>
-    <note priority="high" time="1325346654">
+    <note priority="high" time="1325346654" done="1325593688">
         dblib: Add new stores + functionality test. (https://github.com/mtapoja/ecosl/issues/13)
+        <comment>
+            Implemented.
+        </comment>
     </note>
     <note priority="high" time="1325346655">
         dblib: Add prices for items + functionality test. (https://github.com/mtapoja/ecosl/issues/15)
-    </note>
-    <note priority="high" time="1325491006" done="1325588655">
-        dblib: Find items + functionality test (https://github.com/mtapoja/ecosl/issues/37)
-        <comment>
-            Finding items implemented.
-        </comment>
     </note>
     <note priority="high" time="1325491034">
         dblib: Find shopping lists + functionality test (https://github.com/mtapoja/ecosl/issues/38)

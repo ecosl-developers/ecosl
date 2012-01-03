@@ -77,6 +77,11 @@ class EcoDBTests(unittest.TestCase):
             #print(an_item)
             pass
 
+    def test_07_add_stores(self):
+        for a_store in stores:
+            self.db.add_store([a_store])
+
+
 if __name__ == '__main__':
     """"Main function."""
 
@@ -101,6 +106,13 @@ if __name__ == '__main__':
     languages= ['Finnish',
         'English']
 
+
+    stores= ['K-Citymarket Raksila',
+        'Prisma Raksila',
+        'Siwa Muhos'
+        'K-Supermarket Mimmi',
+        'S-Market Koskiseutu',
+        'K-Citymarket Kaakkuri']
 
 
     suite = unittest.TestLoader().loadTestsFromTestCase(EcoDBTests)
