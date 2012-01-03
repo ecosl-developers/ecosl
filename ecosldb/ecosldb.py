@@ -138,9 +138,9 @@ class EcoDB:
     def add_item(self, item):
         """"Add new item."""
         if self.connection:
-            self.cursor.execute('insert into item (name, shoppinglistid) values ("%s", "%s")' % (item[0], item[1]))
+            t = (item[0], item[1], )
+            self.cursor.execute('insert into item (name, shoppinglistid) values (?, ?)', t)
             self.connection.commit()
-            #r = self.cursor.execute('select id, name, shoppinglistid from item where name = "%s"' % item[0]).fetchall()[0]
 
     def update_item(self, itemid, itemname):  # NOT UPDATED FOR ECOSL II
         """Update the name of an item"""
@@ -155,21 +155,32 @@ class EcoDB:
     def add_language(self, language):
         """"Add new language for item translations."""
         if self.connection:
-            self.cursor.execute('insert into itemlanguage (language) values ("%s")' % language[0])
+            t = (language[0], )
+            self.cursor.execute('insert into itemlanguage (language) values (?)', t)
             self.connection.commit()
 
-    def add_translation(self, trid):
+    def add_translationid(self, trid):
         """Add new translation by item id for an item."""
         if self.connection:
-            self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values ("%s", "%s", "%s")' % (trid[0], trid[1], trid[2]))
+            t = (trid[0], trid[1], trid[2], )
+            self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values (?, ?, ?)', t)
             self.connection.commit()
 
     def add_translationname(self, trname):
         """Add new translation by item name for an item."""
         if self.connection:
             for item in self.find_item_name([trname[0], '0']):
-                self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values ("%s", "%s", "%s")' % (item[0], trname[1], trname[2]))
+                t = (item[0], trname[1], trname[2], )
+                self.cursor.execute('insert into itemtranslation (itemid, itemlanguageid, translation) values (?, ?, ?)', t)
             self.connection.commit()
+
+    def add_store(self, store):
+        """"Add new store"""
+        if self.connection:
+            t = (store[0], )
+            self.cursor.execute('insert into store (name) values (?)', t)
+            self.connection.commit()
+
 
 
     #
@@ -203,12 +214,6 @@ class EcoDB:
         listid = self.cursor.execute('select listid from lists where listhash = "%s"' % listhash).fetchall()[0]
         print('removing itemind, listid: %s, %s' % (itemind, listid[0]))
         r = self.cursor.execute('delete from listitems where (itemid = "%s" and listid = "%s")' % (itemind, listid[0]))
-        self.connection.commit()
-
-    def add_store(self, store):
-        """"Add new store"""
-        t = (store[0], )
-        self.cursor.execute('insert into store (name) values (?)', t)
         self.connection.commit()
 
     def update_store(self, storeid, storename):  # NOT UPDATED FOR ECOSL II
@@ -329,7 +334,7 @@ if __name__ == '__main__':
     # add new translation for an item id
     if hasattr(args, 'translationid'):
         if args.translationid:
-            db.add_translation(args.translationid)
+            db.add_translationid(args.translationid)
 
     # add new translation for an item name
     if hasattr(args, 'translationname'):
