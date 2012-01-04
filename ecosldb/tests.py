@@ -85,6 +85,25 @@ class EcoDBTests(unittest.TestCase):
         for a_list in shoppinglists:
             self.db.add_shoppinglist([a_list])
 
+    def test_09_add_and_update_price(self):
+        index = 1
+        for an_item in items:
+            #print(an_item[0] + ' costs ' + str(an_item[3]))
+            self.db.add_price([index, 1, str(an_item[3])])
+            index += 1
+
+        # Changing a few prices
+        self.db.add_price([1, 1, 0.85])
+        self.db.add_price([4, 1, 3.50])
+        self.db.add_price([10, 1, 1.50])
+
+        # Adding the same price again for few
+        self.db.add_price([2, 1, 0.75])
+        self.db.add_price([5, 1, 2.25])
+        self.db.add_price([6, 1, 1.75])
+
+
+
 
 if __name__ == '__main__':
     """"Main function."""
@@ -92,19 +111,19 @@ if __name__ == '__main__':
     dbfile='./unittest.db'
     database = EcoDB(dbfile)
 
-    items = [('täysmaito', 'täysmaito', 'whole milk'),
-        ('rasvatonmaito', 'rasvaton maito', 'skimmed milk'),
-        ('kevytmaito', 'kevytmaito', 'semi-skimmed milk'),
-        ('ruisleipä', 'ruisleipä', 'rye bread'),
-        ('ranskanleipä', 'ranskanleipä', 'French bread'),
-        ('paahtoleipä', 'paahtoleipä', 'toast'),
-        ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine'),
-        ('Flora-margariini', 'Flora-margariini', 'Flora margarine'),
-        ('Oivariini', 'Oivariini', 'Oivariini margarine'),
-        ('leivontamargariini', 'leivontamargariini', 'baking margarine'),
-        ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee'),
-        ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee'),
-        ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee')]
+    items = [('täysmaito', 'täysmaito', 'whole milk', 0.75),
+        ('rasvatonmaito', 'rasvaton maito', 'skimmed milk', 0.75),
+        ('kevytmaito', 'kevytmaito', 'semi-skimmed milk', 0.75),
+        ('ruisleipä', 'ruisleipä', 'rye bread', 2.50),
+        ('ranskanleipä', 'ranskanleipä', 'French bread', 2.25),
+        ('paahtoleipä', 'paahtoleipä', 'toast', 1.75),
+        ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine', 3.50),
+        ('Flora-margariini', 'Flora-margariini', 'Flora margarine', 3.20),
+        ('Oivariini', 'Oivariini', 'Oivariini margarine', 3.80 ),
+        ('leivontamargariini', 'leivontamargariini', 'baking margarine', 1.20),
+        ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee', 4.00),
+        ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee', 4.20),
+        ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)]
 
 
     languages= ['Finnish',

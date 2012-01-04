@@ -188,6 +188,21 @@ class EcoDB:
         self.cursor.execute('insert into shoppinglist (hash) values (?)', t)
         self.connection.commit()
 
+    def add_price(self, price):
+        """"Add a price to an item for a store"""
+        r = self.cursor.execute('select id, itemid, storeid, price from price where (itemid = %s and storeid = %s)' % (price[0], price[1])).fetchall()
+
+        # Check if price for this item in this store exists: if it does, update, if not, insert.
+        if r == []:
+            t = (price[0], price[1], price[2], )
+            self.cursor.execute('insert into price (itemid, storeid, price) values (?, ?, ?)', t)
+            self.connection.commit()
+        else:
+            if r[0][3] != float(price[2]):
+                t = (price[2], price[0], price[1], )
+                self.cursor.execute('update price set price = ? where (itemid = ? and storeid = ?)', t)
+                self.connection.commit()
+
 
     #
     # Adding, modifying and removing shopping lists
@@ -225,26 +240,6 @@ class EcoDB:
     def get_all_shoppinglists(self):  # NOT UPDATED FOR ECOSL II
         """"Get all shoppinglists"""
         return self.cursor.execute('select listid, listhash from lists')
-
-    def add_price(self, itemid, storeid, price):  # NOT UPDATED FOR ECOSL II
-        """"Add a price to an item for a store"""
-        r = self.cursor.execute('select priceid, itemid, storeid, price from itemprices where (itemid = %s and storeid = %s)' % (itemid, storeid)).fetchall()
-        #print r
-
-        # Check if price for this item in this store exists: if it does, update, if not, insert.
-        if r == []:
-            #print 'price not found, inserting...'
-            t = (itemid, storeid, price)
-            self.cursor.execute('insert into itemprices (itemid, storeid, price) values (?, ?, ?)', t)
-            self.connection.commit()
-            #r = self.cursor.execute('select priceid, itemid, storeid, price from itemprices where (itemid = %s and storeid = %s)' % (itemid, storeid)).fetchall()
-            #print 'new values:'
-            #print r
-        else:
-            #print 'old (%s) and new (%s) price differ, updating...' % (fetchedprice, price)
-            self.cursor.execute('update itemprices set price = "%s" where (itemid = "%s" and storeid = "%s")' % (price, itemid, storeid))
-            self.connection.commit()
-        #return r
 
     def list_items_in_order(self, storeind):  # NOT UPDATED FOR ECOSL II
         """"List items in correct order for one store"""
@@ -288,6 +283,7 @@ if __name__ == '__main__':
     add_parser.add_argument('--trname', nargs=3, metavar=('"<item name>"', '<language id>', '"<translation>"'), dest='translationname', help='Add new translation for an item "<item name>" to language <language id>. Translated string is "<translation>".')
     add_parser.add_argument('--store', nargs=1, metavar='"<store name>"', help='Add new store <store name>.')
     add_parser.add_argument('--shoppinglist', nargs=1, metavar='"<shopping list name>"', help='Add new shopping list <shopping list name>.')
+    add_parser.add_argument('--price', nargs=3, metavar=('<item id>', '<store id>', '<price>'), help='Add a price for <item id>, to <store id>, amount of <price> (e.g. 1.25).')
 
     # Subparser for finding and listing table items
     list_parser = subparsers.add_parser('list', help='subcommands for finding and listing database items');
@@ -350,6 +346,11 @@ if __name__ == '__main__':
         if args.shoppinglist:
             db.add_shoppinglist(args.shoppinglist)
 
+    # add new (or update existing?) price for an item to a store
+    if hasattr(args, 'price'):
+        if args.price:
+            db.add_price(args.price)
+
     # list all items and their translations for the given language
     if hasattr(args, 'allitems'):
         if args.allitems:
@@ -367,5 +368,7 @@ if __name__ == '__main__':
         if args.itemid:
             for an_item in db.find_item_id(args.itemid):
                 print(an_item)
+
+
 
 
