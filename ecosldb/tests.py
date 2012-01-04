@@ -82,8 +82,8 @@ class EcoDBTests(unittest.TestCase):
             self.db.add_store([a_store])
 
     def test_08_add_shoppinglists(self):
-        for a_list in shoppinglists:
-            self.db.add_shoppinglist([a_list])
+        for a_listname in shoppinglists:
+            self.db.add_shoppinglist([a_listname[0]])
 
     def test_09_add_and_update_price(self):
         index = 1
@@ -102,6 +102,9 @@ class EcoDBTests(unittest.TestCase):
         self.db.add_price([5, 1, 2.25])
         self.db.add_price([6, 1, 1.75])
 
+    def test_10_add_items_to_shoppinglist(self):
+        for a_list in shoppinglists:
+            self.db.add_to_list(a_list[0], a_list[1])
 
 
 
@@ -111,7 +114,8 @@ if __name__ == '__main__':
     dbfile='./unittest.db'
     database = EcoDB(dbfile)
 
-    items = [('täysmaito', 'täysmaito', 'whole milk', 0.75),
+    items = [
+        ('täysmaito', 'täysmaito', 'whole milk', 0.75),
         ('rasvatonmaito', 'rasvaton maito', 'skimmed milk', 0.75),
         ('kevytmaito', 'kevytmaito', 'semi-skimmed milk', 0.75),
         ('ruisleipä', 'ruisleipä', 'rye bread', 2.50),
@@ -123,22 +127,30 @@ if __name__ == '__main__':
         ('leivontamargariini', 'leivontamargariini', 'baking margarine', 1.20),
         ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee', 4.00),
         ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee', 4.20),
-        ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)]
+        ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)
+        ]
 
 
-    languages= ['Finnish',
-        'English']
+    languages= [
+        'Finnish',
+        'English'
+        ]
 
 
-    stores= ['K-Citymarket Raksila',
+    stores= [
+        'K-Citymarket Raksila',
         'Prisma Raksila',
         'Siwa Muhos'
         'K-Supermarket Mimmi',
         'S-Market Koskiseutu',
-        'K-Citymarket Kaakkuri']
+        'K-Citymarket Kaakkuri'
+        ]
 
-    shoppinglists = ['Ensimmäinen testilista',
-        'The second testlist']
+    shoppinglists = [
+        ['Ensimmäinen testilista', [[1, 3], [2, 3], [4, 1], [7, 1]]],
+        ['The second testlist', [[2, 2], [9, 1], [13, 1]]]
+        ]
+
 
     suite = unittest.TestLoader().loadTestsFromTestCase(EcoDBTests)
     unittest.TextTestRunner(verbosity=2).run(suite)

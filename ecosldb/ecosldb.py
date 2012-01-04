@@ -203,6 +203,21 @@ class EcoDB:
                 self.cursor.execute('update price set price = ? where (itemid = ? and storeid = ?)', t)
                 self.connection.commit()
 
+    def add_to_list(self, listname, itemlist):
+        """"Add a given amount of items to shopping list"""
+        # itemlist is a nested list so that we can easily add several items to a shopping list at once.
+        
+        # get list id
+        t = (hashlib.md5(listname.encode('utf-8')).hexdigest(), )
+        listid = self.cursor.execute('select id, hash from shoppinglist where hash = ?', t).fetchall()
+        if listid != []:
+            for item in itemlist:
+                t = (listid[0][0], item[0], item[1], )
+                self.cursor.execute('insert into shoppinglistitems (shoppinglistid, itemid, amount) values (?, ?, ?)', t)
+                self.connection.commit()
+        else:
+            print('the list does not exist.')
+
 
     #
     # Adding, modifying and removing shopping lists
@@ -210,16 +225,6 @@ class EcoDB:
     def update_shoppinglist(self, slistid, slisthash):  # NOT UPDATED FOR ECOSL II
         self.cursor.execute('update lists set listhash = "%s" where listid = "%s"' % (slisthash, slistid))
         self.connection.commit()
-
-    def addtolist(self, listhash, itemind, amount):  # NOT UPDATED FOR ECOSL II
-        """"Add a given amount of items to shopping list"""
-        # get list id
-        listid = self.cursor.execute('select listid, listhash from lists where listhash = "%s"' % listhash).fetchall()[0]
-        t = (listid[0], itemind, amount)
-        self.cursor.execute('insert into listitems (listid, itemid, amount) values (?, ?, ?)', t)
-        self.connection.commit()
-        r = self.cursor.execute('select listitemsid, listid, itemid, amount from listitems where listid="%s" and itemid = "%s"' % (listid[0], itemind)).fetchall()[0]
-        return r
 
     def removefromlist(self, listhash, itemind):  # NOT UPDATED FOR ECOSL II
         """"Remove an item from a shopping list"""
@@ -284,6 +289,7 @@ if __name__ == '__main__':
     add_parser.add_argument('--store', nargs=1, metavar='"<store name>"', help='Add new store <store name>.')
     add_parser.add_argument('--shoppinglist', nargs=1, metavar='"<shopping list name>"', help='Add new shopping list <shopping list name>.')
     add_parser.add_argument('--price', nargs=3, metavar=('<item id>', '<store id>', '<price>'), help='Add a price for <item id>, to <store id>, amount of <price> (e.g. 1.25).')
+    add_parser.add_argument('--itemtolist', nargs=3, metavar=('"<shopping list name>"', '<item id>', '<amount>'), help='Add <amount> items (<item id>), to <shopping list name>.')
 
     # Subparser for finding and listing table items
     list_parser = subparsers.add_parser('list', help='subcommands for finding and listing database items');
@@ -346,10 +352,17 @@ if __name__ == '__main__':
         if args.shoppinglist:
             db.add_shoppinglist(args.shoppinglist)
 
-    # add new (or update existing?) price for an item to a store
+    # add new or update existing price for an item to a store
     if hasattr(args, 'price'):
         if args.price:
             db.add_price(args.price)
+
+    # add items to shopping list
+    if hasattr(args, 'itemtolist'):
+        if args.itemtolist:
+            listname = args.itemtolist[0]
+            itemlist = [[args.itemtolist[1], args.itemtolist[2]]]
+            db.add_to_list(listname, itemlist)
 
     # list all items and their translations for the given language
     if hasattr(args, 'allitems'):
