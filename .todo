@@ -60,6 +60,12 @@
             Finding items implemented.
         </comment>
     </note>
+    <note priority="high" time="1325491097" done="1325879343">
+        dblib: Find stores + functionality test (https://github.com/mtapoja/ecosl/issues/40)
+        <comment>
+            Implemented.
+        </comment>
+    </note>
     <note priority="medium" time="1325193385" done="1325329012">
         db: Export database contents (https://github.com/mtapoja/ecosl/issues/3)
         <comment>
@@ -90,20 +96,20 @@
             Importing a database implemented.
         </comment>
     </note>
-    <note priority="veryhigh" time="1325685223">
+    <note priority="veryhigh" time="1325685223" done="1325882039">
         dblib: Certain rows in tables are unique (improves https://github.com/mtapoja/ecosl/issues/1)
+        <comment>
+            Constrains implemented.
+        </comment>
+    </note>
+    <note priority="veryhigh" time="1325880300">
+        dblib: Add field to indicate if a shopping list item is bought or not (improves https://github.com/mtapoja/ecosl/issues/1)
     </note>
     <note priority="high" time="1325491034">
         dblib: Find shopping lists + functionality test (https://github.com/mtapoja/ecosl/issues/38)
     </note>
     <note priority="high" time="1325491081">
         dblib: Find languages (https://github.com/mtapoja/ecosl/issues/39)
-    </note>
-    <note priority="high" time="1325491097" done="1325879343">
-        dblib: Find stores + functionality test (https://github.com/mtapoja/ecosl/issues/40)
-        <comment>
-            Implemented.
-        </comment>
     </note>
     <note priority="high" time="1325491145">
         dblib: Find shopping order for the certain store + functionality test. (https://github.com/mtapoja/ecosl/issues/41)

@@ -55,21 +55,21 @@ class EcoDB:
             print('Database already open! Please choose another file name.')
         else:
             sql='BEGIN TRANSACTION; \
-                CREATE TABLE item (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, shoppinglistid INTEGER); \
+                CREATE TABLE item (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, shoppinglistid INTEGER NOT NULL); \
                 CREATE UNIQUE INDEX itidname ON item (id, shoppinglistid); \
-                CREATE TABLE itemlanguage (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT); \
+                CREATE TABLE itemlanguage (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX idlanguage ON itemlanguage (id, language ASC); \
-                CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, itemlanguageid INTEGER, translation TEXT); \
+                CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER NOT NULL, itemlanguageid INTEGER NOT NULL, translation TEXT NOT NULL); \
                 CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC); \
-                CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT); \
+                CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC); \
-                CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER, itemid INTEGER, amount INTEGER); \
+                CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER NOT NULL, itemid INTEGER NOT NULL, amount INTEGER NOT NULL); \
                 CREATE UNIQUE INDEX idshoppinglistid ON shoppinglistitems (id, shoppinglistid ASC); \
-                CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT); \
+                CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX stidname ON store (id, name ASC); \
-                CREATE TABLE price (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER, storeid INTEGER, price REAL); \
+                CREATE TABLE price (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER NOT NULL, storeid INTEGER NOT NULL, price REAL NOT NULL); \
                 CREATE UNIQUE INDEX pridstoreid ON price (id, storeid ASC); \
-                CREATE TABLE shoppingorder (id INTEGER PRIMARY KEY AUTOINCREMENT, storeid INTEGER, itemid INTEGER, shorder INTEGER); \
+                CREATE TABLE shoppingorder (id INTEGER PRIMARY KEY AUTOINCREMENT, storeid INTEGER NOT NULL, itemid INTEGER NOT NULL, shorder INTEGER NOT NULL); \
                 CREATE UNIQUE INDEX soidstoreid ON shoppingorder (id, storeid ASC); \
                 CREATE UNIQUE INDEX soidstoreiditemid ON shoppingorder (id, storeid, itemid ASC); \
                 COMMIT;'
