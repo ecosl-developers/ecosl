@@ -126,11 +126,19 @@ class EcoDBTests(unittest.TestCase):
         self.db.add_shoppingorder([stores[0], 3, 1])
         self.db.add_shoppingorder([stores[0], 4, 1])
 
-
     def test_13_find_languages(self):
         self.db.find_languages([languages[0]])
         self.db.find_languages([languages[1]])
         self.db.find_languages([''])
+
+    def test_14_find_shopping_list(self):
+        for a_list in self.db.find_shopping_list([shoppinglists[0][0], stores[3], languages[0]]):
+            print(a_list)
+        self.db.find_shopping_list([shoppinglists[1][0], stores[0], languages[0]])
+
+        print('test 14 not yet finished')
+
+
 
 if __name__ == '__main__':
     """"Main function."""

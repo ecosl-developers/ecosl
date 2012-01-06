@@ -289,20 +289,30 @@ class EcoDB:
         self.cursor.execute('update store set storename = "%s" where storeid = "%s"' % (storename, storeid))
         self.connection.commit()
 
-    def get_all_stores(self):  # NOT UPDATED FOR ECOSL II
-        """"Get all stores"""
-        return self.cursor.execute('select storeid, storename from store')
+    def find_shopping_list(self, sl):
+        """"Find a shopping list: items, translations and shopping order."""
+        #r = self.cursor.execute('select shoppingorder.sorder, shoppingorder.storeid, shoppingorder.itemid, store.storeid, store.storename, items.itemid, items.itemname from shoppingorder, store, items where (store.storeid = %s and items.itemid = shoppingorder.itemid and shoppingorder.storeid = store.storeid) order by shoppingorder.sorder' % storeind).fetchall()
+        #return r
+        if sl[0] != "":
+            print('shopping list name: ', sl[0])
+        if sl[1] != "":
+            print('store name: ', sl[1])
+        else:
+            print('no store name')
+        if sl[2] != "":
+            print('language: ', sl[2])
+        else:
+            print('no language')
 
-    def get_all_shoppinglists(self):  # NOT UPDATED FOR ECOSL II
-        """"Get all shoppinglists"""
-        return self.cursor.execute('select listid, listhash from lists')
+        # get list id
+        t = (hashlib.md5(sl[0].encode('utf-8')).hexdigest(), sl[1], sl[2], )
+        the_list = self.cursor.execute('select shoppinglist.id, shoppinglist.hash, store.id, store.name, shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, itemtranslation.translation from shoppinglist, store, shoppinglistitems, item, itemlanguage, itemtranslation where shoppinglist.hash = ? and store.name = ? and shoppinglistitems.shoppinglistid = shoppinglist.id and shoppinglistitems.itemid = item.id and itemlanguage.language = ? and itemtranslation.itemid = item.id and itemtranslation.itemlanguageid = itemlanguage.id', t)
 
-    def list_items_in_order(self, storeind):  # NOT UPDATED FOR ECOSL II
-        """"List items in correct order for one store"""
-        # Currently only thing that connects an item and a store is shoppingorder
-        # table.
-        r = self.cursor.execute('select shoppingorder.sorder, shoppingorder.storeid, shoppingorder.itemid, store.storeid, store.storename, items.itemid, items.itemname from shoppingorder, store, items where (store.storeid = %s and items.itemid = shoppingorder.itemid and shoppingorder.storeid = store.storeid) order by shoppingorder.sorder' % storeind).fetchall()
-        return r
+        # (from)  , shoppingorder
+        # , shoppingorder.id, shoppingorder.storeid, shoppingorder.itemid, shoppingorder.shorder 
+        # and shoppingorder.storeid = store.id and shoppingorder.itemid = item.id
+        return the_list
+
 
     def list_items_not_in_store(self, storeind):  # NOT UPDATED FOR ECOSL II
         """"List items that do not exist in store"""
@@ -350,6 +360,7 @@ if __name__ == '__main__':
     list_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '<language id>'), help='Find items and their translations by their ids.')
     list_parser.add_argument('--store', nargs=1, metavar='"<store name>"', dest='findstore', help='Find "<store name>" and the id. If "<store name>" is empty, list all stores.')
     list_parser.add_argument('--lang', nargs=1, metavar='"<language>"', dest='findlang', help='Find "<language>" and the id.')
+    list_parser.add_argument('--shoppinglist', nargs=3, metavar=('"<shopping list name>"', '"<store name>"', '"<language>"'), dest='findlist', help='Find "<shopping list name>" for "<store name>" and it\'s items translated to "<language>", ordered in shopping order. If "<store name>" is omitted, the items are not ordered, and if "<language>" is omitted, the default names for items are displayed.')
 
     args = ap.parse_args()
 
@@ -455,5 +466,10 @@ if __name__ == '__main__':
             for a_language in db.find_languages(args.findlang):
                 print(a_language)
 
+    # find a shopping list with all the details
+    if hasattr(args, 'findlist'):
+        if args.findlist:
+            for a_list in db.find_shopping_list(args.findlist):
+                print(a_list)
 
 
