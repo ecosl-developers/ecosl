@@ -63,7 +63,7 @@ class EcoDB:
                 CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC); \
                 CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC); \
-                CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER NOT NULL, itemid INTEGER NOT NULL, amount INTEGER NOT NULL); \
+                CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER NOT NULL, itemid INTEGER NOT NULL, amount INTEGER NOT NULL, bought INTEGER); \
                 CREATE UNIQUE INDEX idshoppinglistid ON shoppinglistitems (id, shoppinglistid ASC); \
                 CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX stidname ON store (id, name ASC); \
@@ -222,7 +222,7 @@ class EcoDB:
         if listid != []:
             for item in itemlist:
                 t = (listid[0][0], item[0], item[1], )
-                self.cursor.execute('insert into shoppinglistitems (shoppinglistid, itemid, amount) values (?, ?, ?)', t) 
+                self.cursor.execute('insert into shoppinglistitems (shoppinglistid, itemid, amount, bought) values (?, ?, ?, 0)', t) 
                 self.connection.commit()
         else:
             print('the list does not exist.')
