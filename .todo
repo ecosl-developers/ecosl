@@ -12,6 +12,12 @@
             Constrains implemented.
         </comment>
     </note>
+    <note priority="veryhigh" time="1325880300" done="1325887960">
+        dblib: Add field to indicate if a shopping list item is bought or not (improves https://github.com/mtapoja/ecosl/issues/1)
+        <comment>
+            New field added to database.
+        </comment>
+    </note>
     <note priority="high" time="1325167761" done="1325192410">
         db: Create the database (https://github.com/mtapoja/ecosl/issues/1)
         <comment>
@@ -102,17 +108,11 @@
             Importing a database implemented.
         </comment>
     </note>
-    <note priority="veryhigh" time="1325880300" done="1325887960">
-        dblib: Add field to indicate if a shopping list item is bought or not (improves https://github.com/mtapoja/ecosl/issues/1)
-        <comment>
-            New field added to database.
-        </comment>
-    </note>
     <note priority="high" time="1325491034">
         dblib: Find shopping lists + functionality test (https://github.com/mtapoja/ecosl/issues/38)
     </note>
     <note priority="high" time="1325491081">
-        dblib: Find languages (https://github.com/mtapoja/ecosl/issues/39)
+        dblib: Find languages (https://github.com/mtapoja/ecosl/issues/39) in progress
     </note>
     <note priority="high" time="1325491145">
         dblib: Find shopping order for the certain store + functionality test. (https://github.com/mtapoja/ecosl/issues/41)
