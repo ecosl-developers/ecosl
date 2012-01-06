@@ -84,6 +84,9 @@
             Importing a database implemented.
         </comment>
     </note>
+    <note priority="veryhigh" time="1325685223">
+        dblib: Certain rows in tables are unique (improves https://github.com/mtapoja/ecosl/issues/1)
+    </note>
     <note priority="high" time="1325346655">
         dblib: Modify shopping order in certain store + functionality test. (https://github.com/mtapoja/ecosl/issues/17) in progress
     </note>
@@ -94,7 +97,7 @@
         dblib: Find languages (https://github.com/mtapoja/ecosl/issues/39)
     </note>
     <note priority="high" time="1325491097">
-        dblib: Find stores + functionality test (https://github.com/mtapoja/ecosl/issues/40)
+        dblib: Find stores + functionality test (https://github.com/mtapoja/ecosl/issues/40) in progress
     </note>
     <note priority="high" time="1325491145">
         dblib: Find shopping order for the certain store + functionality test. (https://github.com/mtapoja/ecosl/issues/41)

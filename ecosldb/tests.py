@@ -106,7 +106,25 @@ class EcoDBTests(unittest.TestCase):
         for a_list in shoppinglists:
             self.db.add_to_list(a_list[0], a_list[1])
 
+    def test_11_list_stores(self):
+        stores_found = self.db.find_store([stores[0]])
+        for a_store in stores_found:
+            #print(a_store)
+            pass
+        stores_found = self.db.find_store([stores[2]])
+        for a_store in stores_found:
+            #print(a_store)
+            pass
+        stores_found = self.db.find_store([''])
+        for a_store in stores_found:
+            #print(a_store)
+            pass
 
+    def test_12_set_shopping_order(self):
+        self.db.add_shoppingorder([stores[0], 1, 1])
+        self.db.add_shoppingorder([stores[0], 2, 1])
+        self.db.add_shoppingorder([stores[0], 3, 1])
+        self.db.add_shoppingorder([stores[0], 4, 1])
 
 if __name__ == '__main__':
     """"Main function."""
@@ -140,7 +158,7 @@ if __name__ == '__main__':
     stores= [
         'K-Citymarket Raksila',
         'Prisma Raksila',
-        'Siwa Muhos'
+        'Siwa Muhos',
         'K-Supermarket Mimmi',
         'S-Market Koskiseutu',
         'K-Citymarket Kaakkuri'

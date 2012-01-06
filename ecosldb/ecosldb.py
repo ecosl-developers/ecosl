@@ -71,6 +71,7 @@ class EcoDB:
                 CREATE UNIQUE INDEX pridstoreid ON price (id, storeid ASC); \
                 CREATE TABLE shoppingorder (id INTEGER PRIMARY KEY AUTOINCREMENT, storeid INTEGER, itemid INTEGER, shorder INTEGER); \
                 CREATE UNIQUE INDEX soidstoreid ON shoppingorder (id, storeid ASC); \
+                CREATE UNIQUE INDEX soidstoreiditemid ON shoppingorder (id, storeid, itemid ASC); \
                 COMMIT;'
 
             self.connection = sqlite3.connect(self.db_path)
@@ -128,6 +129,14 @@ class EcoDB:
             itemtranslation.translation \
             from item, itemtranslation \
             where item.id = "%s" and itemtranslation.itemlanguageid = "%s" and itemtranslation.itemid = item.id' % (idid[0], idid[1]))
+
+    def find_store(self, name):
+        """"Find stores by their name."""
+        if name[0] == "":
+            return self.cursor.execute('select * from store')
+        else:
+            return self.cursor.execute('select * from store \
+                where store.name = "%s"' % name[0])
 
     def get_list_items(self, a_list):  # NOT UPDATED FOR ECOSL II
         """"Get all items for a single shopping list"""
@@ -213,10 +222,42 @@ class EcoDB:
         if listid != []:
             for item in itemlist:
                 t = (listid[0][0], item[0], item[1], )
-                self.cursor.execute('insert into shoppinglistitems (shoppinglistid, itemid, amount) values (?, ?, ?)', t)
+                self.cursor.execute('insert into shoppinglistitems (shoppinglistid, itemid, amount) values (?, ?, ?)', t) 
                 self.connection.commit()
         else:
             print('the list does not exist.')
+
+
+    def add_shoppingorder(self, order):
+        """Set a shopping order for an item to a store, and move existing items, if needed."""
+        for a_store in self.find_store(order):
+
+            # move existing items lower in shopping order
+            t = (int(order[2]), )
+            self.cursor.execute('update shoppingorder set shorder = (shorder + 1) where shorder >= ?', t)
+            self.connection.commit()
+
+            # check if the item exists. if it does, update it, otherwise insert new item
+            t = (a_store[0], int(order[1]), )
+            items = self.cursor.execute('select id, storeid, itemid, shorder \
+                    from shoppingorder \
+                    where storeid = ? and itemid = ?', t)
+            for an_item in items:
+                #print(an_item)  # debug
+                #print('items found, updating...')  # debug
+                t = (int(order[2]), int(an_item[0]), )
+                self.cursor.execute('update shoppingorder set shorder = ? where id = ?', t)
+                self.connection.commit()
+                break
+            else:
+                #print('items not found, inserting....')  # debug
+                t = (a_store[0], int(order[1]), int(order[2]), )
+                self.cursor.execute('insert into shoppingorder (storeid, itemid, shorder) values (?, ?, ?)', t)
+                self.connection.commit()
+
+            break
+        #else:
+        #    print('no stores found')
 
 
     #
@@ -290,12 +331,14 @@ if __name__ == '__main__':
     add_parser.add_argument('--shoppinglist', nargs=1, metavar='"<shopping list name>"', help='Add new shopping list <shopping list name>.')
     add_parser.add_argument('--price', nargs=3, metavar=('<item id>', '<store id>', '<price>'), help='Add a price for <item id>, to <store id>, amount of <price> (e.g. 1.25).')
     add_parser.add_argument('--itemtolist', nargs=3, metavar=('"<shopping list name>"', '<item id>', '<amount>'), help='Add <amount> items (<item id>), to <shopping list name>.')
+    add_parser.add_argument('--order', nargs=3, metavar=('"<store name>"', '<item id>', '<order>'), help='Add and modify shopping orders (<order>) for <item id> in <store name>.')
 
     # Subparser for finding and listing table items
     list_parser = subparsers.add_parser('list', help='subcommands for finding and listing database items');
     list_parser.add_argument('--allitems', nargs=1, metavar='<language id>', help='List all available items and their translations for the given language.')
     list_parser.add_argument('--itemname', nargs=2, metavar=('"<item name>"', '<language id>'), help='Find items and their translations by their name for the given language.')
     list_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '<language id>'), help='Find items and their translations by their ids.')
+    list_parser.add_argument('--store', nargs=1, metavar='"<store name>"', dest='findstore', help='Find "<store name>" and the id. If "<store name>" is empty, list all stores.')
 
     args = ap.parse_args()
 
@@ -364,6 +407,11 @@ if __name__ == '__main__':
             itemlist = [[args.itemtolist[1], args.itemtolist[2]]]
             db.add_to_list(listname, itemlist)
 
+    # add shopping orders for items in store
+    if hasattr(args, 'order'):
+        if args.order:
+            db.add_shoppingorder(args.order)
+
     # list all items and their translations for the given language
     if hasattr(args, 'allitems'):
         if args.allitems:
@@ -383,5 +431,10 @@ if __name__ == '__main__':
                 print(an_item)
 
 
+    # find a store and id for it
+    if hasattr(args, 'findstore'):
+        if args.findstore:
+            for a_store in db.find_store(args.findstore):
+                print(a_store)
 
 
