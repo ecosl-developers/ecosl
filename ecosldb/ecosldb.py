@@ -138,6 +138,16 @@ class EcoDB:
             return self.cursor.execute('select * from store \
                 where store.name = "%s"' % name[0])
 
+    def find_languages(self, lang):
+        """Find languages and their ids by the name."""
+        if lang[0] == "":
+            return self.cursor.execute('select * from itemlanguage')
+        else:
+            return self.cursor.execute('select * from itemlanguage \
+                where language= "%s"' % lang[0])
+
+
+
     def get_list_items(self, a_list):  # NOT UPDATED FOR ECOSL II
         """"Get all items for a single shopping list"""
         return self.cursor.execute('select items.itemid, listitems.amount, items.itemname from items, listitems, lists where lists.listhash = "%s" and listitems.listid = lists.listid and listitems.itemid = items.itemid' % a_list)
@@ -339,6 +349,7 @@ if __name__ == '__main__':
     list_parser.add_argument('--itemname', nargs=2, metavar=('"<item name>"', '<language id>'), help='Find items and their translations by their name for the given language.')
     list_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '<language id>'), help='Find items and their translations by their ids.')
     list_parser.add_argument('--store', nargs=1, metavar='"<store name>"', dest='findstore', help='Find "<store name>" and the id. If "<store name>" is empty, list all stores.')
+    list_parser.add_argument('--lang', nargs=1, metavar='"<language>"', dest='findlang', help='Find "<language>" and the id.')
 
     args = ap.parse_args()
 
@@ -436,5 +447,13 @@ if __name__ == '__main__':
         if args.findstore:
             for a_store in db.find_store(args.findstore):
                 print(a_store)
+
+
+    # find a language and id for it
+    if hasattr(args, 'findlang'):
+        if args.findlang:
+            for a_language in db.find_languages(args.findlang):
+                print(a_language)
+
 
 
