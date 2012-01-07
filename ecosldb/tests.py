@@ -27,6 +27,46 @@ from ecosldb import EcoDB
 import unittest
 import random
 
+dbfile='./unittest.db'
+database = EcoDB(dbfile)
+
+items = [
+    ('täysmaito', 'täysmaito', 'whole milk', 0.75),
+    ('rasvatonmaito', 'rasvaton maito', 'skimmed milk', 0.75),
+    ('kevytmaito', 'kevytmaito', 'semi-skimmed milk', 0.75),
+    ('ruisleipä', 'ruisleipä', 'rye bread', 2.50),
+    ('ranskanleipä', 'ranskanleipä', 'French bread', 2.25),
+    ('paahtoleipä', 'paahtoleipä', 'toast', 1.75),
+    ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine', 3.50),
+    ('Flora-margariini', 'Flora-margariini', 'Flora margarine', 3.20),
+    ('Oivariini', 'Oivariini', 'Oivariini margarine', 3.80 ),
+    ('leivontamargariini', 'leivontamargariini', 'baking margarine', 1.20),
+    ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee', 4.00),
+    ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee', 4.20),
+    ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)
+    ]
+
+
+languages= [
+    'Finnish',
+    'English'
+    ]
+
+
+stores= [
+    'K-Citymarket Raksila',
+    'Prisma Raksila',
+    'Siwa Muhos',
+    'K-Supermarket Mimmi',
+    'S-Market Koskiseutu',
+    'K-Citymarket Kaakkuri'
+    ]
+
+shoppinglists = [
+    ['Ensimmäinen testilista', [[1, 3], [2, 3], [4, 1], [7, 1]]],
+    ['The second testlist', [[2, 2], [9, 1], [13, 1]]]
+    ]
+
 
 class EcoDBTests(unittest.TestCase):
 
@@ -123,69 +163,44 @@ class EcoDBTests(unittest.TestCase):
     def test_12_set_shopping_order(self):
         self.db.add_shoppingorder([stores[0], 1, 1])
         self.db.add_shoppingorder([stores[0], 2, 1])
-        self.db.add_shoppingorder([stores[0], 3, 1])
-        self.db.add_shoppingorder([stores[0], 4, 1])
+        self.db.add_shoppingorder([stores[0], 3, 3])
+        self.db.add_shoppingorder([stores[0], 4, 3])
+        self.db.add_shoppingorder([stores[0], 7, 4])
+        self.db.add_shoppingorder([stores[0], 9, 5])
+        self.db.add_shoppingorder([stores[0], 13, 6])
+
+
+        self.db.add_shoppingorder([stores[1], 1, 1])
+        self.db.add_shoppingorder([stores[1], 2, 2])
+        self.db.add_shoppingorder([stores[1], 3, 3])
+        self.db.add_shoppingorder([stores[1], 4, 4])
+        self.db.add_shoppingorder([stores[1], 7, 5])
+        self.db.add_shoppingorder([stores[1], 9, 6])
+        self.db.add_shoppingorder([stores[1], 13, 7])
 
     def test_13_find_languages(self):
         self.db.find_languages([languages[0]])
         self.db.find_languages([languages[1]])
         self.db.find_languages([''])
 
-    def test_14_find_shopping_list(self):
-        for a_list in self.db.find_shopping_list([shoppinglists[0][0], stores[3], languages[0]]):
-            print(a_list)
-        self.db.find_shopping_list([shoppinglists[1][0], stores[0], languages[0]])
+    def test_14_find_shopping_list_by_name(self):
+        a_list = self.db.find_shopping_list_by_name([shoppinglists[0][0]])
+        #print(a_list)
+        a_list = self.db.find_shopping_list_by_name([shoppinglists[1][0]])
+        #print(a_list)
 
-        print('test 14 not yet finished')
+    #def test_15_find_shopping_list(self):
+        #for a_list in self.db.find_shopping_list([shoppinglists[0][0], stores[3], languages[0]]):
+        #    print(a_list)
+        #self.db.find_shopping_list([shoppinglists[1][0], stores[0], languages[0]])
+        #print('test 15 not yet finished')
 
 
 
 if __name__ == '__main__':
     """"Main function."""
 
-    dbfile='./unittest.db'
-    database = EcoDB(dbfile)
-
-    items = [
-        ('täysmaito', 'täysmaito', 'whole milk', 0.75),
-        ('rasvatonmaito', 'rasvaton maito', 'skimmed milk', 0.75),
-        ('kevytmaito', 'kevytmaito', 'semi-skimmed milk', 0.75),
-        ('ruisleipä', 'ruisleipä', 'rye bread', 2.50),
-        ('ranskanleipä', 'ranskanleipä', 'French bread', 2.25),
-        ('paahtoleipä', 'paahtoleipä', 'toast', 1.75),
-        ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine', 3.50),
-        ('Flora-margariini', 'Flora-margariini', 'Flora margarine', 3.20),
-        ('Oivariini', 'Oivariini', 'Oivariini margarine', 3.80 ),
-        ('leivontamargariini', 'leivontamargariini', 'baking margarine', 1.20),
-        ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee', 4.00),
-        ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee', 4.20),
-        ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)
-        ]
-
-
-    languages= [
-        'Finnish',
-        'English'
-        ]
-
-
-    stores= [
-        'K-Citymarket Raksila',
-        'Prisma Raksila',
-        'Siwa Muhos',
-        'K-Supermarket Mimmi',
-        'S-Market Koskiseutu',
-        'K-Citymarket Kaakkuri'
-        ]
-
-    shoppinglists = [
-        ['Ensimmäinen testilista', [[1, 3], [2, 3], [4, 1], [7, 1]]],
-        ['The second testlist', [[2, 2], [9, 1], [13, 1]]]
-        ]
-
-
     suite = unittest.TestLoader().loadTestsFromTestCase(EcoDBTests)
     unittest.TextTestRunner(verbosity=2).run(suite)
-
 
 
