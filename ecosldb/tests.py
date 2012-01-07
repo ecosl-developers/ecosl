@@ -189,16 +189,37 @@ class EcoDBTests(unittest.TestCase):
         a_list = self.db.find_shopping_list_by_name([shoppinglists[1][0]])
         #print(a_list)
 
-    #def test_15_find_shopping_list(self):
-        #for a_list in self.db.find_shopping_list([shoppinglists[0][0], stores[3], languages[0]]):
-        #    print(a_list)
-        #self.db.find_shopping_list([shoppinglists[1][0], stores[0], languages[0]])
-        #print('test 15 not yet finished')
+    def test_15_find_shopping_list(self):
+        for a_list in self.db.find_shopping_list([shoppinglists[0][0], stores[0], languages[0]]):
+            #print(a_list)
+            pass
+
+        for a_list in self.db.find_shopping_list([shoppinglists[1][0], stores[1], languages[1]]):
+            #print(a_list)
+            pass
+
+        # No language
+        for a_list in self.db.find_shopping_list([shoppinglists[1][0], stores[1], '']):
+            #print(a_list)
+            pass
+
+        # No store 
+        for a_list in self.db.find_shopping_list([shoppinglists[0][0], '', languages[0]]):
+            #print(a_list)
+            pass
 
 
 
 if __name__ == '__main__':
     """"Main function."""
+
+    # Running tests one by one:
+    # 1. remove the test db and run the script through so that new db is created:
+    # $ rm unittest.sb ; ./tests.py
+    #
+    # 2. run individual tests:
+    # $ python3 -m unittest tests.EcoDBTests.test_14_find_shopping_list_by_name
+    # $ python3 -m unittest tests.EcoDBTests.test_15_find_shopping_list
 
     suite = unittest.TestLoader().loadTestsFromTestCase(EcoDBTests)
     unittest.TextTestRunner(verbosity=2).run(suite)
