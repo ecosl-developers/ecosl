@@ -101,7 +101,7 @@ class EcoDB:
     def find_all_items(self, langid):
         """"Find all items and their translations for the given language."""
         if langid[0] == '0': # all items without the translations
-            return self.cursor.execute('select * from item')
+            return self.cursor.execute('select id, name, shoppinglistid from item')
         else:
             return self.cursor.execute('select item.id, item.shoppinglistid, item.name, \
                 itemtranslation.id, itemtranslation.itemid, itemtranslation.itemlanguageid, \
@@ -113,7 +113,7 @@ class EcoDB:
     def find_item_name(self, nameid):
         """"Find items and translations by their name for the given language."""
         if nameid[1] == '0':
-            return self.cursor.execute('select * from item \
+            return self.cursor.execute('select id, name, shoppinglistid from item \
                 where item.name = "%s"' % nameid[0])
         else:
             return self.cursor.execute('select item.id, item.name, item.shoppinglistid, \
@@ -141,9 +141,9 @@ class EcoDB:
     def find_languages(self, lang):
         """Find languages and their ids by the name."""
         if lang[0] == "":
-            return self.cursor.execute('select * from itemlanguage')
+            return self.cursor.execute('select id, language from itemlanguage')
         else:
-            return self.cursor.execute('select * from itemlanguage \
+            return self.cursor.execute('select id, language from itemlanguage \
                 where language= "%s"' % lang[0])
 
 
