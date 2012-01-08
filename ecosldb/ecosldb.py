@@ -149,11 +149,6 @@ class EcoDB:
                 where language= "%s"' % lang[0])
 
 
-
-    def get_list_items(self, a_list):  # NOT UPDATED FOR ECOSL II
-        """"Get all items for a single shopping list"""
-        return self.cursor.execute('select items.itemid, listitems.amount, items.itemname from items, listitems, lists where lists.listhash = "%s" and listitems.listid = lists.listid and listitems.itemid = items.itemid' % a_list)
-
     #
     # Adding, modifying and removing items to database
 
@@ -295,12 +290,11 @@ class EcoDB:
         self.cursor.execute('update lists set listhash = "%s" where listid = "%s"' % (slisthash, slistid))
         self.connection.commit()
 
-    def removefromlist(self, listhash, itemind):  # NOT UPDATED FOR ECOSL II
+    def remove_item_from_list(self, item):
         """"Remove an item from a shopping list"""
-        # get list id
-        listid = self.cursor.execute('select listid from lists where listhash = "%s"' % listhash).fetchall()[0]
-        print('removing itemind, listid: %s, %s' % (itemind, listid[0]))
-        r = self.cursor.execute('delete from listitems where (itemid = "%s" and listid = "%s")' % (itemind, listid[0]))
+        # <shopping list id>, <item id>
+        t = (item[0], item[1], )
+        self.cursor.execute('delete from shoppinglistitems where (shoppinglistid = ? and itemid = ?)', t)
         self.connection.commit()
 
     def update_store(self, storeid, storename):  # NOT UPDATED FOR ECOSL II
@@ -445,6 +439,7 @@ if __name__ == '__main__':
     modify_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '"<new item name>"'), dest='moditemid', help='Modify item names.')
     modify_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<translation id>', '"<new item translation>"'), dest='modtrid', help='Modify translations by the <item id> and <translation id>.')
     modify_parser.add_argument('--amount', nargs=3, metavar=('<shopping list id>', '<item id>', '<amount>'), dest='modamount', help='Modify amount <amount> of an item in shopping list <shopping list id> by the <item id>.')
+    modify_parser.add_argument('--rmitem', nargs=2, metavar=('<shopping list id>', '<item id>'), dest='rmitem', help='Remove <item id> from shopping list <shopping list id>.')
 
     args = ap.parse_args()
 
@@ -577,5 +572,10 @@ if __name__ == '__main__':
     if hasattr(args, 'modamount'):
         if args.modamount:
             db.modify_amount_of_items(args.modamount)
+
+    # remove item from a shopping list
+    if hasattr(args, 'rmitem'):
+        if args.rmitem:
+            db.remove_item_from_list(args.rmitem)
 
 

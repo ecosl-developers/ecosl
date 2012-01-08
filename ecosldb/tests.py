@@ -31,19 +31,19 @@ dbfile='./unittest.db'
 database = EcoDB(dbfile)
 
 items = [
-    ('täysmaito', 'täysmaito', 'whole milk', 0.75),
-    ('rasvatonmaito', 'rasvaton maito', 'skimmed milk', 0.75),
-    ('kevytmaito', 'kevytmaito', 'semi-skimmed milk', 0.75),
-    ('ruisleipä', 'ruisleipä', 'rye bread', 2.50),
-    ('ranskanleipä', 'ranskanleipä', 'French bread', 2.25),
-    ('paahtoleipä', 'paahtoleipä', 'toast', 1.75),
-    ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine', 3.50),
-    ('Flora-margariini', 'Flora-margariini', 'Flora margarine', 3.20),
-    ('Oivariini', 'Oivariini', 'Oivariini margarine', 3.80 ),
-    ('leivontamargariini', 'leivontamargariini', 'baking margarine', 1.20),
-    ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee', 4.00),
-    ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee', 4.20),
-    ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)
+    ('täysmaito', 'täysmaito', 'whole milk', 0.75),                          #  1
+    ('rasvatonmaito', 'rasvaton maito', 'skimmed milk', 0.75),               #  2
+    ('kevytmaito', 'kevytmaito', 'semi-skimmed milk', 0.75),                 #  3
+    ('ruisleipä', 'ruisleipä', 'rye bread', 2.50),                           #  4
+    ('ranskanleipä', 'ranskanleipä', 'French bread', 2.25),                  #  5
+    ('paahtoleipä', 'paahtoleipä', 'toast', 1.75),                           #  6
+    ('Keiju-margariini', 'Keiju-margariini', 'Keiju margarine', 3.50),       #  7
+    ('Flora-margariini', 'Flora-margariini', 'Flora margarine', 3.20),       #  8
+    ('Oivariini', 'Oivariini', 'Oivariini margarine', 3.80 ),                #  9
+    ('leivontamargariini', 'leivontamargariini', 'baking margarine', 1.20),  # 10
+    ('Pirkka-kahvi', 'Pirkka-kahvi', 'Pirkka coffee', 4.00),                 # 11
+    ('Saludo-kahvi', 'Saludo-kahvi', 'Saludo coffee', 4.20),                 # 12
+    ('Presidentti-kahvi', 'Presidentti-kahvi', 'Presidentti coffee', 5.00)   # 13
     ]
 
 
@@ -64,7 +64,7 @@ stores= [
 
 shoppinglists = [
     ['Ensimmäinen testilista', [[1, 3], [2, 3], [4, 1], [7, 1]]],
-    ['The second testlist', [[2, 2], [9, 1], [13, 1]]]
+    ['The second testlist', [[2, 2], [9, 1], [13, 1], [5, 1], [4, 2], [7, 1]]]
     ]
 
 
@@ -258,6 +258,19 @@ class EcoDBTests(unittest.TestCase):
         self.db.modify_amount_of_items([1, 2, 2])
         #for a_list in self.db.find_shopping_list([shoppinglists[0][0], '', '']):
         #    print(a_list)
+
+    def test_20_remove_items_from_list(self):
+        #for a_list in self.db.find_shopping_list([shoppinglists[1][0], '', '']):
+        #    print(a_list)
+        #print('-------------------------------------------')
+        #print('removing French bread and Keiju margarine')
+        # <shopping list id>, <item id>
+        self.db.remove_item_from_list([2, 5])
+        self.db.remove_item_from_list([2, 7])
+        #print('-------------------------------------------')
+        #for a_list in self.db.find_shopping_list([shoppinglists[1][0], '', '']):
+        #    print(a_list)
+
 
 if __name__ == '__main__':
     """"Main function."""
