@@ -221,6 +221,16 @@ class EcoDBTests(unittest.TestCase):
             #print(an_item)
             pass
 
+    def test_17_modify_item(self):
+        #for an_item in self.db.find_all_items('1'):
+        #    print(an_item)
+        self.db.modify_item([2, 'rasvaton maito'])
+        self.db.modify_item([4, 'rukiinen leipä'])
+        self.db.modify_item([7, 'keijumargariini'])
+        self.db.modify_item([8, 'floramargariini'])
+        #for an_item in self.db.find_all_items('1'):
+        #    print(an_item)
+
 
 
 if __name__ == '__main__':

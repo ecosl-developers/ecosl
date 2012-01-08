@@ -129,8 +129,11 @@
     <note priority="medium" time="1325346654">
         dblib: Modify amount of an item in shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/9)
     </note>
-    <note priority="medium" time="1325346654">
-        dblib: Modify items + functionality test. (https://github.com/mtapoja/ecosl/issues/5) in progress
+    <note priority="medium" time="1325346654" done="1326016762">
+        dblib: Modify items + functionality test. (https://github.com/mtapoja/ecosl/issues/5)
+        <comment>
+            Modifying items implemented.
+        </comment>
     </note>
     <note priority="medium" time="1325346654">
         dblib: Modify translations. (https://github.com/mtapoja/ecosl/issues/19)

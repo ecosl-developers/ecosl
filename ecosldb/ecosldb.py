@@ -162,9 +162,11 @@ class EcoDB:
             self.cursor.execute('insert into item (name, shoppinglistid) values (?, ?)', t)
             self.connection.commit()
 
-    def update_item(self, itemid, itemname):  # NOT UPDATED FOR ECOSL II
-        """Update the name of an item"""
-        self.cursor.execute('update items set itemname = "%s" where itemid = "%s"' % (itemname, itemid))
+    def modify_item(self, itemid):
+        """Update the name of an item. NOTE: not the translation, there's another function for it."""
+        # t = (<id>, <name>)
+        t = (itemid[1], itemid[0], )
+        self.cursor.execute('update item set name = ? where id = ?', t)
         self.connection.commit()
 
     def remove_item(self, item):  # NOT UPDATED FOR ECOSL II
@@ -422,6 +424,10 @@ if __name__ == '__main__':
     list_parser.add_argument('--shoppinglist', nargs=3, metavar=('"<shopping list name>"', '"<store name>"', '"<language>"'), dest='findlist', help='Find "<shopping list name>" for "<store name>" and it\'s items translated to "<language>", ordered in shopping order. If "<store name>" is omitted, the items are not ordered, and if "<language>" is omitted, the default names for items are displayed.')
     list_parser.add_argument('--shoppingorder', nargs=1, metavar='"<store name>"', help='Find shopping order for all the items in "<store name>".')
 
+    # Subparser for modifying the database
+    modify_parser = subparsers.add_parser('mod', help='subcommand to modify existing items: item names, translations, shopping lists');
+    modify_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '"<new item name>"'), dest='moditemid', help='Modify item names.')
+
     args = ap.parse_args()
 
     print(args) #  debug
@@ -532,11 +538,16 @@ if __name__ == '__main__':
             for a_list in db.find_shopping_list(args.findlist):
                 print(a_list)
 
-
     # find the shopping order for all the items in a store
     if hasattr(args, 'shoppingorder'):
         if args.shoppingorder:
             for an_item in db.find_shopping_order(args.shoppingorder):
                 print(an_item)
+
+
+    # modify item name by the id
+    if hasattr(args, 'moditemid'):
+        if args.moditemid:
+            db.modify_item(args.moditemid)
 
 
