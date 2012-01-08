@@ -61,6 +61,7 @@ class EcoDB:
                 CREATE UNIQUE INDEX idlanguage ON itemlanguage (id, language ASC); \
                 CREATE TABLE itemtranslation (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER NOT NULL, itemlanguageid INTEGER NOT NULL, translation TEXT NOT NULL); \
                 CREATE UNIQUE INDEX iditemlanguageid ON itemtranslation (id, itemlanguageid ASC); \
+                CREATE UNIQUE INDEX itemiditemlanguageid ON itemtranslation (itemid, itemlanguageid ASC); \
                 CREATE TABLE shoppinglist (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC); \
                 CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER NOT NULL, itemid INTEGER NOT NULL, amount INTEGER NOT NULL, bought INTEGER); \
@@ -168,6 +169,14 @@ class EcoDB:
         t = (itemid[1], itemid[0], )
         self.cursor.execute('update item set name = ? where id = ?', t)
         self.connection.commit()
+
+    def modify_translation(self, trid):
+        """Update the translation for given <item id> and <translation id>."""
+        t = (trid[2], trid[0], trid[1] )
+        self.cursor.execute('update itemtranslation set translation = ? \
+            where itemid = ? and itemlanguageid = ?', t)
+        self.connection.commit()
+
 
     def remove_item(self, item):  # NOT UPDATED FOR ECOSL II
         """"Remove an item completely"""
@@ -427,6 +436,7 @@ if __name__ == '__main__':
     # Subparser for modifying the database
     modify_parser = subparsers.add_parser('mod', help='subcommand to modify existing items: item names, translations, shopping lists');
     modify_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '"<new item name>"'), dest='moditemid', help='Modify item names.')
+    modify_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<translation id>', '"<new item translation>"'), dest='modtrid', help='Modify translations by the <item id> and <translation id>.')
 
     args = ap.parse_args()
 
@@ -549,5 +559,10 @@ if __name__ == '__main__':
     if hasattr(args, 'moditemid'):
         if args.moditemid:
             db.modify_item(args.moditemid)
+
+    # modify translation by the item id and translation id
+    if hasattr(args, 'modtrid'):
+        if args.modtrid:
+            db.modify_translation(args.modtrid)
 
 

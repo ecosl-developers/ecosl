@@ -231,6 +231,23 @@ class EcoDBTests(unittest.TestCase):
         #for an_item in self.db.find_all_items('1'):
         #    print(an_item)
 
+    def test_18_modify_traslations(self):
+        # <item id>, <language id>, "<new translation>"
+        #for an_item in self.db.find_all_items('1'):
+        #    print(an_item)
+        #for an_item in self.db.find_all_items('2'):
+        #    print(an_item)
+        #print('----------------------------------')
+        self.db.modify_translation([2, 1, 'Rasvaton Maito'])
+        self.db.modify_translation([2, 2, 'Skimmed Milk'])
+        self.db.modify_translation([3, 1, 'Kevyt Maito'])
+        self.db.modify_translation([3, 2, 'Semi-Skimmed Milk'])
+        self.db.modify_translation([6, 1, 'PaahtoLeipä'])
+        self.db.modify_translation([6, 2, 'Toast'])
+        #for an_item in self.db.find_all_items('1'):
+        #    print(an_item)
+        #for an_item in self.db.find_all_items('2'):
+        #    print(an_item)
 
 
 if __name__ == '__main__':
