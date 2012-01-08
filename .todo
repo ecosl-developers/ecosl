@@ -138,8 +138,11 @@
             Importing a database implemented.
         </comment>
     </note>
-    <note priority="high" time="1325346654">
-        dblib: Modify amount of an item in shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/9) in progress
+    <note priority="high" time="1325346654" done="1326040505">
+        dblib: Modify amount of an item in shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/9)
+        <comment>
+            Implemented.
+        </comment>
     </note>
     <note priority="high" time="1325346654">
         dblib: Remove items from shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/8)

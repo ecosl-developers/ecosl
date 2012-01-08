@@ -66,6 +66,7 @@ class EcoDB:
                 CREATE UNIQUE INDEX idhash ON shoppinglist (id, hash ASC); \
                 CREATE TABLE shoppinglistitems (id INTEGER PRIMARY KEY AUTOINCREMENT, shoppinglistid INTEGER NOT NULL, itemid INTEGER NOT NULL, amount INTEGER NOT NULL, bought INTEGER); \
                 CREATE UNIQUE INDEX idshoppinglistid ON shoppinglistitems (id, shoppinglistid ASC); \
+                CREATE UNIQUE INDEX idshoppinglistiditemid ON shoppinglistitems (id, shoppinglistid, itemid ASC); \
                 CREATE TABLE store (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE); \
                 CREATE UNIQUE INDEX stidname ON store (id, name ASC); \
                 CREATE TABLE price (id INTEGER PRIMARY KEY AUTOINCREMENT, itemid INTEGER NOT NULL, storeid INTEGER NOT NULL, price REAL NOT NULL); \
@@ -248,6 +249,12 @@ class EcoDB:
         else:
             print('the list does not exist.')
 
+    def modify_amount_of_items(self, item):
+        """Modify the amount of an item in a shopping list."""
+        t = (item[2], item[0], item[1], )
+        self.cursor.execute('update shoppinglistitems set amount = ? \
+            where shoppinglistid = ? and itemid = ?', t) 
+        self.connection.commit()
 
     def add_shoppingorder(self, order):
         """Set a shopping order for an item to a store, and move existing items, if needed."""
@@ -437,6 +444,7 @@ if __name__ == '__main__':
     modify_parser = subparsers.add_parser('mod', help='subcommand to modify existing items: item names, translations, shopping lists');
     modify_parser.add_argument('--itemid', nargs=2, metavar=('<item id>', '"<new item name>"'), dest='moditemid', help='Modify item names.')
     modify_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<translation id>', '"<new item translation>"'), dest='modtrid', help='Modify translations by the <item id> and <translation id>.')
+    modify_parser.add_argument('--amount', nargs=3, metavar=('<shopping list id>', '<item id>', '<amount>'), dest='modamount', help='Modify amount <amount> of an item in shopping list <shopping list id> by the <item id>.')
 
     args = ap.parse_args()
 
@@ -564,5 +572,10 @@ if __name__ == '__main__':
     if hasattr(args, 'modtrid'):
         if args.modtrid:
             db.modify_translation(args.modtrid)
+
+    # modify amount of an item in shopping list
+    if hasattr(args, 'modamount'):
+        if args.modamount:
+            db.modify_amount_of_items(args.modamount)
 
 

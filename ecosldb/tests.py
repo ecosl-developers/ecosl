@@ -249,6 +249,15 @@ class EcoDBTests(unittest.TestCase):
         #for an_item in self.db.find_all_items('2'):
         #    print(an_item)
 
+    def test_19_modify_amount_of_items(self):
+        #for a_list in self.db.find_shopping_list([shoppinglists[0][0], '', '']):
+        #    print(a_list)
+        #print('-------------------------------------------')
+        # <shopping list id>, <item id>, <amount>
+        self.db.modify_amount_of_items([1, 1, 2])
+        self.db.modify_amount_of_items([1, 2, 2])
+        #for a_list in self.db.find_shopping_list([shoppinglists[0][0], '', '']):
+        #    print(a_list)
 
 if __name__ == '__main__':
     """"Main function."""
