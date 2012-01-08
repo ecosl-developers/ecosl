@@ -271,6 +271,16 @@ class EcoDBTests(unittest.TestCase):
         #for a_list in self.db.find_shopping_list([shoppinglists[1][0], '', '']):
         #    print(a_list)
 
+    def test_21_modify_stores(self):
+        #for a_store in self.db.find_store(['']):
+        #    print(a_store)
+        #print('-------------------------------------------')
+        self.db.modify_store([1, 'Raksilan Cittari'])
+        self.db.modify_store([2, 'Raksilan Prisma'])
+        self.db.modify_store([3, 'Muhoksen Siwa'])
+        #for a_store in self.db.find_store(['']):
+        #    print(a_store)
+
 
 if __name__ == '__main__':
     """"Main function."""

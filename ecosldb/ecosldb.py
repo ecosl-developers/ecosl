@@ -286,10 +286,6 @@ class EcoDB:
     #
     # Adding, modifying and removing shopping lists
 
-    def update_shoppinglist(self, slistid, slisthash):  # NOT UPDATED FOR ECOSL II
-        self.cursor.execute('update lists set listhash = "%s" where listid = "%s"' % (slisthash, slistid))
-        self.connection.commit()
-
     def remove_item_from_list(self, item):
         """"Remove an item from a shopping list"""
         # <shopping list id>, <item id>
@@ -297,8 +293,10 @@ class EcoDB:
         self.cursor.execute('delete from shoppinglistitems where (shoppinglistid = ? and itemid = ?)', t)
         self.connection.commit()
 
-    def update_store(self, storeid, storename):  # NOT UPDATED FOR ECOSL II
-        self.cursor.execute('update store set storename = "%s" where storeid = "%s"' % (storename, storeid))
+    def modify_store(self, storeid):
+        """Modify the name of the store by <store id>."""
+        t = (storeid[1], storeid[0], )
+        self.cursor.execute('update store set name = ? where id = ?', t)
         self.connection.commit()
 
     def find_shopping_list_by_name(self, name):
@@ -440,6 +438,7 @@ if __name__ == '__main__':
     modify_parser.add_argument('--trid', nargs=3, metavar=('<item id>', '<translation id>', '"<new item translation>"'), dest='modtrid', help='Modify translations by the <item id> and <translation id>.')
     modify_parser.add_argument('--amount', nargs=3, metavar=('<shopping list id>', '<item id>', '<amount>'), dest='modamount', help='Modify amount <amount> of an item in shopping list <shopping list id> by the <item id>.')
     modify_parser.add_argument('--rmitem', nargs=2, metavar=('<shopping list id>', '<item id>'), dest='rmitem', help='Remove <item id> from shopping list <shopping list id>.')
+    modify_parser.add_argument('--store', nargs=2, metavar=('<store id>', '"<new store name>"'), dest='modstore', help='Modify store <store id> to "<new store name>".')
 
     args = ap.parse_args()
 
@@ -577,5 +576,10 @@ if __name__ == '__main__':
     if hasattr(args, 'rmitem'):
         if args.rmitem:
             db.remove_item_from_list(args.rmitem)
+
+    # modify the name of a store
+    if hasattr(args, 'modstore'):
+        if args.modstore:
+            db.modify_store(args.modstore)
 
 
