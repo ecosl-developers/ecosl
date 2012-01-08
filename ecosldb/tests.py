@@ -208,6 +208,19 @@ class EcoDBTests(unittest.TestCase):
             #print(a_list)
             pass
 
+    def test_16_find_shopping_order(self):
+        for an_item in self.db.find_shopping_order([stores[0]]):
+            #print(an_item)
+            pass
+
+        for an_item in self.db.find_shopping_order([stores[1]]):
+            #print(an_item)
+            pass
+
+        for an_item in self.db.find_shopping_order([stores[2]]):
+            #print(an_item)
+            pass
+
 
 
 if __name__ == '__main__':

@@ -339,7 +339,7 @@ class EcoDB:
                     and itemtranslation.itemlanguageid = itemlanguage.id \
                     and shoppingorder.storeid = ? \
                     and shoppingorder.itemid = item.id \
-                    order by shoppingorder.shorder', t)
+                    order by shoppingorder.shorder desc', t)
             else:
                 #print('no store name')
 
@@ -362,10 +362,21 @@ class EcoDB:
         return the_list
 
 
-    def list_items_not_in_store(self, storeind):  # NOT UPDATED FOR ECOSL II
-        """"List items that do not exist in store"""
-        r = self.cursor.execute('select items.itemid, items.itemname from items where items.itemid not in (select shoppingorder.itemid from shoppingorder, store where store.storeid = "%s" and store.storeid = shoppingorder.storeid) order by items.itemname' % storeind).fetchall()
-        return r
+    def find_shopping_order(self, storename):
+        """Find shopping order for all the items by store."""
+        stores_found = self.find_store([storename[0]])
+        for a_store in stores_found:
+            #print(a_store)
+            pass
+        t = (a_store[0], )
+        items = self.cursor.execute('select item.id, item.name, shoppingorder.id, \
+            shoppingorder.storeid, shoppingorder.itemid, shoppingorder.shorder \
+            from item \
+            left join shoppingorder \
+            on shoppingorder.itemid = item.id and shoppingorder.storeid = ? \
+            order by shoppingorder.shorder desc', t)
+        #items = []
+        return items
 
 
 
@@ -409,6 +420,7 @@ if __name__ == '__main__':
     list_parser.add_argument('--store', nargs=1, metavar='"<store name>"', dest='findstore', help='Find "<store name>" and the id. If "<store name>" is empty, list all stores.')
     list_parser.add_argument('--lang', nargs=1, metavar='"<language>"', dest='findlang', help='Find "<language>" and the id.')
     list_parser.add_argument('--shoppinglist', nargs=3, metavar=('"<shopping list name>"', '"<store name>"', '"<language>"'), dest='findlist', help='Find "<shopping list name>" for "<store name>" and it\'s items translated to "<language>", ordered in shopping order. If "<store name>" is omitted, the items are not ordered, and if "<language>" is omitted, the default names for items are displayed.')
+    list_parser.add_argument('--shoppingorder', nargs=1, metavar='"<store name>"', help='Find shopping order for all the items in "<store name>".')
 
     args = ap.parse_args()
 
@@ -519,5 +531,12 @@ if __name__ == '__main__':
         if args.findlist:
             for a_list in db.find_shopping_list(args.findlist):
                 print(a_list)
+
+
+    # find the shopping order for all the items in a store
+    if hasattr(args, 'shoppingorder'):
+        if args.shoppingorder:
+            for an_item in db.find_shopping_order(args.shoppingorder):
+                print(an_item)
 
 
