@@ -1,0 +1,416 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+# 
+# This file is part of Ecological Shopping List II (ecosl).
+# 
+# Copyright (C) 2011 - 2012  Mika Tapojärvi
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+# The prototype for backend and protocol
+
+#print('Content-type: text/html')
+#print
+
+import os, sys, cgi, traceback
+import cgitb
+import time
+import csv
+import shutil
+import hashlib
+cgitb.enable()
+sys.path.append('/home/mtapoja/code/github/ecosl/ecosldb')
+from ecosldb import EcoDB
+from xml.dom.minidom import Document
+
+class EcoSLBackend:
+
+    def __init__(self, aform):
+        self.form        = aform
+        self.CGIPATH     = 'https://projects.sse.fi/cgi-bin/ecoslbe1'
+        self.KLTEMP      = '/tmp/kltemp'
+        self.KLHASH      = ''
+        # Font Size, Table Heading (for labels above the edit fields)
+        self.FSTH        = '2'
+        # Font Size, editor fields 
+        self.FSIN        = '17'
+        # Edit field values
+        self.EDITAMOUNT  = '1'
+        self.EDITPRODUCT = ''
+        self.EDITPRICE   = '1.00'
+        self.db = EcoDB('/home/mtapoja/code/github/ecosl/ecosldb/unittest.db')
+
+
+    def ecocontenttype(self, ct):
+        print('Content-type: %s\n' % ct)
+
+
+    def ecoheader(self):
+        print('<html>')
+        print('<head><title>Ecological Shopping List II - this is going to be it!</title></head>')
+        print('<body>')
+        print('<h2><a href="' + be.getcgipath() + '">Ecological Shopping List II</a></h2>')
+
+
+    def ecofooter(self):
+        print('</body>')
+        print('</html>')
+
+
+    def ecoformtop(self):
+        print('<form id="theform" name="theform" action="' + self.CGIPATH + '" method="post">')
+
+
+    def ecoformbottom(self):
+        print('<table width="320" bgcolor="lightgreen" border="0">')
+        print('<tr><th><font size="' + self.FSTH + '">amount</font></th>')
+        print('<th><font size="' + self.FSTH + '">product</font></th>')
+        print('<th><font size="' + self.FSTH + '">price</font></th></tr>')
+        print('<tr><td><input type="text" name="amount" value="' + self.EDITAMOUNT + '" style="width:45px; height:30px; font-size: ' + self.FSIN + 'px;"/></td>')
+        print('<td><input type="text" id="product" name="product" value="' + self.EDITPRODUCT + '" style="width:200px; height:30px; font-size: ' + self.FSIN + 'px;"/></td>')
+        print('<td><input type="text" name="price" value="' + self.EDITPRICE + '" style="width:50px; height:30px; font-size: ' + self.FSIN + 'px;"/></td></tr>')
+        print('<input type="hidden" name="klhash" value="' + self.KLHASH + '"/>')
+        print('<tr><th colspan="3"><input type="submit" value="Add product, amount and price" style="width:310px; height:30px;"/></tr>')
+        print('</table>')
+        print('</form>')
+        print('<script type="text/javascript">')
+        print('document.theform.product.focus();')
+        print('</script>')
+        print('<h3><a href="' + self.getcgipath() + '">Create a new shopping list</a></h3>')
+
+
+
+    def getklhash(self):
+        return self.KLHASH
+
+
+    def getcgipath(self):
+        return self.CGIPATH
+
+    def ecomenu(self):
+        print('<ul>')
+
+        # language menu
+        print('<li><a href="' + be.getcgipath() + '?listaction=languages">list all item languages</a> (<a href="' + be.getcgipath() + '?listaction=languages&type=text">text</a>, <a href="' + be.getcgipath() + '?listaction=languages&type=xml">xml</a>)')
+
+
+        # store menu
+        print('<li><a href="' + be.getcgipath() + '?listaction=stores">list all stores</a> (<a href="' + be.getcgipath() + '?listaction=stores&type=text">text</a>, <a href="' + be.getcgipath() + '?listaction=stores&type=xml">xml</a>)')
+
+
+        # item menus
+        print('<li><a href="' + be.getcgipath() + '?listaction=allitems">list all items</a> (')
+        print('<a href="' + be.getcgipath() + '?listaction=allitems&type=text">text</a>, <a href="' + be.getcgipath() + '?listaction=allitems&type=xml">xml</a>)')
+        print('<ul>')
+        for a_lang in self.db.find_languages(['']):
+            print('<li><a href="' + be.getcgipath() + '?listaction=allitems&lang=' + str(a_lang[0]) + '">' + a_lang[1] + '</a> (')
+            print('<a href="' + be.getcgipath() + '?listaction=allitems&lang=' + str(a_lang[0]) + '&type=text">text</a>, <a href="' + be.getcgipath() + '?listaction=allitems&lang=' + str(a_lang[0]) + '&type=xml">xml</a>)')
+        print('</ul>')
+
+        # shopping lists (NOTE: this will not be a normal function, shopping lists will not be listed)
+        print('<li>shopping lists')
+        print('<ul>')
+
+        # languages='Finnish'
+        # stores='K-Citymarket Raksila'
+        # shoppinglists='Ensimmäinen testilista'
+
+        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1">list 1, language 1, store 1, html (IN PROGRESS)</a>')
+        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1&type=text">list 1, language 1, store 1, text</a>')
+        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1&type=xml">list 1, language 1, store 1, xml</a>')
+        print('</ul>')
+        print('</ul>')
+
+
+    # Break the POSTed data into keys and values.
+    
+    def process_form(self):
+        for a_key in self.form.keys():
+            if a_key == 'listaction':
+                #print('listaction: ', self.form[a_key].value)
+
+                if self.form[a_key].value == 'allitems':
+                    if 'lang' in self.form:
+                        items = self.db.find_all_items([self.form['lang'].value])
+                    else:
+                        items = self.db.find_all_items([0])
+
+                    if 'type' in self.form:
+                        self.print_data('items', items, self.form['type'].value)
+                    else:
+                        self.print_data('items', items, '')
+
+                elif self.form[a_key].value == 'languages':
+                    languages = self.db.find_languages([''])
+                    if 'type' in self.form:
+                        self.print_data('languages', languages, self.form['type'].value)
+                    else:
+                        self.print_data('languages', languages, '')
+
+                elif self.form[a_key].value == 'stores':
+                    stores = self.db.find_store([''])
+                    if 'type' in self.form:
+                        self.print_data('stores', stores, self.form['type'].value)
+                    else:
+                        self.print_data('stores', stores, '')
+
+                elif self.form[a_key].value == 'shoppinglist':
+                    if 'shoppinglistid' in self.form:
+                        if 'storeid' in self.form:
+                            the_lists = self.db.find_shopping_list([u'Ensimmäinen testilista', 
+                                'K-Citymarket Raksila', 'Finnish'])
+
+                            if 'type' in self.form:
+                                self.print_data('shoppinglist', the_lists, self.form['type'].value)
+                            else:
+                                self.print_data('shoppinglist', the_lists, '')
+                    else:
+                        be.ecoheader()
+
+
+    # Formulate the output. 'what' tells the type of data (items, languages, stores),
+    # 'data' contains the list of data and 'how' tells the output (xml, text)
+
+    def print_data(self, what, data, how):
+
+        if how == '':
+            be.ecocontenttype('text/html')
+            #be.ecoheader()
+            if what == 'items':
+                for an_item in data:
+                    if an_item[3] == None:
+                        print('%s;%s;"%s";' % 
+                            (an_item[0], 
+                            an_item[1],
+                            an_item[2].encode('utf-8')))
+                    else:
+                        print('%s;%s;"%s";%s;%s;"%s";' % 
+                            (an_item[0], 
+                            an_item[1],
+                            an_item[2].encode('utf-8'),
+                            an_item[3],
+                            #an_item[4],
+                            an_item[5],
+                            an_item[6].encode('utf-8')))
+
+            elif what == 'languages':
+                for a_lang in data:
+                    print('%s;%s;' % (str(a_lang[0]), a_lang[1]))
+
+            elif what == 'stores':
+                for a_store in data:
+                    print('%s;%s;' % (str(a_store[0]), a_store[1]))
+
+            elif what == 'shoppinglist':
+                for a_list in data:
+                    #  0:   shoppinglistitems.id
+                    #  1:   shoppinglistitems.shoppinglistid
+                    #  2:   shoppinglistitems.itemid
+                    #  3:   shoppinglistitems.amount
+                    #  4:   shoppinglistitems.bought
+                    #  5:   item.id
+                    #  6:   item.name
+                    #  7:   itemlanguage.id
+                    #  8:   itemlanguage.language
+                    #  9:   itemtranslation.id
+                    # 10:   itemtranslation.itemid
+                    # 11:   itemtranslation.translation
+                    # 12:   shoppingorder.id
+                    # 13:   shoppingorder.storeid
+                    # 14:   shoppingorder.itemid
+                    # 15:   shoppingorder.shorder
+                    print('%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;' % (
+                        str(a_list[0]), 
+                        a_list[1],
+                        a_list[2],
+                        a_list[3],
+                        a_list[4],
+                        a_list[5],
+                        a_list[6],
+                        a_list[7],
+                        a_list[8],
+                        a_list[9],
+                        a_list[10],
+                        a_list[11],
+                        a_list[12],
+                        a_list[13],
+                        a_list[14],
+                        a_list[14]
+                        ))
+
+
+        elif how == 'text':
+            be.ecocontenttype('text/plain')
+
+            if what == 'items':
+                for an_item in data:
+                    if an_item[3] == None:
+                        print('%s;%s;%s;' % 
+                            (an_item[0], 
+                            an_item[1],
+                            #bytes(an_item[2], encoding='utf-8'))) 
+                            an_item[2].encode('utf-8')))
+                            #str(an_item[2].encode('utf-8'))))
+                            #str(an_item[2], encoding = 'ascii'))) ei toimi
+                    else:
+                        print('%s;%s;"%s";%s;%s;"%s";' % 
+                            (an_item[0], 
+                            an_item[1],
+                            an_item[2].encode('utf-8'),
+                            an_item[3],
+                            #an_item[4],
+                            an_item[5],
+                            an_item[6].encode('utf-8')))
+
+            elif what == 'languages':
+                for a_lang in data:
+                    print('%s;%s;' % (str(a_lang[0]), a_lang[1]))
+
+            elif what == 'stores':
+                for a_store in data:
+                    print('%s;%s;' % (str(a_store[0]), a_store[1]))
+
+
+        elif how == 'xml':
+            be.ecocontenttype('text/xml')
+
+            if what == 'items':
+
+                doc = Document()
+                item_table = doc.createElement('item_table')
+                doc.appendChild(item_table)
+
+                for an_item in data:
+                    if an_item[3] == None:
+
+                        items = doc.createElement('item')
+                        items.setAttribute('languageid', '0')
+                        item_table.appendChild(items)
+
+                        item_id = doc.createElement('id')
+                        items.appendChild(item_id)
+                        idtext = doc.createTextNode(str(an_item[0]))
+                        item_id.appendChild(idtext)
+
+                        item_shoppinglistid = doc.createElement('shoppinglistid')
+                        items.appendChild(item_shoppinglistid)
+                        item_shoppinglistidtext = doc.createTextNode(str(an_item[1]))
+                        item_shoppinglistid.appendChild(item_shoppinglistidtext)
+
+                        item_name = doc.createElement('name')
+                        items.appendChild(item_name)
+                        item_nametext = doc.createTextNode(str(an_item[2].encode('utf-8')))
+                        item_name.appendChild(item_nametext)
+
+                    else:
+                        items = doc.createElement('item')
+                        items.setAttribute('languageid', str(an_item[5]))
+                        item_table.appendChild(items)
+
+                        item_id = doc.createElement('id')
+                        items.appendChild(item_id)
+                        idtext = doc.createTextNode(str(an_item[0]))
+                        item_id.appendChild(idtext)
+
+                        item_shoppinglistid = doc.createElement('shoppinglistid')
+                        items.appendChild(item_shoppinglistid)
+                        item_shoppinglistidtext = doc.createTextNode(str(an_item[1]))
+                        item_shoppinglistid.appendChild(item_shoppinglistidtext)
+
+                        item_name = doc.createElement('name')
+                        items.appendChild(item_name)
+                        item_nametext = doc.createTextNode(str(an_item[2].encode('utf-8')))
+                        item_name.appendChild(item_nametext)
+
+                        item_itemtranslationid = doc.createElement('itemtranslationid')
+                        items.appendChild(item_itemtranslationid)
+                        item_itemtranslationidtext = doc.createTextNode(str(an_item[3]))
+                        item_itemtranslationid.appendChild(item_itemtranslationidtext)
+
+                        item_translation = doc.createElement('translation')
+                        items.appendChild(item_translation)
+                        item_translationtext = doc.createTextNode(str(an_item[6].encode('utf-8')))
+                        item_translation.appendChild(item_translationtext)
+
+                print(doc.toprettyxml(indent="  "))
+
+            elif what == 'languages':
+
+                doc = Document()
+                itemlanguage_table = doc.createElement('itemlanguage_table')
+                doc.appendChild(itemlanguage_table)
+
+                for a_lang in data:
+                    itemlanguages = doc.createElement('itemlanguage')
+                    itemlanguage_table.appendChild(itemlanguages)
+
+                    itemlanguage_id = doc.createElement('id')
+                    itemlanguages.appendChild(itemlanguage_id)
+                    idtext = doc.createTextNode(str(a_lang[0]))
+                    itemlanguage_id.appendChild(idtext)
+
+                    itemlanguage_language = doc.createElement('language')
+                    itemlanguages.appendChild(itemlanguage_language)
+                    languagetext = doc.createTextNode(str(a_lang[1]))
+                    itemlanguages.appendChild(languagetext)
+
+                print(doc.toprettyxml(indent="  "))
+
+            elif what == 'stores':
+
+                doc = Document()
+                store_table = doc.createElement('store_table')
+                doc.appendChild(store_table)
+
+                #print('%s;%s;' % (str(a_store[0]), a_store[1]))
+                for a_store in data:
+                    stores = doc.createElement('store')
+                    store_table.appendChild(stores)
+
+                    store_id = doc.createElement('id')
+                    stores.appendChild(store_id)
+                    idtext = doc.createTextNode(str(a_store[0]))
+                    store_id.appendChild(idtext)
+
+                    store_name = doc.createElement('name')
+                    stores.appendChild(store_name)
+                    nametext = doc.createTextNode(a_store[1])
+                    stores.appendChild(nametext)
+
+                print(doc.toprettyxml(indent="  "))
+
+#
+# main function
+#
+
+if __name__ == '__main__':
+
+    theform = cgi.FieldStorage()
+    be = EcoSLBackend(theform)
+    #be.ecocontenttype('text/html')
+
+
+    if (len(theform) != 0):
+        be.process_form()
+    else:
+        be.ecocontenttype('text/html')
+        be.ecoheader()
+        #be.ecoformtop()
+        #be.ecoformbottom()
+        be.ecomenu()
+        be.ecofooter()
+
+
