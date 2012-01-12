@@ -217,9 +217,9 @@
         backend: Find shopping order for the certain store. (https://github.com/mtapoja/ecosl/issues/45)
     </note>
     <note priority="low" time="1325346654">
-        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10)
+        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10) in progress
     </note>
     <note priority="low" time="1325346654">
-        dblib: Mark a shopping list item as not bought + functionality test. (https://github.com/mtapoja/ecosl/issues/11)
+        dblib: Mark a shopping list item as not bought + functionality test. (https://github.com/mtapoja/ecosl/issues/11) in progress
     </note>
 </todo>
