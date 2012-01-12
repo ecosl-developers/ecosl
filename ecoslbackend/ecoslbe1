@@ -62,7 +62,7 @@ class EcoSLBackend:
         print('<html>')
         print('<head><title>Ecological Shopping List II - this is going to be it!</title></head>')
         print('<body>')
-        print('<h2><a href="' + be.getcgipath() + '">Ecological Shopping List II</a></h2>')
+        print('<h2><a href="' + be.getcgipath() + '">Ecological Shopping List II - protocol prototype 1</a></h2>')
 
 
     def ecofooter(self):
@@ -128,7 +128,7 @@ class EcoSLBackend:
         # stores='K-Citymarket Raksila'
         # shoppinglists='Ensimmäinen testilista'
 
-        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1">list 1, language 1, store 1, html (IN PROGRESS)</a>')
+        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1">list 1, language 1, store 1, html</a>')
         print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1&type=text">list 1, language 1, store 1, text</a>')
         print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1&type=xml">list 1, language 1, store 1, xml</a>')
         print('</ul>')
@@ -171,7 +171,7 @@ class EcoSLBackend:
                     if 'shoppinglistid' in self.form:
                         if 'storeid' in self.form:
                             the_lists = self.db.find_shopping_list([u'Ensimmäinen testilista', 
-                                'K-Citymarket Raksila', 'Finnish'])
+                                'Raksilan Cittari', 'Finnish'])
 
                             if 'type' in self.form:
                                 self.print_data('shoppinglist', the_lists, self.form['type'].value)
@@ -216,39 +216,23 @@ class EcoSLBackend:
 
             elif what == 'shoppinglist':
                 for a_list in data:
-                    #  0:   shoppinglistitems.id
-                    #  1:   shoppinglistitems.shoppinglistid
-                    #  2:   shoppinglistitems.itemid
-                    #  3:   shoppinglistitems.amount
-                    #  4:   shoppinglistitems.bought
-                    #  5:   item.id
-                    #  6:   item.name
-                    #  7:   itemlanguage.id
-                    #  8:   itemlanguage.language
-                    #  9:   itemtranslation.id
-                    # 10:   itemtranslation.itemid
-                    # 11:   itemtranslation.translation
-                    # 12:   shoppingorder.id
-                    # 13:   shoppingorder.storeid
-                    # 14:   shoppingorder.itemid
-                    # 15:   shoppingorder.shorder
-                    print('%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;' % (
-                        str(a_list[0]), 
-                        a_list[1],
-                        a_list[2],
-                        a_list[3],
-                        a_list[4],
-                        a_list[5],
-                        a_list[6],
-                        a_list[7],
-                        a_list[8],
-                        a_list[9],
-                        a_list[10],
-                        a_list[11],
-                        a_list[12],
-                        a_list[13],
-                        a_list[14],
-                        a_list[14]
+                    print('%s;%s;%s;%s;%s;%s;%s;' % (
+                        str(a_list[0]),                          #  0:   shoppinglistitems.id
+                        a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
+                        #a_list[2],                              #  2:   shoppinglistitems.itemid
+                        a_list[3],                               #  3:   shoppinglistitems.amount
+                        a_list[4],                               #  4:   shoppinglistitems.bought
+                        a_list[5],                               #  5:   item.id
+                        #a_list[6].encode('utf-8'),              #  6:   item.name
+                        #a_list[7],                              #  7:   itemlanguage.id
+                        a_list[8].encode('utf-8'),               #  8:   itemlanguage.language
+                        #a_list[9],                              #  9:   itemtranslation.id
+                        #a_list[10],                             # 10:   itemtranslation.itemid
+                        a_list[11].encode('utf-8')               # 11:   itemtranslation.translation
+                        #a_list[12],                             # 12:   shoppingorder.id
+                        #a_list[13],                             # 13:   shoppingorder.storeid
+                        #a_list[14],                             # 14:   shoppingorder.itemid
+                        #a_list[14]                              # 15:   shoppingorder.shorder
                         ))
 
 
@@ -282,6 +266,27 @@ class EcoSLBackend:
             elif what == 'stores':
                 for a_store in data:
                     print('%s;%s;' % (str(a_store[0]), a_store[1]))
+
+            elif what == 'shoppinglist':
+                for a_list in data:
+                    print('%s;%s;%s;%s;%s;%s;%s;' % (
+                        str(a_list[0]),                          #  0:   shoppinglistitems.id
+                        a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
+                        #a_list[2],                              #  2:   shoppinglistitems.itemid
+                        a_list[3],                               #  3:   shoppinglistitems.amount
+                        a_list[4],                               #  4:   shoppinglistitems.bought
+                        a_list[5],                               #  5:   item.id
+                        #a_list[6].encode('utf-8'),              #  6:   item.name
+                        #a_list[7],                              #  7:   itemlanguage.id
+                        a_list[8].encode('utf-8'),               #  8:   itemlanguage.language
+                        #a_list[9],                              #  9:   itemtranslation.id
+                        #a_list[10],                             # 10:   itemtranslation.itemid
+                        a_list[11].encode('utf-8')               # 11:   itemtranslation.translation
+                        #a_list[12],                             # 12:   shoppingorder.id
+                        #a_list[13],                             # 13:   shoppingorder.storeid
+                        #a_list[14],                             # 14:   shoppingorder.itemid
+                        #a_list[14]                              # 15:   shoppingorder.shorder
+                        ))
 
 
         elif how == 'xml':
@@ -389,6 +394,62 @@ class EcoSLBackend:
                     stores.appendChild(store_name)
                     nametext = doc.createTextNode(a_store[1])
                     stores.appendChild(nametext)
+
+                print(doc.toprettyxml(indent="  "))
+
+            elif what == 'shoppinglist':
+
+                doc = None
+
+                for a_list in data:
+                    #print('%s;%s;%s;%s;%s;%s;%s;' % (
+                    #    str(a_list[0]),                          #  0:   shoppinglistitems.id
+                    #    a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
+                    #    #a_list[2],                              #  2:   shoppinglistitems.itemid
+                    #    a_list[3],                               #  3:   shoppinglistitems.amount
+                    #    a_list[4],                               #  4:   shoppinglistitems.bought
+                    #    a_list[5],                               #  5:   item.id
+                    #    #a_list[6].encode('utf-8'),              #  6:   item.name
+                    #    #a_list[7],                              #  7:   itemlanguage.id
+                    #    a_list[8].encode('utf-8'),               #  8:   itemlanguage.language
+                    #    #a_list[9],                              #  9:   itemtranslation.id
+                    #    #a_list[10],                             # 10:   itemtranslation.itemid
+                    #    a_list[11].encode('utf-8')               # 11:   itemtranslation.translation
+                    #    #a_list[12],                             # 12:   shoppingorder.id
+                    #    #a_list[13],                             # 13:   shoppingorder.storeid
+                    #    #a_list[14],                             # 14:   shoppingorder.itemid
+                    #    #a_list[14]                              # 15:   shoppingorder.shorder
+                    #    ))
+
+                    if not doc:
+                        doc = Document()
+                        the_list = doc.createElement('shoppinglist')
+                        the_list.setAttribute('languageid', str(a_list[7]))
+                        the_list.setAttribute('shoppinglistid', str(a_list[1]))
+                        doc.appendChild(the_list)
+
+                    items = doc.createElement('item')
+                    the_list.appendChild(items)
+
+                    item_id = doc.createElement('id')
+                    items.appendChild(item_id)
+                    idtext = doc.createTextNode(str(a_list[0]))
+                    item_id.appendChild(idtext)
+
+                    item_name = doc.createElement('name')
+                    items.appendChild(item_name)
+                    item_nametext = doc.createTextNode(str(a_list[6].encode('utf-8')))
+                    item_name.appendChild(item_nametext)
+
+                    item_itemtranslationid = doc.createElement('itemtranslationid')
+                    items.appendChild(item_itemtranslationid)
+                    item_itemtranslationidtext = doc.createTextNode(str(a_list[3]))
+                    item_itemtranslationid.appendChild(item_itemtranslationidtext)
+
+                    item_itemtranslation = doc.createElement('itemtranslation')
+                    items.appendChild(item_itemtranslation)
+                    item_itemtranslationtext = doc.createTextNode(str(a_list[6].encode('utf-8')))
+                    item_itemtranslation.appendChild(item_itemtranslationtext)
 
                 print(doc.toprettyxml(indent="  "))
 
