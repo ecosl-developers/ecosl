@@ -64,7 +64,8 @@ stores= [
 
 shoppinglists = [
     ['Ensimmäinen testilista', [[1, 3], [2, 3], [4, 1], [7, 1]]],
-    ['The second testlist', [[2, 2], [9, 1], [13, 1], [5, 1], [4, 2], [7, 1]]]
+    ['The second testlist', [[2, 2], [9, 1], [13, 1], [5, 1], [4, 2], [7, 1]]],
+    ['My list', [[1, 3], [2, 2], [13, 2], [5, 1], [4, 2], [7, 1], [10, 2], [11, 2]]]
     ]
 
 
@@ -280,6 +281,17 @@ class EcoDBTests(unittest.TestCase):
         self.db.modify_store([3, 'Muhoksen Siwa'])
         #for a_store in self.db.find_store(['']):
         #    print(a_store)
+
+    def test_22_mark_items_bought(self):
+        # <shopping list id>, <item id>, <bought> (bought = 1, not bought = 0)
+        # buy
+        self.db.mark_item_bought([3, 1, 1])
+        self.db.mark_item_bought([3, 2, 1])
+        self.db.mark_item_bought([3, 13, 1])
+
+        # cancel buying
+        self.db.mark_item_bought([3, 2, 0])
+        self.db.mark_item_bought([3, 13, 0])
 
 
 if __name__ == '__main__':

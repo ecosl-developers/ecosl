@@ -156,6 +156,12 @@
             Importing a database implemented.
         </comment>
     </note>
+    <note priority="low" time="1325346654" done="1326405971">
+        dblib: Mark a shopping list item as not bought + functionality test. (https://github.com/mtapoja/ecosl/issues/11)
+        <comment>
+            Implemented.
+        </comment>
+    </note>
     <note priority="medium" time="1325346655">
         backend: Add items to shopping list. (https://github.com/mtapoja/ecosl/issues/27)
     </note>
@@ -216,10 +222,10 @@
     <note priority="medium" time="1325491296">
         backend: Find shopping order for the certain store. (https://github.com/mtapoja/ecosl/issues/45)
     </note>
-    <note priority="low" time="1325346654">
-        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10) in progress
-    </note>
-    <note priority="low" time="1325346654">
-        dblib: Mark a shopping list item as not bought + functionality test. (https://github.com/mtapoja/ecosl/issues/11) in progress
+    <note priority="low" time="1325346654" done="1326406005">
+        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10)
+        <comment>
+            Implemented.
+        </comment>
     </note>
 </todo>

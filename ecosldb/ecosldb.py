@@ -388,6 +388,11 @@ class EcoDB:
         #items = []
         return items
 
+    def mark_item_bought(self, data):
+        """Mark an item in a shopping list as bought or not bought."""
+        t = (data[2], data[0], data[1], )
+        self.cursor.execute('update shoppinglistitems set bought = ? where shoppinglistid = ? and itemid = ?', t)
+        self.connection.commit()
 
 
 
@@ -439,6 +444,7 @@ if __name__ == '__main__':
     modify_parser.add_argument('--amount', nargs=3, metavar=('<shopping list id>', '<item id>', '<amount>'), dest='modamount', help='Modify amount <amount> of an item in shopping list <shopping list id> by the <item id>.')
     modify_parser.add_argument('--rmitem', nargs=2, metavar=('<shopping list id>', '<item id>'), dest='rmitem', help='Remove <item id> from shopping list <shopping list id>.')
     modify_parser.add_argument('--store', nargs=2, metavar=('<store id>', '"<new store name>"'), dest='modstore', help='Modify store <store id> to "<new store name>".')
+    modify_parser.add_argument('--buy', nargs=3, metavar=('<shopping list id>', '<item id>', '<bought>'), help='Mark <item id> in <shopping list id> as bought (1) or not bought (0).')
 
     args = ap.parse_args()
 
@@ -581,5 +587,10 @@ if __name__ == '__main__':
     if hasattr(args, 'modstore'):
         if args.modstore:
             db.modify_store(args.modstore)
+
+    # mark item in a shopping list bought or not bought
+    if hasattr(args, 'buy'):
+        if args.buy:
+            db.mark_item_bought(args.buy)
 
 
