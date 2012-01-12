@@ -340,8 +340,9 @@ class EcoDB:
                     shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
                     itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
                     itemtranslation.translation, shoppingorder.id, shoppingorder.storeid, \
-                    shoppingorder.itemid, shoppingorder.shorder \
-                    from shoppinglistitems, item, itemlanguage, itemtranslation, shoppingorder \
+                    shoppingorder.itemid, shoppingorder.shorder, \
+                    price.itemid, price.storeid, price.price \
+                    from shoppinglistitems, item, itemlanguage, itemtranslation, shoppingorder, price \
                     where shoppinglistitems.shoppinglistid = ? \
                     and shoppinglistitems.itemid = item.id \
                     and itemlanguage.id = ? \
@@ -349,6 +350,8 @@ class EcoDB:
                     and itemtranslation.itemlanguageid = itemlanguage.id \
                     and shoppingorder.storeid = ? \
                     and shoppingorder.itemid = item.id \
+                    and price.storeid = shoppingorder.storeid \
+                    and price.itemid = item.id \
                     order by shoppingorder.shorder desc', t)
             else:
                 #print('no store name')
