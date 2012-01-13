@@ -171,7 +171,7 @@ class EcoSLBackend:
                     if 'shoppinglistid' in self.form:
                         if 'storeid' in self.form:
                             the_lists = self.db.find_shopping_list([u'Ensimmäinen testilista', 
-                                'Raksilan Cittari', 'Finnish'])
+                                'K-Citymarket Raksila', 'Finnish'])
 
                             if 'type' in self.form:
                                 self.print_data('shoppinglist', the_lists, self.form['type'].value)
@@ -216,23 +216,13 @@ class EcoSLBackend:
 
             elif what == 'shoppinglist':
                 for a_list in data:
-                    print('%s;%s;%s;%s;%s;%s;%s;' % (
-                        str(a_list[0]),                          #  0:   shoppinglistitems.id
-                        a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
-                        #a_list[2],                              #  2:   shoppinglistitems.itemid
-                        a_list[3],                               #  3:   shoppinglistitems.amount
-                        a_list[4],                               #  4:   shoppinglistitems.bought
-                        a_list[5],                               #  5:   item.id
-                        #a_list[6].encode('utf-8'),              #  6:   item.name
-                        #a_list[7],                              #  7:   itemlanguage.id
-                        a_list[8].encode('utf-8'),               #  8:   itemlanguage.language
-                        #a_list[9],                              #  9:   itemtranslation.id
-                        #a_list[10],                             # 10:   itemtranslation.itemid
-                        a_list[11].encode('utf-8')               # 11:   itemtranslation.translation
-                        #a_list[12],                             # 12:   shoppingorder.id
-                        #a_list[13],                             # 13:   shoppingorder.storeid
-                        #a_list[14],                             # 14:   shoppingorder.itemid
-                        #a_list[14]                              # 15:   shoppingorder.shorder
+                    print('%s;%s;%s;%s;%s;%s;' % (
+                        a_list[0],                               #  0:   item.id
+                        a_list[1].encode('utf-8'),               #  1:   item.name
+                        a_list[2],                               #  2:   shoppinglistitems.amount
+                        a_list[3],                               #  3:   shoppinglistitems.bought
+                        a_list[4].encode('utf-8'),               #  4:   itemtranslation.translation
+                        str(a_list[5]),                          #  5:   price.price
                         ))
 
 
@@ -269,23 +259,13 @@ class EcoSLBackend:
 
             elif what == 'shoppinglist':
                 for a_list in data:
-                    print('%s;%s;%s;%s;%s;%s;%s;' % (
-                        str(a_list[0]),                          #  0:   shoppinglistitems.id
-                        a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
-                        #a_list[2],                              #  2:   shoppinglistitems.itemid
-                        a_list[3],                               #  3:   shoppinglistitems.amount
-                        a_list[4],                               #  4:   shoppinglistitems.bought
-                        a_list[5],                               #  5:   item.id
-                        #a_list[6].encode('utf-8'),              #  6:   item.name
-                        #a_list[7],                              #  7:   itemlanguage.id
-                        a_list[8].encode('utf-8'),               #  8:   itemlanguage.language
-                        #a_list[9],                              #  9:   itemtranslation.id
-                        #a_list[10],                             # 10:   itemtranslation.itemid
-                        a_list[11].encode('utf-8')               # 11:   itemtranslation.translation
-                        #a_list[12],                             # 12:   shoppingorder.id
-                        #a_list[13],                             # 13:   shoppingorder.storeid
-                        #a_list[14],                             # 14:   shoppingorder.itemid
-                        #a_list[14]                              # 15:   shoppingorder.shorder
+                    print('%s;%s;%s;%s;%s;%s;' % (
+                        a_list[0],                               #  0:   item.id
+                        a_list[1].encode('utf-8'),               #  1:   item.name
+                        a_list[2],                               #  2:   shoppinglistitems.amount
+                        a_list[3],                               #  3:   shoppinglistitems.bought
+                        a_list[4].encode('utf-8'),               #  4:   itemtranslation.translation
+                        str(a_list[5]),                          #  5:   price.price
                         ))
 
 
@@ -402,6 +382,14 @@ class EcoSLBackend:
                 doc = None
 
                 for a_list in data:
+                    #print('%s;%s;%s;%s;%s;%s;' % (
+                    #    a_list[0],                               #  0:   item.id
+                    #    a_list[1].encode('utf-8'),               #  1:   item.name
+                    #    a_list[2],                               #  2:   shoppinglistitems.amount
+                    #    a_list[3],                               #  3:   shoppinglistitems.bought
+                    #    a_list[4].encode('utf-8'),               #  4:   itemtranslation.translation
+                    #    str(a_list[5]),                          #  5:   price.price
+                    #    ))
                     #print('%s;%s;%s;%s;%s;%s;%s;' % (
                     #    str(a_list[0]),                          #  0:   shoppinglistitems.id
                     #    a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
@@ -424,8 +412,8 @@ class EcoSLBackend:
                     if not doc:
                         doc = Document()
                         the_list = doc.createElement('shoppinglist')
-                        the_list.setAttribute('languageid', str(a_list[7]))
-                        the_list.setAttribute('shoppinglistid', str(a_list[1]))
+                        #the_list.setAttribute('languageid', str(a_list[7]))
+                        #the_list.setAttribute('shoppinglistid', str(a_list[1]))
                         doc.appendChild(the_list)
 
                     items = doc.createElement('item')
@@ -438,18 +426,23 @@ class EcoSLBackend:
 
                     item_name = doc.createElement('name')
                     items.appendChild(item_name)
-                    item_nametext = doc.createTextNode(str(a_list[6].encode('utf-8')))
+                    item_nametext = doc.createTextNode(str(a_list[1].encode('utf-8')))
                     item_name.appendChild(item_nametext)
 
-                    item_itemtranslationid = doc.createElement('itemtranslationid')
-                    items.appendChild(item_itemtranslationid)
-                    item_itemtranslationidtext = doc.createTextNode(str(a_list[3]))
-                    item_itemtranslationid.appendChild(item_itemtranslationidtext)
+                    item_amount = doc.createElement('amount')
+                    items.appendChild(item_amount)
+                    item_amounttext = doc.createTextNode(str(a_list[2]))
+                    item_amount.appendChild(item_amounttext)
 
-                    item_itemtranslation = doc.createElement('itemtranslation')
-                    items.appendChild(item_itemtranslation)
-                    item_itemtranslationtext = doc.createTextNode(str(a_list[6].encode('utf-8')))
-                    item_itemtranslation.appendChild(item_itemtranslationtext)
+                    item_bought = doc.createElement('bought')
+                    items.appendChild(item_bought)
+                    item_boughttext = doc.createTextNode(str(a_list[3]))
+                    item_bought.appendChild(item_boughttext)
+
+                    item_price = doc.createElement('price')
+                    items.appendChild(item_price)
+                    item_pricetext = doc.createTextNode(str(a_list[5]))
+                    item_price.appendChild(item_pricetext)
 
                 print(doc.toprettyxml(indent="  "))
 
