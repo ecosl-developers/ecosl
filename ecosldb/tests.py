@@ -124,6 +124,7 @@ class EcoDBTests(unittest.TestCase):
 
     def test_08_add_shoppinglists(self):
         for a_listname in shoppinglists:
+            #print('list name: %s' % a_listname[0])  # debug
             self.db.add_shoppinglist([a_listname[0]])
 
     def test_09_add_and_update_price(self):
@@ -191,23 +192,36 @@ class EcoDBTests(unittest.TestCase):
         #print(a_list)
 
     def test_15_find_shopping_list(self):
-        for a_list in self.db.find_shopping_list([shoppinglists[0][0], stores[0], languages[0]]):
+        
+        #print('Ensimmäinen testilista, K-Citymarket Raksila, Finnish: ')
+        for a_list in self.db.find_shopping_list(['Ensimmäinen testilista', 'K-Citymarket Raksila', 'Finnish']):
             #print(a_list)
             pass
 
-        for a_list in self.db.find_shopping_list([shoppinglists[1][0], stores[1], languages[1]]):
+        #print('The second testlist, K-Citymarket Raksila, Finnish: ')
+        for a_list in self.db.find_shopping_list(['The second testlist', 'K-Citymarket Raksila', 'Finnish']):
             #print(a_list)
             pass
 
         # No language
-        for a_list in self.db.find_shopping_list([shoppinglists[1][0], stores[1], '']):
+        #print('The second testlist, K-Citymarket Raksila, no lang: ')
+        for a_list in self.db.find_shopping_list(['The second testlist', 'K-Citymarket Raksila', '']):
             #print(a_list)
             pass
 
         # No store 
-        for a_list in self.db.find_shopping_list([shoppinglists[0][0], '', languages[0]]):
+        #print('The second testlist, no store, Finnish: ')
+        for a_list in self.db.find_shopping_list(['Ensimmäinen testilista', '', 'Finnish']):
             #print(a_list)
             pass
+
+        # Find by ids
+        print('ids: 3, 1, 1: ')
+        #print('ids: 2, 1, 1: ')
+        for a_list in self.db.find_shopping_list_by_id([3, 1, 1]):
+        #for a_list in self.db.find_shopping_list_by_id([2, 1, 1]):
+            print(a_list)
+            #pass
 
     def test_16_find_shopping_order(self):
         for an_item in self.db.find_shopping_order([stores[0]]):
@@ -279,6 +293,11 @@ class EcoDBTests(unittest.TestCase):
         self.db.modify_store([1, 'Raksilan Cittari'])
         self.db.modify_store([2, 'Raksilan Prisma'])
         self.db.modify_store([3, 'Muhoksen Siwa'])
+
+        # ...and back
+        self.db.modify_store([1, 'K-Citymarket Raksila'])
+        self.db.modify_store([2, 'Prisma Raksila'])
+        self.db.modify_store([3, 'Siwa Muhos'])
         #for a_store in self.db.find_store(['']):
         #    print(a_store)
 

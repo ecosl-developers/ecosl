@@ -306,71 +306,86 @@ class EcoDB:
             return self.cursor.execute('select id, hash from shoppinglist \
                 where hash = ?', t).fetchone()
         else:
+            # Shopping lists will not be listed without the name!
             return None
             
 
     def find_shopping_list(self, sl):
         """"Find a shopping list: items, translations and shopping order for the given store."""
 
+        the_list = []
+
         # Check the language. If it's not set, use 1 as default.
         if sl[2] != "":
-            #print('language: ', sl[2])
+            #print('language: ', sl[2])  # debug
             for a_language in self.find_languages([sl[2]]):
-                #print(a_language)
+                #print(a_language)  # debug
                 pass
         else:
-            #print('no language')
+            #print('no language')  # debug
             a_language = (1, )
 
         # Check shopping list name, that is needed.
         if sl[0] != "":
+            #print('shopping list name: ', sl[0])  # debug
             a_list = self.find_shopping_list_by_name([sl[0]])
-            #print(a_list)
+            #print(a_list)  # debug
 
             if sl[1] != "":
                 #print('store name: ', sl[1])
                 for a_store in self.find_store([sl[1]]):
-                    #print(a_store)
+                    #print(a_store)  # debug
                     pass
 
-                # get list id
-                # t = (<shopping list id>, <language id>, <store id>, )
-                t = (a_list[0], a_language[0], a_store[0], )
-                the_list = self.cursor.execute('select shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, \
-                    shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
-                    itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
-                    itemtranslation.translation, shoppingorder.id, shoppingorder.storeid, \
-                    shoppingorder.itemid, shoppingorder.shorder, \
-                    price.itemid, price.storeid, price.price \
-                    from shoppinglistitems, item, itemlanguage, itemtranslation, shoppingorder, price \
-                    where shoppinglistitems.shoppinglistid = ? \
-                    and shoppinglistitems.itemid = item.id \
-                    and itemlanguage.id = ? \
-                    and itemtranslation.itemid = item.id \
-                    and itemtranslation.itemlanguageid = itemlanguage.id \
-                    and shoppingorder.storeid = ? \
-                    and shoppingorder.itemid = item.id \
-                    and price.storeid = shoppingorder.storeid \
-                    and price.itemid = item.id \
-                    order by shoppingorder.shorder desc', t)
+                the_list = self.find_shopping_list_by_id([a_list[0], a_language[0], a_store[0]])
             else:
-                #print('no store name')
+                the_list = self.find_shopping_list_by_id([a_list[0], a_language[0], ''])
 
-                # get list id
-                # t = (<shopping list id>, <language id>, )
-                t = (a_list[0], a_language[0], )
-                the_list = self.cursor.execute('select shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, \
-                    shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
-                    itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
-                    itemtranslation.translation \
-                    from shoppinglistitems, item, itemlanguage, itemtranslation \
-                    where shoppinglistitems.shoppinglistid = ? \
-                    and shoppinglistitems.itemid = item.id \
-                    and itemlanguage.id = ? \
-                    and itemtranslation.itemid = item.id \
-                    and itemtranslation.itemlanguageid = itemlanguage.id', t)
+        return the_list
+
+
+    def find_shopping_list_by_id(self, ids):
+
+        the_list = []
+
+        print(ids)
+        if ids[2] != '':
+            # t = (<shopping list id>, <language id>, <store id>, )
+            print('find shopping list by ids, all three')
+            t = (ids[0], ids[1], ids[2], )
+            the_list = self.cursor.execute('select shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, \
+                shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
+                itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
+                itemtranslation.translation, shoppingorder.id, shoppingorder.storeid, \
+                shoppingorder.itemid, shoppingorder.shorder, \
+                price.itemid, price.storeid, price.price \
+                from shoppinglistitems, item, itemlanguage, itemtranslation, shoppingorder, price \
+                where shoppinglistitems.shoppinglistid = ? \
+                and shoppinglistitems.itemid = item.id \
+                and itemlanguage.id = ? \
+                and itemtranslation.itemid = item.id \
+                and itemtranslation.itemlanguageid = itemlanguage.id \
+                and shoppingorder.storeid = ? \
+                and shoppingorder.itemid = item.id \
+                and price.storeid = shoppingorder.storeid \
+                and price.itemid = item.id \
+                order by shoppingorder.shorder desc', t)
         else:
-            the_list = None
+            print('find shopping list by ids, no store name')
+
+            # t = (<shopping list id>, <language id>, )
+            #t = (a_list[0], a_language[0], )
+            t = (ids[0], ids[1], )
+            the_list = self.cursor.execute('select shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, \
+                shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
+                itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
+                itemtranslation.translation \
+                from shoppinglistitems, item, itemlanguage, itemtranslation \
+                where shoppinglistitems.shoppinglistid = ? \
+                and shoppinglistitems.itemid = item.id \
+                and itemlanguage.id = ? \
+                and itemtranslation.itemid = item.id \
+                and itemtranslation.itemlanguageid = itemlanguage.id', t)
 
         return the_list
 
