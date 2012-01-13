@@ -348,37 +348,32 @@ class EcoDB:
 
         the_list = []
 
-        print(ids)
         if ids[2] != '':
             # t = (<shopping list id>, <language id>, <store id>, )
-            print('find shopping list by ids, all three')
+            #print('find shopping list by ids, all three')
             t = (ids[0], ids[1], ids[2], )
-            the_list = self.cursor.execute('select shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, \
-                shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
-                itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
-                itemtranslation.translation, shoppingorder.id, shoppingorder.storeid, \
-                shoppingorder.itemid, shoppingorder.shorder, \
-                price.itemid, price.storeid, price.price \
-                from shoppinglistitems, item, itemlanguage, itemtranslation, shoppingorder, price \
+            the_list = self.cursor.execute('select item.id, item.name, \
+                shoppinglistitems.amount, shoppinglistitems.bought, \
+                itemtranslation.translation, \
+                price.price \
+                from shoppinglistitems, item, itemlanguage, itemtranslation, price \
+                left join shoppingorder \
+                on item.id  = shoppingorder.itemid \
+                and shoppingorder.storeid = price.storeid \
                 where shoppinglistitems.shoppinglistid = ? \
                 and shoppinglistitems.itemid = item.id \
                 and itemlanguage.id = ? \
                 and itemtranslation.itemid = item.id \
                 and itemtranslation.itemlanguageid = itemlanguage.id \
-                and shoppingorder.storeid = ? \
-                and shoppingorder.itemid = item.id \
-                and price.storeid = shoppingorder.storeid \
-                and price.itemid = item.id \
+                and item.id = price.itemid \
+                and price.storeid = ? \
                 order by shoppingorder.shorder desc', t)
         else:
-            print('find shopping list by ids, no store name')
-
             # t = (<shopping list id>, <language id>, )
-            #t = (a_list[0], a_language[0], )
+            #print('find shopping list by ids, no store name')
             t = (ids[0], ids[1], )
-            the_list = self.cursor.execute('select shoppinglistitems.id, shoppinglistitems.shoppinglistid, shoppinglistitems.itemid, \
-                shoppinglistitems.amount, shoppinglistitems.bought, item.id, item.name, \
-                itemlanguage.id, itemlanguage.language, itemtranslation.id, itemtranslation.itemid, \
+            the_list = self.cursor.execute('select item.id, item.name, \
+                shoppinglistitems.amount, shoppinglistitems.bought, \
                 itemtranslation.translation \
                 from shoppinglistitems, item, itemlanguage, itemtranslation \
                 where shoppinglistitems.shoppinglistid = ? \

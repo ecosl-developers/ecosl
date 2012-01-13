@@ -216,12 +216,9 @@ class EcoDBTests(unittest.TestCase):
             pass
 
         # Find by ids
-        print('ids: 3, 1, 1: ')
-        #print('ids: 2, 1, 1: ')
         for a_list in self.db.find_shopping_list_by_id([3, 1, 1]):
-        #for a_list in self.db.find_shopping_list_by_id([2, 1, 1]):
-            print(a_list)
-            #pass
+            #print(a_list)
+            pass
 
     def test_16_find_shopping_order(self):
         for an_item in self.db.find_shopping_order([stores[0]]):
