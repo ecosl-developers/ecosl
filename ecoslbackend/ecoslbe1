@@ -93,8 +93,7 @@ class EcoSLBackend:
 
 
 
-    def getklhash(self):
-        return self.KLHASH
+    def getklhash(self): return self.KLHASH
 
 
     def getcgipath(self):
@@ -119,9 +118,18 @@ class EcoSLBackend:
             print('<li><a href="' + be.getcgipath() + '?listaction=allitems&lang=' + str(a_lang[0]) + '">' + a_lang[1] + '</a> (')
             print('<a href="' + be.getcgipath() + '?listaction=allitems&lang=' + str(a_lang[0]) + '&type=text">text</a>, <a href="' + be.getcgipath() + '?listaction=allitems&lang=' + str(a_lang[0]) + '&type=xml">xml</a>)')
         print('</ul>')
+        print('<li>single items:')
+        print('<ul>')
+        print('<li>item 1, language 1: <a href="' + be.getcgipath() + '?listaction=item&itemid=1&languageid=1">html</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=item&itemid=1&languageid=1&type=text">text</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=item&itemid=1&languageid=1&type=xml">xml</a>')
+        print('<li>item 80, language 2: <a href="' + be.getcgipath() + '?listaction=item&itemid=80&languageid=2">html</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=item&itemid=80&languageid=1&type=text">text</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=item&itemid=80&languageid=1&type=xml">xml</a>')
+        print('</ul>')
 
         # shopping lists (NOTE: this will not be a normal function, shopping lists will not be listed)
-        print('<li>shopping lists')
+        print('<li>shopping lists:')
         print('<ul>')
 
         # languages='Finnish'
@@ -144,6 +152,20 @@ class EcoSLBackend:
         for a_key in self.form.keys():
             if a_key == 'listaction':
                 #print('listaction: ', self.form[a_key].value)
+
+                if self.form[a_key].value == 'item':
+                    itemid = 1
+                    langid = 1
+                    if 'itemid' in self.form:
+                        itemid = self.form['itemid'].value
+                    if 'languageid' in self.form:
+                        langid = self.form['languageid'].value
+
+                    items = self.db.find_item_id([itemid, langid])
+                    if 'type' in self.form:
+                        self.print_data('items', items, self.form['type'].value)
+                    else:
+                        self.print_data('items', items, '')
 
                 if self.form[a_key].value == 'allitems':
                     if 'lang' in self.form:
@@ -186,8 +208,8 @@ class EcoSLBackend:
                         self.print_data('shoppinglist', the_lists, self.form['type'].value)
                     else:
                         self.print_data('shoppinglist', the_lists, '')
-                else:
-                    be.ecoheader()
+                #else:
+                #    be.ecoheader()
 
 
     # Formulate the output. 'what' tells the type of data (items, languages, stores),
