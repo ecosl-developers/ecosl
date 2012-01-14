@@ -50,67 +50,73 @@ items = [
     ('nakkeja, HK', 'nakkeja, 830g, HK', 'sausages, 830g, HK', 6.99),  #
     ('nautajauheliha, 400g', 'nautajauheliha, 400g', 'minced beef (bovine), 400g', 2.95),  #
     ('nauta-sikajauheliha', 'nauta-sikajauheliha', 'minced beef (bovine, pork)', 1.50),  #
-    ('kermaviili, Pirkka', 'kermaviili, Pirkka', 'sour cream, Pirkka', 1.50),  #
+    ('kermaviili, Pirkka', 'kermaviili, Pirkka', 'sour cream, Pirkka', 0.55),  #
     ('kahvikerma', 'kahvikerma', 'coffee cream', 1.50),  #
     ('Marli Vital -mehu', 'Marli Vital -mehu', 'Marli Vital juice', 1.49),  #
     ('Sun-astiapesukoneaine, 70 kpl', 'Sun-astiapesukoneaine, 70 kpl', 'Sun machine dishwasher capsule', 1.50),  #
-    ('jogurtti, banaani, Valio, 1 l', 'jogurtti, banaani, Valio, 1 l', 'yoghurt, banana, Valio', 1.50),  #
-    ('jogurtti, mansikka Valio, 1 l', 'jogurtti, mansikka Valio, 1 l', 'yoghurt, strawberry, Valio', 1.50),  #
-    ('tikkuperunoita', 'tikkuperunoita', 'potato sticks', 1.50),  #
-    ('lihapyörykkä, HK', 'lihapyörykkä, HK', 'meat balls, HK', 1.50),  #
-    ('nakkeja, Atria', 'nakkeja, Atria', 'sausages, Atria', 1.50),  #
-    ('wok-kasvismix', 'wok-kasvismix', 'wok vegetable mix', 1.50),  #
-    ('Lipton Yellow Label tee, 50 ps', 'Lipton Yellow Label tee, 50 ps', 'Lipton Yellow Label tea, 50 pcs', 1.50),  #
-    ('hammasharja, lasten', 'hammasharja, lasten', 'toothbrush, for kids', 1.50),  #
-    ('hammasharja, aikuisten', 'hammasharja, aikuisten', 'toothbrush, for adults', 1.50),  #
-    ('ananas, tuore', 'ananas, tuore', 'ananas, fresh', 1.50),  #
+    ('jogurtti, banaani, Valio, 1 l', 'jogurtti, banaani, Valio, 1 l', 'yoghurt, banana, Valio', 2.09),  #
+    ('jogurtti, mansikka Valio, 1 l', 'jogurtti, mansikka Valio, 1 l', 'yoghurt, strawberry, Valio', 2.09),  #
+    ('tikkuperunoita', 'tikkuperunoita', 'potato sticks', 1.19),  #
+    ('lihapyörykkä, HK', 'lihapyörykkä, HK', 'meat balls, HK', 1.29),  #
+    ('nakkeja, Atria', 'nakkeja, Atria', 'sausages, Atria', 1.95),  #
+    ('wok-kasvismix, 1kg', 'wok-kasvismix, 1kg', 'wok vegetable mix, 1kg', 2.59),  #
+    ('Lipton Yellow Label tee, 50 ps', 'Lipton Yellow Label tee, 50 ps', 'Lipton Yellow Label tea, 50 pcs', 2.15),  #
+    ('hammasharja, lasten', 'hammasharja, lasten', 'toothbrush, for kids', 1.00),  #
+    ('hammasharja, aikuisten', 'hammasharja, aikuisten', 'toothbrush, for adults', 2.00),  #
+    ('ananas, tuore', 'ananas, tuore', 'ananas, fresh', 1.92),  #
     ('suklaanappirulla, Marabou', 'suklaanappirulla, Marabou', 'chocolate buttons, Marabou', 1.50),  #
-    ('ylikypsä kinkkuleike, Atria', 'ylikypsä kinkkuleike, Atria', 'mellow ham slices, Atria', 1.50),  #
-    ('keittokinkkuleike, Atria', 'keittokinkkuleike, Atria', 'ham slices, Atria', 1.50),  #
-    ('Daimrulla, Marabou', 'Daimrulla, Marabou', 'Daim chocolate buttons, Marabou', 1.50),  #
-    ('sipuli', 'sipuli', 'onion', 1.50),  #
-    ('Lauantaipussi, Malaco', 'Lauantaipussi, Malaco', 'Saturday bag candy, Malaco', 1.50),  #
-    ('Caesar-salaatti, Pirkka', 'Caesar-salaatti, Pirkka', 'Caesar salad bag, Pirkka', 1.50),  #
-    ('ruisleipä, Ruiskiekko, Putaan Pulla', 'ruisleipä, Ruiskiekko, Putaan Pulla', 'rye bread, Ruiskiekko, Putaan Pulla', 1.50),  #
-    ('Italian pata -pussi, Blå Band', 'Italian pata -pussi, Blå Band', 'Italian stew bag, Blå Band', 1.50),  #
-    ('tex mex -pata -pussi, Blå Band', 'tex mex -pata -pussi, Blå Band', 'tex mex stew bag, Blå Band', 1.50),  #
-    ('appelsiinijuomatiiviste, Pirkka', 'appelsiinijuomatiiviste, Pirkka', 'orange juice concentrate, Pirkka', 1.50),  #
-    ('jäätelö, herkkutrio, Pingviini', 'jäätelö, herkkutrio, Pingviini', 'ice cream, triple taste, Pingviini', 1.50),  #
-    ('jäätelö, nougat, Pingviini', 'jäätelö, nougat, Pingviini', 'ice cream, nougat, Pingviini', 1.50),  #
-    ('saaristolaisleike, Kalavalmis', 'saaristolaisleike, Kalavalmis', 'islanders cold cut, Kalavalmis', 1.50),  #
-    ('kirjolohisuikale, Pirkka', 'kirjolohisuikale, Pirkka', 'rainbow strout slices, Pirkka', 1.50),  #
-    ('ylikypsä kinkkuleike, Snellman', 'ylikypsä kinkkuleike, Snellman', 'mellow ham slices, Snellman', 1.50),  #
-    ('muffinsi, kaakao, Pirkka', 'muffinsi, kaakao, Pirkka', 'muffin, cocoa, Pirkka', 1.50),  #
-    ('muffinsi, sitruuna, Pirkka', 'muffinsi, sitruuna, Pirkka', 'muffin, lemon, Pirkka', 1.50),  #
-    ('jahtimakkara, Atria', 'jahtimakkara, Atria', 'hunters sausage, Atria', 1.50),  #
-    ('tomaatti, Suomi', 'tomaatti, Suomi', 'tomato, Finland', 1.50),  #
+    ('ylikypsä kinkkuleike, 250g, Atria', 'ylikypsä kinkkuleike, 250g, Atria', 'mellow ham slices, 250g, Atria', 3.05),  #
+    ('keittokinkkuleike, 250g, Atria', 'keittokinkkuleike, 250g, Atria', 'ham slices, 250g, Atria', 3.15),  #
+    ('Daimrulla, Marabou', 'Daimrulla, Marabou', 'Daim chocolate buttons, Marabou', 1.59),  #
+    ('sipuli, 1kg', 'sipuli, 1kg', 'onion, 1kg', 1.19),  #
+    ('Lauantaipussi, 150g, Malaco', 'Lauantaipussi, 150g, Malaco', 'Saturday bag candy, 150g, Malaco', 1.64),  #
+    ('Caesar-salaatti, Pirkka', 'Caesar-salaatti, Pirkka', 'Caesar salad bag, Pirkka', 2.99),  #
+    ('ruisleipä, Ruiskiekko, Putaan Pulla', 'ruisleipä, Ruiskiekko, Putaan Pulla', 'rye bread, Ruiskiekko, Putaan Pulla', 1.70),  #
+    ('Italian pata -pussi, Blå Band', 'Italian pata -pussi, Blå Band', 'Italian stew bag, Blå Band', 2.29),  #
+    ('tex mex -pata -pussi, Blå Band', 'tex mex -pata -pussi, Blå Band', 'tex mex stew bag, Blå Band', 2.15),  #
+    ('appelsiinijuomatiiviste, 1.5l, Pirkka', 'appelsiinijuomatiiviste, 1.5l, Pirkka', 'orange juice concentrate, 1.5l, Pirkka', 2.29),  #
+    ('jäätelö, herkkutrio, Pingviini', 'jäätelö, herkkutrio, Pingviini', 'ice cream, triple taste, Pingviini', 2.85),  #
+    ('jäätelö, nougat, Pingviini', 'jäätelö, nougat, Pingviini', 'ice cream, nougat, Pingviini', 2.85),  #
+    ('saaristolaisleike, Kalavalmis', 'saaristolaisleike, Kalavalmis', 'islanders cold cut, Kalavalmis', 3.49),  #
+    ('kirjolohisuikale, 300g, Pirkka', 'kirjolohisuikale, 300g, Pirkka', 'rainbow strout slices, 300g, Pirkka', 4.29),  #
+    ('ylikypsä kinkkuleike, 300g, Snellman', 'ylikypsä kinkkuleike, 300g, Snellman', 'mellow ham slices, 300g, Snellman', 3.89),  #
+    ('muffinsi, kaakao, Pirkka', 'muffinsi, kaakao, Pirkka', 'muffin, cocoa, Pirkka', 2.39),  #
+    ('muffinsi, sitruuna, Pirkka', 'muffinsi, sitruuna, Pirkka', 'muffin, lemon, Pirkka', 2.39),  #
+    ('jahtimakkara, 250g, Atria', 'jahtimakkara, 250g, Atria', 'hunters sausage, 250g, Atria', 2.29),  #
+    ('tomaatti, 1kg, Suomi', 'tomaatti, 1kg, Suomi', 'tomato, 1kg, Finland', 4.00),  #
     ('ruisleipä, Oululainen Reissumies', 'ruisleipä, Oululainen Reissumies', 'rye bread, Oululainen Reissumies', 1.50),  #
     ('limsa, Hartwall Jaffa 1.5l, keltainen', 'limsa, Hartwall Jaffa 1.5l, keltainen', 'lemonade, Hartwall Jaffa 1.5l, yellow', 1.50),  #
     ('limsa, Hartwall Jaffa 1.5l, punainen', 'limsa, Hartwall Jaffa 1.5l, punainen', 'lemonade, Hartwall Jaffa 1.5l, red', 1.50),  #
     ('limsa, Coca-Cola 1.5l', 'limsa, Coca-Cola 1.5l', 'lemonade, Coca-Cola 1.5l', 1.50),  #
-    ('siideri, mansikka, Kopparberg', 'siideri, mansikka, Kopparberg', 'cider, strawberry, Kopparberg', 1.50),  #
-    ('juustosnacks, Taffel', 'juustosnacks, Taffel', 'cheese snacks, Taffel', 1.50),  #
-    ('jogurtti, banaani, 8x125g, Valio', 'jogurtti, banaani, 8x125g, Valio', 'yoghurt, banana, 8x125g, Valio', 1.50),  #
-    ('tortillapohja, 8kpl/360g, Pirkka', 'tortillapohja, 8kpl/360g, Pirkka', 'tortilla base, 8pcs/360g ', 1.50),  #
+    ('siideri, mansikka, Kopparberg', 'siideri, mansikka, Kopparberg', 'cider, strawberry, Kopparberg', 2.95),  #
+    ('juustosnacks, 275g, Taffel', 'juustosnacks, 275g, Taffel', 'cheese snacks, 275g, Taffel', 2.75),  #
+    ('jogurtti, banaani, 8x125g, Valio', 'jogurtti, banaani, 8x125g, Valio', 'yoghurt, banana, 8x125g, Valio', 3.19),  #
+    ('jogurtti, mansikka, 8x125g, Valio', 'jogurtti, mansikka, 8x125g, Valio', 'yoghurt, strawberry, 8x125g, Valio', 3.19),  #
+    ('jogurtti, hedelmäpommi, 8x125g, Valio', 'jogurtti, hedelmäpommi, 8x125g, Valio', 'yoghurt, fruit bomb, 8x125g, Valio', 3.19),  #
+    ('jogurtti, banaani, 200g, Valio', 'jogurtti, banaani, 200g, Valio', 'yoghurt, banana, 200g, Valio', 0.47),  #
+    ('jogurtti, mansikka, 200g, Valio', 'jogurtti, mansikka, 200g, Valio', 'yoghurt, strawberry, 200g, Valio', 0.47),  #
+    ('jogurtti, hedelmäpommi, 200g, Valio', 'jogurtti, hedelmäpommi, 200g, Valio', 'yoghurt, fruit bomb, 200g, Valio', 0.47),  #
+    ('karkki, eucalyptus, Fazer', 'karkki, eucalyptus, Fazer', 'candies, eucalyptus, Fazer', 2.89),  #
+    ('tortillapohja, 8kpl/360g, Pirkka', 'tortillapohja, 8kpl/360g, Pirkka', 'tortilla base, 8pcs/360g ', 1.52),  #
     ('broilerin paistisuikale, Pirkka', 'broilerin paistisuikale, Pirkka', 'broiler meat slices', 1.50),  #
-    ('olut, tumma lager, 0.5l, Pirkka', 'olut, tumma lager, 0.5l, Pirkka', 'beer, dark lager, 0.5l, Pirkka', 1.50),  #
-    ('olut, vaalea lager, 0.33l, Pirkka', 'olut, vaalea lager, 0.33l, Pirkka', 'beer, light lager, 0.33l, Pirkka', 0.83),  #
-    ('juusto, emmental 400g, Pirkka', 'juusto, emmental 400g, Pirkka', 'cheese, emmental 400g, Pirkka', 1.50),  #
-    ('jääsalaatti, Pirkka', 'jääsalaatti, Pirkka', 'ice salad, Pirkka', 1.50),  #
+    ('olut, tumma lager, 0.5l, Pirkka', 'olut, tumma lager, 0.5l, Pirkka', 'beer, dark lager, 0.5l, Pirkka', 1.79),  #
+    ('olut, vaalea lager, 0.33l, Pirkka', 'olut, vaalea lager, 0.33l, Pirkka', 'beer, light lager, 0.33l, Pirkka', 0.98),  #
+    ('juusto, emmental 400g, Pirkka', 'juusto, emmental 400g, Pirkka', 'cheese, emmental 400g, Pirkka', 3.69),  #
+    ('jääsalaatti, Pirkka', 'jääsalaatti, Pirkka', 'ice salad, Pirkka', 1.19),  #
     ('tomaattimurska, 390g, Pirkka', 'tomaattimurska, 390g, Pirkka', 'crushed tomato, 390g, Pirkka', 1.50),  #
-    ('meetvursti, valkosipuli, Atria', 'meetvursti, valkosipuli, Atria', 'metwurst sausage, garlic, Atria', 1.50),  #
-    ('salsadippi, keskivahva, 315g, Pirkka', 'salsadippi, keskivahva, 315g, Pirkka', 'salsa dip, medium, 315g', 1.50),  #
-    ('sinihomejuusto, Pirkka', 'sinihomejuusto, Pirkka', 'blue cheese, Pirkka', 1.50),  #
-    ('valkohomejuusto, Pirkka', 'valkohomejuusto, Pirkka', 'white cheese, Pirkka', 1.50),  #
-    ('sinihomejuusto, Aura', 'sinihomejuusto, Aura', 'blue cheese, Aura', 1.50),  #
-    ('tuorekurkku, Suomi', 'tuorekurkku, Suomi', 'cucumber, Finland', 1.50),  #
-    ('kalkkunaleike, 250g, Atria', 'kalkkunaleike, 250g, Atria', 'turkey cold cut, 250g, Atria ', 1.50),  #
-    ('kananmuna, 15kpl', 'kananmuna, 15kpl', 'eggs, 15pcs', 1.50),  #
-    ('kanan koipireisi', 'kanan koipireisi', 'chicken leg', 1.50),  #
+    ('meetvursti, valkosipuli, Atria', 'meetvursti, valkosipuli, Atria', 'metwurst sausage, garlic, Atria', 3.49),  #
+    ('salsadippi, keskivahva, 315g, Pirkka', 'salsadippi, keskivahva, 315g, Pirkka', 'salsa dip, medium, 315g', 1.71),  #
+    ('sinihomejuusto, 175g, Pirkka', 'sinihomejuusto, 175g, Pirkka', 'blue cheese, 175g, Pirkka', 2.25),  #
+    ('valkohomejuusto, 175g, Pirkka', 'valkohomejuusto, 175g, Pirkka', 'white cheese, 175g, Pirkka', 2.25),  #
+    ('sinihomejuusto, Aura', 'sinihomejuusto, Aura', 'blue cheese, Aura', 3.50),  #
+    ('tuorekurkku, 1kg, Suomi', 'tuorekurkku, 1kg, Suomi', 'cucumber, 1kg, Finland', 3.50),  #
+    ('kalkkunaleike, 250g, Atria', 'kalkkunaleike, 250g, Atria', 'turkey cold cut, 250g, Atria ', 2.45),  #
+    ('kananmuna, 15kpl', 'kananmuna, 15kpl', 'eggs, 15pcs', 2.37),  #
+    ('kanan koipipalat, 1kg', 'kanan koipipalat, 1kg', 'chicken leg pieces, 1kg', 3.45),  #
     ('WC-paperi', 'WC-paperi', 'toilet paper', 1.50),  #
-    ('talouspaperi', 'talouspaperi', 'paper towel', 1.50),  #
-    ('suihkusaippua, Bergamot', 'suihkusaippua, Bergamot', 'shower gel, Bergamot', 1.50),  #
-    ('suihkusaippua, Sport', 'suihkusaippua, Sport', 'shower gel, Bergamot', 1.50)  #
+    ('talouspaperi', 'talouspaperi', 'paper towel', 2.05),  #
+    ('suihkusaippua, Bergamot', 'suihkusaippua, Bergamot', 'shower gel, Bergamot', 2.20),  #
+    ('suihkusaippua, Sport', 'suihkusaippua, Sport', 'shower gel, Sport', 2.45)  #
     ]
 
 
