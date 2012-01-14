@@ -117,7 +117,7 @@ items = [
     ('talouspaperi', 'talouspaperi', 'paper towel', 2.05),                                                                                #  84
     ('suihkusaippua, Bergamot', 'suihkusaippua, Bergamot', 'shower gel, Bergamot', 2.20),                                                 #  85
     ('suihkusaippua, Sport', 'suihkusaippua, Sport', 'shower gel, Sport', 2.45),                                                          #  86
-    ('näkkileipä, Kunto', 'näkkileipä, Kunto', 'hard bread, Kunto', 2.69)                                                                 #  87
+    ('näkkileipä, Kunto', 'näkkileipä, Kunto', 'crispbread, Kunto', 2.69)                                                                 #  87
     ]
 
 

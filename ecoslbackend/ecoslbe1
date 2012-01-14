@@ -128,9 +128,12 @@ class EcoSLBackend:
         # stores='K-Citymarket Raksila'
         # shoppinglists='Ensimmäinen testilista'
 
-        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1">list 1, language 1, store 1, html</a>')
-        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1&type=text">list 1, language 1, store 1, text</a>')
-        print('<li><a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&storeid=1&type=xml">list 1, language 1, store 1, xml</a>')
+        print('<li>list 1, language 1, store 1: <a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&languageid=1&storeid=1">html</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&languageid=1&storeid=1&type=text">text</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=1&languageid=1&storeid=1&type=xml">xml</a>')
+        print('<li>list 4, language 2, store 1: <a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1">html</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1&type=text">text</a>, ')
+        print('<a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1&type=xml">xml</a>')
         print('</ul>')
         print('</ul>')
 
@@ -168,21 +171,27 @@ class EcoSLBackend:
                         self.print_data('stores', stores, '')
 
                 elif self.form[a_key].value == 'shoppinglist':
+                    listid = 1
+                    storeid = 1
+                    langid = 1
                     if 'shoppinglistid' in self.form:
-                        if 'storeid' in self.form:
-                            the_lists = self.db.find_shopping_list([u'Ensimmäinen testilista', 
-                                'K-Citymarket Raksila', 'Finnish'])
+                        listid = self.form['shoppinglistid'].value
+                    if 'storeid' in self.form:
+                        storeid = self.form['storeid'].value
+                    if 'languageid' in self.form:
+                        langid = self.form['languageid'].value
 
-                            if 'type' in self.form:
-                                self.print_data('shoppinglist', the_lists, self.form['type'].value)
-                            else:
-                                self.print_data('shoppinglist', the_lists, '')
+                    the_lists = self.db.find_shopping_list_by_id([listid, langid, storeid])
+                    if 'type' in self.form:
+                        self.print_data('shoppinglist', the_lists, self.form['type'].value)
                     else:
-                        be.ecoheader()
+                        self.print_data('shoppinglist', the_lists, '')
+                else:
+                    be.ecoheader()
 
 
     # Formulate the output. 'what' tells the type of data (items, languages, stores),
-    # 'data' contains the list of data and 'how' tells the output (xml, text)
+    # 'data' contains the list of data and 'how' tells the output (xml, text
 
     def print_data(self, what, data, how):
 
@@ -390,24 +399,6 @@ class EcoSLBackend:
                     #    a_list[4].encode('utf-8'),               #  4:   itemtranslation.translation
                     #    str(a_list[5]),                          #  5:   price.price
                     #    ))
-                    #print('%s;%s;%s;%s;%s;%s;%s;' % (
-                    #    str(a_list[0]),                          #  0:   shoppinglistitems.id
-                    #    a_list[1],                               #  1:   shoppinglistitems.shoppinglistid
-                    #    #a_list[2],                              #  2:   shoppinglistitems.itemid
-                    #    a_list[3],                               #  3:   shoppinglistitems.amount
-                    #    a_list[4],                               #  4:   shoppinglistitems.bought
-                    #    a_list[5],                               #  5:   item.id
-                    #    #a_list[6].encode('utf-8'),              #  6:   item.name
-                    #    #a_list[7],                              #  7:   itemlanguage.id
-                    #    a_list[8].encode('utf-8'),               #  8:   itemlanguage.language
-                    #    #a_list[9],                              #  9:   itemtranslation.id
-                    #    #a_list[10],                             # 10:   itemtranslation.itemid
-                    #    a_list[11].encode('utf-8')               # 11:   itemtranslation.translation
-                    #    #a_list[12],                             # 12:   shoppingorder.id
-                    #    #a_list[13],                             # 13:   shoppingorder.storeid
-                    #    #a_list[14],                             # 14:   shoppingorder.itemid
-                    #    #a_list[14]                              # 15:   shoppingorder.shorder
-                    #    ))
 
                     if not doc:
                         doc = Document()
@@ -438,6 +429,11 @@ class EcoSLBackend:
                     items.appendChild(item_bought)
                     item_boughttext = doc.createTextNode(str(a_list[3]))
                     item_bought.appendChild(item_boughttext)
+
+                    item_translation = doc.createElement('translation')
+                    items.appendChild(item_translation)
+                    item_translationtext = doc.createTextNode(str(a_list[4].encode('utf-8')))
+                    item_translation.appendChild(item_translationtext)
 
                     item_price = doc.createElement('price')
                     items.appendChild(item_price)
