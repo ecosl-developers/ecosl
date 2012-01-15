@@ -20,17 +20,17 @@
 #
 
 
-# The prototype for backend and protocol
+# The prototype for backend and protocol, the CGI version
 
 #print('Content-type: text/html')
 #print
 
 import os, sys, cgi, traceback
 import cgitb
-import time
-import csv
-import shutil
-import hashlib
+#import time
+#import csv
+#import shutil
+#import hashlib
 cgitb.enable()
 sys.path.append('/home/mtapoja/code/github/ecosl/ecosldb')
 from ecosldb import EcoDB
