@@ -57,63 +57,121 @@ class PerfT(unittest.TestCase):
         self.h = httplib2.Http('/tmp/.cache')
         self.h.disable_ssl_certificate_validation = True
         self.URL1 = 'https://projects.sse.fi/cgi-bin/ecoslbe1/'
+        self.URL2 = 'https://projects.sse.fi/ecotest/ecoslbe2.py/'
 
-    def test_01_fetch_languages_html(self):
+    def test_01_be1_fetch_languages_html(self):
         response, content = self.h.request(self.URL1 + '?listaction=languages')
         self.assertEqual(content_languages_html_text, content)
 
-    def test_02_fetch_languages_text(self):
+    def test_02_be1_fetch_languages_text(self):
         response, content = self.h.request(self.URL1 + '?listaction=languages&type=text')
         self.assertEqual(content_languages_html_text, content)
 
-    def test_03_fetch_languages_xml(self):
+    def test_03_be1_fetch_languages_xml(self):
         response, content = self.h.request(self.URL1 + '?listaction=languages&type=xml')
         self.assertEqual(content_languages_xml, content)
 
-    def test_04_fetch_stores_html(self):
+    def test_04_be1_fetch_stores_html(self):
         response, content = self.h.request(self.URL1 + '?listaction=stores')
         self.assertEqual(content_stores_html_text, content)
 
-    def test_05_fetch_stores_text(self):
+    def test_05_be1_fetch_stores_text(self):
         response, content = self.h.request(self.URL1 + '?listaction=stores&type=text')
         self.assertEqual(content_stores_html_text, content)
 
-    def test_06_fetch_stores_xml(self):
+    def test_06_be1_fetch_stores_xml(self):
         response, content = self.h.request(self.URL1 + '?listaction=stores&type=xml')
         self.assertEqual(content_stores_xml, content)
 
-    def test_07_fetch_all_items_html(self):
+    def test_07_be1_fetch_all_items_html(self):
         response, content = self.h.request(self.URL1 + '?listaction=allitems')
         #self.assertEqual(content_all_items_html, content)
 
-    def test_08_fetch_all_items_text(self):
+    def test_08_be1_fetch_all_items_text(self):
         response, content = self.h.request(self.URL1 + '?listaction=allitems&type=text')
         #self.assertEqual(content_all_items_text, content)
 
-    def test_09_fetch_all_items_xml(self):
+    def test_09_be1_fetch_all_items_xml(self):
         response, content = self.h.request(self.URL1 + '?listaction=allitems&type=xml')
         #self.assertEqual(content_all_items_xml, content)
 
-    def test_10_fetch_single_items_html(self):
+    def test_10_be1_fetch_single_items_html(self):
         for ind in range(1, 40):
             response, content = self.h.request(self.URL1 + '?listaction=item&itemid=%u&languageid=1' % ind)
 
-    def test_11_fetch_single_items_text(self):
+    def test_11_be1_fetch_single_items_text(self):
         for ind in range(1, 40):
             response, content = self.h.request(self.URL1 + '?listaction=item&itemid=%u&languageid=1&type=text' % ind)
 
-    def test_12_fetch_single_items_xml(self):
+    def test_12_be1_fetch_single_items_xml(self):
         for ind in range(1, 40):
             response, content = self.h.request(self.URL1 + '?listaction=item&itemid=%u&languageid=1&type=xml' % ind)
 
-    def test_13_fetch_shopping_list_html(self):
+    def test_13_be1_fetch_shopping_list_html(self):
         response, content = self.h.request(self.URL1 + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1')
 
-    def test_14_fetch_shopping_list_text(self):
+    def test_14_be1_fetch_shopping_list_text(self):
         response, content = self.h.request(self.URL1 + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1&type=text')
 
-    def test_15_fetch_shopping_list_xml(self):
+    def test_15_be1_fetch_shopping_list_xml(self):
         response, content = self.h.request(self.URL1 + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1&type=xml')
+
+    def test_16_be2_fetch_languages_html(self):
+        response, content = self.h.request(self.URL2 + 'languages?outputtype=html')
+        self.assertEqual(content_languages_html_text, content)
+
+    def test_17_be2_fetch_languages_text(self):
+        response, content = self.h.request(self.URL2 + 'languages?outputtype=text')
+        self.assertEqual(content_languages_html_text, content)
+
+    def test_18_be2_fetch_languages_xml(self):
+        response, content = self.h.request(self.URL2 + 'languages?outputtype=xml')
+        self.assertEqual(content_languages_xml, content)
+
+    def test_19_be2_fetch_stores_html(self):
+        response, content = self.h.request(self.URL2 + 'stores?outputtype=html')
+        self.assertEqual(content_stores_html_text, content)
+
+    def test_20_be2_fetch_stores_text(self):
+        response, content = self.h.request(self.URL2 + 'stores?outputtype=text')
+        self.assertEqual(content_stores_html_text, content)
+
+    def test_21_be2_fetch_stores_xml(self):
+        response, content = self.h.request(self.URL2 + 'stores?outputtype=xml')
+        self.assertEqual(content_stores_xml, content)
+
+    def test_22_be2_fetch_all_items_html(self):
+        response, content = self.h.request(self.URL2 + 'allitems?lang=0&outputtype=html')
+        #self.assertEqual(content_all_items_html, content)
+
+    def test_23_be2_fetch_all_items_text(self):
+        response, content = self.h.request(self.URL2 + 'allitems?lang=0&outputtype=text')
+        #self.assertEqual(content_all_items_text, content)
+
+    def test_24_be2_fetch_all_items_xml(self):
+        response, content = self.h.request(self.URL2 + 'allitems?lang=0&outputtype=xml')
+        #self.assertEqual(content_all_items_xml, content)
+
+    def test_25_be2_fetch_single_items_html(self):
+        for ind in range(1, 40):
+            response, content = self.h.request(self.URL2 + 'singleitem?itemid=%u&lang=1&outputtype=html' % ind)
+
+    def test_26_be2_fetch_single_items_text(self):
+        for ind in range(1, 40):
+            response, content = self.h.request(self.URL2 + 'singleitem?itemid=%u&lang=1&outputtype=text' % ind)
+
+    def test_27_be2_fetch_single_items_xml(self):
+        for ind in range(1, 40):
+            response, content = self.h.request(self.URL2 + 'singleitem?itemid=%u&lang=1&outputtype=xml' % ind)
+
+    def test_28_be2_fetch_shopping_list_html(self):
+        response, content = self.h.request(self.URL2 + 'shoppinglist?slid=4&lang=2&storeid=1&outputtype=html')
+
+    def test_29_be2_fetch_shopping_list_text(self):
+        response, content = self.h.request(self.URL2 + 'shoppinglist?slid=4&lang=2&storeid=1&outputtype=text')
+
+    def test_30_be2_fetch_shopping_list_xml(self):
+        response, content = self.h.request(self.URL2 + 'shoppinglist?slid=4&lang=2&storeid=1&outputtype=xml')
 
 
 if __name__ == '__main__':
@@ -121,8 +179,8 @@ if __name__ == '__main__':
 
     # Running tests one by one:
     # run individual tests:
-    # $ python -m unittest perftests.PerfT.test_01_fetch_languages_html
-    # $ python -m unittest perftests.PerfT.test_02_fetch_languages_text
+    # $ python -m unittest perftests.PerfT.test_01_be1_fetch_languages_html
+    # $ python -m unittest perftests.PerfT.test_02_be1_fetch_languages_text
 
     suite = unittest.TestLoader().loadTestsFromTestCase(PerfT)
     unittest.TextTestRunner(verbosity=2).run(suite)

@@ -156,11 +156,11 @@ def print_data(req, what, data, how):
 
         elif what == 'languages':
             for a_lang in data:
-                req.write('%s;%s;' % (str(a_lang[0]), a_lang[1]))
+                req.write('%s;%s;\n' % (str(a_lang[0]), a_lang[1]))
 
         elif what == 'stores':
             for a_store in data:
-                req.write('%s;%s;' % (str(a_store[0]), a_store[1]))
+                req.write('%s;%s;\n' % (str(a_store[0]), a_store[1]))
 
         elif what == 'shoppinglist':
             for a_list in data:
@@ -199,11 +199,11 @@ def print_data(req, what, data, how):
 
         elif what == 'languages':
             for a_lang in data:
-                req.write('%s;%s;' % (str(a_lang[0]), a_lang[1]))
+                req.write('%s;%s;\n' % (str(a_lang[0]), a_lang[1]))
 
         elif what == 'stores':
             for a_store in data:
-                req.write('%s;%s;' % (str(a_store[0]), a_store[1]))
+                req.write('%s;%s;\n' % (str(a_store[0]), a_store[1]))
 
 
         elif what == 'shoppinglist':
@@ -301,7 +301,7 @@ def print_data(req, what, data, how):
                 languagetext = doc.createTextNode(str(a_lang[1]))
                 itemlanguages.appendChild(languagetext)
 
-            req.write(doc.toprettyxml(indent="  "))
+            req.write(doc.toprettyxml(indent="  ") + '\n')
 
         elif what == 'stores':
 
@@ -323,7 +323,7 @@ def print_data(req, what, data, how):
                 nametext = doc.createTextNode(a_store[1])
                 stores.appendChild(nametext)
 
-            req.write(doc.toprettyxml(indent="  "))
+            req.write(doc.toprettyxml(indent="  ") + '\n')
 
         elif what == 'shoppinglist':
 
@@ -379,5 +379,5 @@ def print_data(req, what, data, how):
                 item_pricetext = doc.createTextNode(str(a_list[5]))
                 item_price.appendChild(item_pricetext)
 
-            req.write(doc.toprettyxml(indent="  "))
+            req.write(doc.toprettyxml(indent="  ") + '\n')
 
