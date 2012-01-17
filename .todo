@@ -150,10 +150,28 @@
             Implemented with adding prices.
         </comment>
     </note>
+    <note priority="medium" time="1325491226" done="1326786684">
+        backend: Find items (https://github.com/mtapoja/ecosl/issues/42)
+        <comment>
+            Implemented.
+        </comment>
+    </note>
+    <note priority="medium" time="1325491245" done="1326786706">
+        backend: Find shopping lists (https://github.com/mtapoja/ecosl/issues/43)
+        <comment>
+            Implemented.
+        </comment>
+    </note>
     <note priority="low" time="1325193346" done="1325335286">
         db: Import database contents (https://github.com/mtapoja/ecosl/issues/2)
         <comment>
             Importing a database implemented.
+        </comment>
+    </note>
+    <note priority="low" time="1325346654" done="1326406005">
+        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10)
+        <comment>
+            Implemented.
         </comment>
     </note>
     <note priority="low" time="1325346654" done="1326405971">
@@ -210,22 +228,13 @@
     <note priority="medium" time="1325346656">
         backend: Modify stores. (https://github.com/mtapoja/ecosl/issues/33)
     </note>
-    <note priority="medium" time="1325491226">
-        backend: Find items (https://github.com/mtapoja/ecosl/issues/42) in progress
-    </note>
-    <note priority="medium" time="1325491245">
-        backend: Find shopping lists (https://github.com/mtapoja/ecosl/issues/43) in progress
-    </note>
-    <note priority="medium" time="1325491264">
-        backend: Find stores (https://github.com/mtapoja/ecosl/issues/44) in progress
-    </note>
-    <note priority="medium" time="1325491296">
-        backend: Find shopping order for the certain store. (https://github.com/mtapoja/ecosl/issues/45)
-    </note>
-    <note priority="low" time="1325346654" done="1326406005">
-        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10)
+    <note priority="medium" time="1325491264" done="1326786727">
+        backend: Find stores (https://github.com/mtapoja/ecosl/issues/44)
         <comment>
             Implemented.
         </comment>
+    </note>
+    <note priority="medium" time="1325491296">
+        backend: Find shopping order for the certain store. (https://github.com/mtapoja/ecosl/issues/45)
     </note>
 </todo>
