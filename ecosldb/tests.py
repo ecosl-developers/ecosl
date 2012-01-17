@@ -26,6 +26,7 @@ import os
 from ecosldb import EcoDB
 import unittest
 import random
+import hashlib
 
 dbfile='./unittest.db'
 database = EcoDB(dbfile)
@@ -121,13 +122,13 @@ items = [
     ]
 
 
-languages= [
+languages = [
     'Finnish',
     'English'
     ]
 
 
-stores= [
+stores = [
     'K-Citymarket Raksila',
     'Prisma Raksila',
     'Siwa Muhos',
@@ -266,6 +267,14 @@ class EcoDBTests(unittest.TestCase):
         #print(a_list)
         a_list = self.db.find_shopping_list_by_name([shoppinglists[1][0]])
         #print(a_list)
+
+    def test_14_b_find_shopping_list_by_hash(self):
+        for a_list in self.db.find_shopping_list_by_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 1, 1]):
+            pass
+            #print(a_list)
+        for a_list in self.db.find_shopping_list_by_hash([hashlib.md5(shoppinglists[3][0].encode('utf-8')).hexdigest(), 1, 1]):
+            pass
+            #print(a_list)
 
     def test_15_find_shopping_list(self):
         

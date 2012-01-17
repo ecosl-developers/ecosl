@@ -299,6 +299,27 @@ class EcoDB:
         self.cursor.execute('update store set name = ? where id = ?', t)
         self.connection.commit()
 
+    def find_shopping_list_by_hash(self, hashids):
+        """Find shopping list id by it's hash, language id and store id (optional)."""
+        # t = (<shopping list hash>, <language id>, <store id>, )
+
+        the_list = []
+
+        if hashids[0] != "":
+            t = (hashids[0], )
+
+            # First find the id for the shopping list
+            listid = self.cursor.execute('select id, hash from shoppinglist \
+                where hash = ?', t).fetchone()
+
+            # next the whole list
+            the_list = self.find_shopping_list_by_id([listid[0], hashids[1], hashids[2]])
+        else:
+            # Shopping lists will not be listed without the hash!
+            pass
+
+        return the_list
+            
     def find_shopping_list_by_name(self, name):
         """Find shopping list id by it's hash (generated from it's name)."""
         if name[0] != "":
