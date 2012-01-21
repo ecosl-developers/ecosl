@@ -54,6 +54,8 @@ def menu(req):
     req.write('<li><a href="' + scriptpath + 'singleitem?itemid=80&lang=2&outputtype=xml">item 80</a>, English')
     #req.write('<li>shopping list <a href="' + scriptpath + 'shoppinglistid?slid=4&lang=2&storeid=1&outputtype=xml">by id 4</a> (this will be removed)')
     req.write('<li>shopping list <a href="' + scriptpath + 'shoppinglist?md5hash=0c968723b0179f28f29f9508eff994b3&lang=2&storeid=1&outputtype=xml">by hash4</a>')
+    req.write('<li>mark item 1 <a href="' + scriptpath + 'buy?md5hash=0c968723b0179f28f29f9508eff994b3&itemid=1&bought=1&outputtype=xml">as bought</a>')
+    req.write('<li>mark item 1 <a href="' + scriptpath + 'buy?md5hash=0c968723b0179f28f29f9508eff994b3&itemid=1&bought=0&outputtype=xml">as not bought</a>')
 
     req.write('</ul>')
     req.write('</body>')
@@ -82,6 +84,10 @@ def singleitem(req, itemid, lang, outputtype):
 def shoppinglist(req, md5hash, lang, storeid, outputtype):
     the_lists = db.find_shopping_list_by_hash([md5hash, int(lang), int(storeid)])
     data_out(req, 'shoppinglist', the_lists, outputtype)
+
+def buy(req, md5hash, itemid, bought, outputtype):
+    db.mark_item_bought_for_shoppinglist_hash([md5hash, int(itemid), int(bought)])
+    data_out(req, 'buy', [], outputtype)
 
 def data_out(req, what, data, how):
 
@@ -332,4 +338,13 @@ def data_out(req, what, data, how):
                 item_price.appendChild(item_pricetext)
 
             req.write(doc.toprettyxml(indent="  ") + '\n')
+
+        elif what == 'buy':
+
+            doc = Document()
+            resp = doc.createElement('response')
+            resp.setAttribute('value', 'ok')
+            doc.appendChild(resp)
+            req.write(doc.toprettyxml(indent="  ") + '\n')
+
 

@@ -394,6 +394,16 @@ class EcoDBTests(unittest.TestCase):
         self.db.mark_item_bought([3, 2, 0])
         self.db.mark_item_bought([3, 13, 0])
 
+    def test_22_mark_items_bought_by_list_hash(self):
+        # <Shopping list hash>, <item id>, <bought> (bought = 1, not bought = 0)
+        # buy
+        self.db.mark_item_bought_for_shoppinglist_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 1, 1])
+        self.db.mark_item_bought_for_shoppinglist_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 2, 1])
+
+        # cancel buying
+        self.db.mark_item_bought_for_shoppinglist_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 1, 0])
+        self.db.mark_item_bought_for_shoppinglist_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 2, 0])
+
 
 if __name__ == '__main__':
     """"Main function."""

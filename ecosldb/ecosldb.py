@@ -422,6 +422,19 @@ class EcoDB:
         #items = []
         return items
 
+    def mark_item_bought_for_shoppinglist_hash(self, data):
+        """Mark an item in a shopping list identified by hash as bought or not bought."""
+        # <md5hash>, <item id>, <bought>
+        if data[0] != "":
+            t = (data[0], )
+
+            # First find the id for the shopping list
+            listid = self.cursor.execute('select id, hash from shoppinglist \
+                where hash = ?', t).fetchone()
+
+            # get the list id and call the final function
+            self.mark_item_bought([listid[0], data[1], data[2]])
+
     def mark_item_bought(self, data):
         """Mark an item in a shopping list as bought or not bought."""
         t = (data[2], data[0], data[1], )

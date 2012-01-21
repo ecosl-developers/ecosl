@@ -142,6 +142,12 @@ class EcoSLBackend:
         print('<li>list 4, language 2, store 1: <a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1">html</a>, ')
         print('<a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1&type=text">text</a>, ')
         print('<a href="' + be.getcgipath() + '?listaction=shoppinglist&shoppinglistid=4&languageid=2&storeid=1&type=xml">xml</a>')
+        print('<li>list 4 by hash, language 2, store 1: <a href="' + be.getcgipath() + '?listaction=shoppinglistbyhash&md5hash=0c968723b0179f28f29f9508eff994b3&languageid=2&storeid=1&type=xml">xml</a>')
+        print('</ul>')
+        print('mark item 1 bought or not bought for a list by hash: ')
+        print('<ul>')
+        print('<li><a href="' + be.getcgipath() + '?listaction=buy&md5hash=0c968723b0179f28f29f9508eff994b3&itemid=1&bought=0">mark as not bought</a>')
+        print('<li><a href="' + be.getcgipath() + '?listaction=buy&md5hash=0c968723b0179f28f29f9508eff994b3&itemid=1&bought=1">mark as bought</a>')
         print('</ul>')
         print('</ul>')
 
@@ -208,6 +214,41 @@ class EcoSLBackend:
                         self.print_data('shoppinglist', the_lists, self.form['type'].value)
                     else:
                         self.print_data('shoppinglist', the_lists, '')
+
+                elif self.form[a_key].value == 'shoppinglistbyhash':
+                    md5hash = ''
+                    storeid = 1
+                    langid = 1
+                    if 'md5hash' in self.form:
+                        md5hash = self.form['md5hash'].value
+                    if 'storeid' in self.form:
+                        storeid = self.form['storeid'].value
+                    if 'languageid' in self.form:
+                        langid = self.form['languageid'].value
+
+                    the_lists = self.db.find_shopping_list_by_hash([md5hash, int(langid), int(storeid)])
+
+                    if 'type' in self.form:
+                        self.print_data('shoppinglist', the_lists, self.form['type'].value)
+                    else:
+                        self.print_data('shoppinglist', the_lists, '')
+
+                elif self.form[a_key].value == 'buy':
+                    md5hash = ''
+                    itemid = 1
+                    bought = 0
+                    if 'md5hash' in self.form:
+                        md5hash = self.form['md5hash'].value
+                    if 'itemid' in self.form:
+                        itemid = self.form['itemid'].value
+                    if 'bought' in self.form:
+                        bought = self.form['bought'].value
+
+                    self.db.mark_item_bought_for_shoppinglist_hash([md5hash, int(itemid), int(bought)])
+
+                    self.print_data('buy', [], 'xml')
+
+
                 #else:
                 #    be.ecoheader()
 
@@ -462,6 +503,14 @@ class EcoSLBackend:
                     item_pricetext = doc.createTextNode(str(a_list[5]))
                     item_price.appendChild(item_pricetext)
 
+                print(doc.toprettyxml(indent="  "))
+
+            elif what == 'buy':
+
+                doc = Document()
+                resp = doc.createElement('response')
+                resp.setAttribute('value', 'ok')
+                doc.appendChild(resp)
                 print(doc.toprettyxml(indent="  "))
 
 #
