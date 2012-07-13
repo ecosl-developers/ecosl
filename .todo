@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <todo version="0.1.20">
     <note priority="veryhigh" time="1325346654" done="1325457171">
-        dblib: Test script that uses the library, for testing functionality and performance. (https://github.com/mtapoja/ecosl/issues/20)
+        dblib: Test script that uses the library, for testing functionality and performance. (https://github.com/ecosl-developers/ecosl/issues/20)
         <comment>
             Test script implemented.
         </comment>
     </note>
     <note priority="veryhigh" time="1325685223" done="1325882039">
-        dblib: Certain rows in tables are unique (improves https://github.com/mtapoja/ecosl/issues/1)
+        dblib: Certain rows in tables are unique (improves https://github.com/ecosl-developers/ecosl/issues/1)
         <comment>
             Constrains implemented.
         </comment>
     </note>
     <note priority="veryhigh" time="1325880300" done="1325887960">
-        dblib: Add field to indicate if a shopping list item is bought or not (improves https://github.com/mtapoja/ecosl/issues/1)
+        dblib: Add field to indicate if a shopping list item is bought or not (improves https://github.com/ecosl-developers/ecosl/issues/1)
         <comment>
             New field added to database.
         </comment>
     </note>
     <note priority="high" time="1325167761" done="1325192410">
-        db: Create the database (https://github.com/mtapoja/ecosl/issues/1)
+        db: Create the database (https://github.com/ecosl-developers/ecosl/issues/1)
         <comment>
             Implemented
         </comment>
@@ -31,216 +31,216 @@
         </note>
     </note>
     <note priority="high" time="1325193437" done="1325254995">
-        dblib: Add new items (https://github.com/mtapoja/ecosl/issues/4)
+        dblib: Add new items (https://github.com/ecosl-developers/ecosl/issues/4)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346654" done="1325680669">
-        dblib: Add items to shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/7)
+        dblib: Add items to shopping list + functionality test. (https://github.com/ecosl-developers/ecosl/issues/7)
         <comment>
             Adding items to shopping list implemented.
         </comment>
     </note>
     <note priority="high" time="1325346654" done="1325598878">
-        dblib: Add new shopping lists + functionality test. (https://github.com/mtapoja/ecosl/issues/6)
+        dblib: Add new shopping lists + functionality test. (https://github.com/ecosl-developers/ecosl/issues/6)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346654" done="1325593688">
-        dblib: Add new stores + functionality test. (https://github.com/mtapoja/ecosl/issues/13)
+        dblib: Add new stores + functionality test. (https://github.com/ecosl-developers/ecosl/issues/13)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346654" done="1326040505">
-        dblib: Modify amount of an item in shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/9)
+        dblib: Modify amount of an item in shopping list + functionality test. (https://github.com/ecosl-developers/ecosl/issues/9)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346654" done="1326030429">
-        dblib: Modify translations. (https://github.com/mtapoja/ecosl/issues/19)
+        dblib: Modify translations. (https://github.com/ecosl-developers/ecosl/issues/19)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346654" done="1326043139">
-        dblib: Remove items from shopping list + functionality test. (https://github.com/mtapoja/ecosl/issues/8)
+        dblib: Remove items from shopping list + functionality test. (https://github.com/ecosl-developers/ecosl/issues/8)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346655" done="1325669402">
-        dblib: Add prices for items + functionality test. (https://github.com/mtapoja/ecosl/issues/15)
+        dblib: Add prices for items + functionality test. (https://github.com/ecosl-developers/ecosl/issues/15)
         <comment>
             Implemented
         </comment>
     </note>
     <note priority="high" time="1325346655" done="1325879325">
-        dblib: Modify shopping order in certain store + functionality test. (https://github.com/mtapoja/ecosl/issues/17)
+        dblib: Modify shopping order in certain store + functionality test. (https://github.com/ecosl-developers/ecosl/issues/17)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325346655" done="1326045498">
-        dblib: Modify stores + functionality test. (https://github.com/mtapoja/ecosl/issues/14)
+        dblib: Modify stores + functionality test. (https://github.com/ecosl-developers/ecosl/issues/14)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325491006" done="1325588655">
-        dblib: Find items + functionality test (https://github.com/mtapoja/ecosl/issues/37)
+        dblib: Find items + functionality test (https://github.com/ecosl-developers/ecosl/issues/37)
         <comment>
             Finding items implemented.
         </comment>
     </note>
     <note priority="high" time="1325491034" done="1325979140">
-        dblib: Find shopping lists + functionality test (https://github.com/mtapoja/ecosl/issues/38)
+        dblib: Find shopping lists + functionality test (https://github.com/ecosl-developers/ecosl/issues/38)
         <comment>
             Finding shopping lists names and shopping lists implemented.
         </comment>
     </note>
     <note priority="high" time="1325491081" done="1325889092">
-        dblib: Find languages (https://github.com/mtapoja/ecosl/issues/39)
+        dblib: Find languages (https://github.com/ecosl-developers/ecosl/issues/39)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325491097" done="1325879343">
-        dblib: Find stores + functionality test (https://github.com/mtapoja/ecosl/issues/40)
+        dblib: Find stores + functionality test (https://github.com/ecosl-developers/ecosl/issues/40)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="high" time="1325491145" done="1325983627">
-        dblib: Find shopping order for the certain store + functionality test. (https://github.com/mtapoja/ecosl/issues/41)
+        dblib: Find shopping order for the certain store + functionality test. (https://github.com/ecosl-developers/ecosl/issues/41)
         <comment>
             Finding shopping order for all items in a store implemented.
         </comment>
     </note>
     <note priority="medium" time="1325193385" done="1325329012">
-        db: Export database contents (https://github.com/mtapoja/ecosl/issues/3)
+        db: Export database contents (https://github.com/ecosl-developers/ecosl/issues/3)
         <comment>
             Dumping db implemented.
         </comment>
     </note>
     <note priority="medium" time="1325255233" done="1325272236">
-        dblib: Add new translations. (https://github.com/mtapoja/ecosl/issues/18)
+        dblib: Add new translations. (https://github.com/ecosl-developers/ecosl/issues/18)
         <comment>
             Implemented
         </comment>
     </note>
     <note priority="medium" time="1325255277" done="1325256828">
-        dblib: Add new languages for translations. (https://github.com/mtapoja/ecosl/issues/12)
+        dblib: Add new languages for translations. (https://github.com/ecosl-developers/ecosl/issues/12)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="medium" time="1325346654" done="1326016762">
-        dblib: Modify items + functionality test. (https://github.com/mtapoja/ecosl/issues/5)
+        dblib: Modify items + functionality test. (https://github.com/ecosl-developers/ecosl/issues/5)
         <comment>
             Modifying items implemented.
         </comment>
     </note>
     <note priority="medium" time="1325346655" done="1327156871">
-        backend: Mark a shopping list item as bought. (https://github.com/mtapoja/ecosl/issues/30)
+        backend: Mark a shopping list item as bought. (https://github.com/ecosl-developers/ecosl/issues/30)
         <comment>
             Implemented
         </comment>
     </note>
     <note priority="medium" time="1325346655" done="1325669425">
-        dblib: Modify prices + functionality test. (https://github.com/mtapoja/ecosl/issues/16)
+        dblib: Modify prices + functionality test. (https://github.com/ecosl-developers/ecosl/issues/16)
         <comment>
             Implemented with adding prices.
         </comment>
     </note>
     <note priority="medium" time="1325491226" done="1326786684">
-        backend: Find items (https://github.com/mtapoja/ecosl/issues/42)
+        backend: Find items (https://github.com/ecosl-developers/ecosl/issues/42)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="medium" time="1325491245" done="1326786706">
-        backend: Find shopping lists (https://github.com/mtapoja/ecosl/issues/43)
+        backend: Find shopping lists (https://github.com/ecosl-developers/ecosl/issues/43)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="medium" time="1325491264" done="1326786727">
-        backend: Find stores (https://github.com/mtapoja/ecosl/issues/44)
+        backend: Find stores (https://github.com/ecosl-developers/ecosl/issues/44)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="low" time="1325193346" done="1325335286">
-        db: Import database contents (https://github.com/mtapoja/ecosl/issues/2)
+        db: Import database contents (https://github.com/ecosl-developers/ecosl/issues/2)
         <comment>
             Importing a database implemented.
         </comment>
     </note>
     <note priority="low" time="1325346654" done="1326406005">
-        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/mtapoja/ecosl/issues/10)
+        dblib: Mark a shopping list item as bought + functionality test. (https://github.com/ecosl-developers/ecosl/issues/10)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="low" time="1325346654" done="1326405971">
-        dblib: Mark a shopping list item as not bought + functionality test. (https://github.com/mtapoja/ecosl/issues/11)
+        dblib: Mark a shopping list item as not bought + functionality test. (https://github.com/ecosl-developers/ecosl/issues/11)
         <comment>
             Implemented.
         </comment>
     </note>
     <note priority="medium" time="1325346655">
-        backend: Add items to shopping list. (https://github.com/mtapoja/ecosl/issues/27)
+        backend: Add items to shopping list. (https://github.com/ecosl-developers/ecosl/issues/27)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Add new items. (https://github.com/mtapoja/ecosl/issues/24)
+        backend: Add new items. (https://github.com/ecosl-developers/ecosl/issues/24)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Add new shopping lists. (https://github.com/mtapoja/ecosl/issues/26)
+        backend: Add new shopping lists. (https://github.com/ecosl-developers/ecosl/issues/26)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Backend shall provide a web API for clients to use. (https://github.com/mtapoja/ecosl/issues/22)
+        backend: Backend shall provide a web API for clients to use. (https://github.com/ecosl-developers/ecosl/issues/22)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Backend shall use https protocol to for securing the connection to the client. (https://github.com/mtapoja/ecosl/issues/23)
+        backend: Backend shall use https protocol to for securing the connection to the client. (https://github.com/ecosl-developers/ecosl/issues/23)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Backend shall utilize Python db library. (https://github.com/mtapoja/ecosl/issues/21)
+        backend: Backend shall utilize Python db library. (https://github.com/ecosl-developers/ecosl/issues/21)
     </note>
     <note priority="medium" time="1325346655" done="1327156894">
-        backend: Mark a shopping list item as not bought. (https://github.com/mtapoja/ecosl/issues/31)
+        backend: Mark a shopping list item as not bought. (https://github.com/ecosl-developers/ecosl/issues/31)
         <comment>
             Implemented
         </comment>
     </note>
     <note priority="medium" time="1325346655">
-        backend: Modify amount of an item in shopping list. (https://github.com/mtapoja/ecosl/issues/29)
+        backend: Modify amount of an item in shopping list. (https://github.com/ecosl-developers/ecosl/issues/29)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Modify items. (https://github.com/mtapoja/ecosl/issues/25)
+        backend: Modify items. (https://github.com/ecosl-developers/ecosl/issues/25)
     </note>
     <note priority="medium" time="1325346655">
-        backend: Remove items from shopping list. (https://github.com/mtapoja/ecosl/issues/28)
+        backend: Remove items from shopping list. (https://github.com/ecosl-developers/ecosl/issues/28)
     </note>
     <note priority="medium" time="1325346656">
-        backend: Add new stores. (https://github.com/mtapoja/ecosl/issues/32)
+        backend: Add new stores. (https://github.com/ecosl-developers/ecosl/issues/32)
     </note>
     <note priority="medium" time="1325346656">
-        backend: Add prices for items. (https://github.com/mtapoja/ecosl/issues/34)
+        backend: Add prices for items. (https://github.com/ecosl-developers/ecosl/issues/34)
     </note>
     <note priority="medium" time="1325346656">
-        backend: Modify prices. (https://github.com/mtapoja/ecosl/issues/35)
+        backend: Modify prices. (https://github.com/ecosl-developers/ecosl/issues/35)
     </note>
     <note priority="medium" time="1325346656">
-        backend: Modify shopping order in certain store. (https://github.com/mtapoja/ecosl/issues/36)
+        backend: Modify shopping order in certain store. (https://github.com/ecosl-developers/ecosl/issues/36)
     </note>
     <note priority="medium" time="1325346656">
-        backend: Modify stores. (https://github.com/mtapoja/ecosl/issues/33)
+        backend: Modify stores. (https://github.com/ecosl-developers/ecosl/issues/33)
     </note>
     <note priority="medium" time="1325491296">
-        backend: Find shopping order for the certain store. (https://github.com/mtapoja/ecosl/issues/45)
+        backend: Find shopping order for the certain store. (https://github.com/ecosl-developers/ecosl/issues/45)
     </note>
 </todo>

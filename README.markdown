@@ -19,4 +19,4 @@ This project is Free Software under [GPL version 3](http://www.gnu.org/licenses/
 
 #### Check out the wiki!
 
-* Please check out our development [wiki](https://github.com/mtapoja/ecosl/wiki) for more information.
+* Please check out our development [wiki](https://github.com/ecosl-developers/ecosl/wiki) for more information.
