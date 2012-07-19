@@ -269,12 +269,23 @@ class EcoDBTests(unittest.TestCase):
         #print(a_list)
 
     def test_14_b_find_shopping_list_by_hash(self):
-        for a_list in self.db.find_shopping_list_by_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 1, 1]):
-            pass
-            #print(a_list)
-        for a_list in self.db.find_shopping_list_by_hash([hashlib.md5(shoppinglists[3][0].encode('utf-8')).hexdigest(), 1, 1]):
-            pass
-            #print(a_list)
+        #for a_list in self.db.find_shopping_list_by_hash([hashlib.md5(shoppinglists[0][0].encode('utf-8')).hexdigest(), 1, 1]):
+        #    pass
+        #    #print(a_list)
+
+        # Example for sorting 'None' sorted items as the last, leaving them 
+        # behind the sorted items.
+        
+        non_sorted = []
+        for an_item in self.db.find_shopping_list_by_hash([hashlib.md5(shoppinglists[3][0].encode('utf-8')).hexdigest(), 1, 1]):
+            #pass
+            if an_item[6]:
+                print(an_item)
+            else:
+                non_sorted.append(an_item)
+
+        for a_non_sorted in non_sorted:
+            print(a_non_sorted)
 
     def test_15_find_shopping_list(self):
         

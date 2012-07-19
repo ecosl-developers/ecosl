@@ -33,7 +33,8 @@ sys.path.append('/home/mtapoja/code/github/ecosl/ecosldb')
 from ecosldb import EcoDB
 from xml.dom.minidom import Document
 
-db = EcoDB('/home/mtapoja/code/github/ecosl/ecosldb/unittest.db')
+#db = EcoDB('/home/mtapoja/code/github/ecosl/ecosldb/unittest.db')
+db = EcoDB('/var/lib/ecosl/ecosl.db')
 scriptpath = 'https://projects.sse.fi/ecotest/ecoslbe2.py/'
 
 def ecomenu(req):

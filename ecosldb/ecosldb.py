@@ -373,10 +373,16 @@ class EcoDB:
             # t = (<shopping list id>, <language id>, <store id>, )
             #print('find shopping list by ids, all three')
             t = (ids[0], ids[1], ids[2], )
+
+            # Note the ascending order for the query. It gives smaller shorder 
+            # first, but if an item is 'new' in a store and has no shorder number
+            # (e.g. is None), those are listed first. The application using this
+            # library has to move them behind the ordered items, if necessary.
             the_list = self.cursor.execute('select item.id, item.name, \
                 shoppinglistitems.amount, shoppinglistitems.bought, \
                 itemtranslation.translation, \
-                price.price \
+                price.price, \
+                shoppingorder.shorder \
                 from shoppinglistitems, item, itemlanguage, itemtranslation, price \
                 left join shoppingorder \
                 on item.id  = shoppingorder.itemid \
@@ -388,7 +394,7 @@ class EcoDB:
                 and itemtranslation.itemlanguageid = itemlanguage.id \
                 and item.id = price.itemid \
                 and price.storeid = ? \
-                order by shoppingorder.shorder desc', t)
+                order by shoppingorder.shorder asc', t)
         else:
             # t = (<shopping list id>, <language id>, )
             #print('find shopping list by ids, no store name')

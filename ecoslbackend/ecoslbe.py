@@ -28,11 +28,14 @@
 import sys
 from mod_python import apache
 sys.path.append('/home/mtapoja/code/github/ecosl/ecosldb')
+#sys.path.append('/usr/share/ecosl/')
 from ecosldb import EcoDB
 from xml.dom.minidom import Document
 
-db = EcoDB('/home/mtapoja/code/github/ecosl/ecosldb/unittest.db')
-scriptpath = 'https://projects.sse.fi/ecosl/ecoslbe.py/'
+#db = EcoDB('/home/mtapoja/code/github/ecosl/ecosldb/unittest.db')
+db = EcoDB('/var/lib/ecosl/ecosl.db')
+#scriptpath = 'https://projects.sse.fi/ecosl/ecoslbe.py/'
+scriptpath = 'http://projects.sse.fi/ecosl/ecoslbe.py/'
 
 
 def menu(req):
@@ -82,8 +85,25 @@ def singleitem(req, itemid, lang, outputtype):
 #    data_out(req, 'shoppinglist', the_lists, outputtype)
 
 def shoppinglist(req, md5hash, lang, storeid, outputtype):
-    the_lists = db.find_shopping_list_by_hash([md5hash, int(lang), int(storeid)])
-    data_out(req, 'shoppinglist', the_lists, outputtype)
+    #req.content_type = "text/html"
+    #non_sorted = []
+    #the_items = []
+    # 
+    #for an_item in db.find_shopping_list_by_hash([md5hash, int(lang), int(storeid)]):
+    #    if an_item[6]:
+    #        #the_items.append(tuple(an_item))
+    #        the_items.append(an_item)
+    #    else:
+    #        #non_sorted.append(tuple(an_item))
+    #        non_sorted.append(an_item))
+    #the_items.append(non_sorted)
+
+    the_items = db.find_shopping_list_by_hash([md5hash, int(lang), int(storeid)])
+    #for an_item in [the_items]:
+    #for an_item in the_items:
+    #    req.write(str(an_item))
+    data_out(req, 'shoppinglist', the_items, outputtype)
+
 
 def buy(req, md5hash, itemid, bought, outputtype):
     db.mark_item_bought_for_shoppinglist_hash([md5hash, int(itemid), int(bought)])
@@ -295,6 +315,7 @@ def data_out(req, what, data, how):
                 #    a_list[3],                               #  3:   shoppinglistitems.bought
                 #    a_list[4].encode('utf-8'),               #  4:   itemtranslation.translation
                 #    str(a_list[5]),                          #  5:   price.price
+                #    a_list[6]),                              #  6:   shoppingorder.shorder
                 #    ))
 
                 if not doc:
@@ -336,6 +357,11 @@ def data_out(req, what, data, how):
                 items.appendChild(item_price)
                 item_pricetext = doc.createTextNode(str(a_list[5]))
                 item_price.appendChild(item_pricetext)
+
+                item_shorder = doc.createElement('shoppingorder')
+                items.appendChild(item_shorder)
+                item_shordertext = doc.createTextNode(str(a_list[6]))
+                item_shorder.appendChild(item_shordertext)
 
             req.write(doc.toprettyxml(indent="  ") + '\n')
 
