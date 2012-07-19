@@ -150,6 +150,12 @@
             Implemented
         </comment>
     </note>
+    <note priority="medium" time="1325346655" done="1327156894">
+        backend: Mark a shopping list item as not bought. (https://github.com/ecosl-developers/ecosl/issues/31)
+        <comment>
+            Implemented
+        </comment>
+    </note>
     <note priority="medium" time="1325346655" done="1325669425">
         dblib: Modify prices + functionality test. (https://github.com/ecosl-developers/ecosl/issues/16)
         <comment>
@@ -192,6 +198,15 @@
             Implemented.
         </comment>
     </note>
+    <note priority="high" time="1342706410">
+        packaging: Debian packaging for ecosldb.
+    </note>
+    <note priority="high" time="1342706423">
+        packaging: Debian packaging for ecoslbackend.
+        <note priority="high" time="1342706488">
+            packaging: setup script for making the symlinks.
+        </note>
+    </note>
     <note priority="medium" time="1325346655">
         backend: Add items to shopping list. (https://github.com/ecosl-developers/ecosl/issues/27)
     </note>
@@ -209,12 +224,6 @@
     </note>
     <note priority="medium" time="1325346655">
         backend: Backend shall utilize Python db library. (https://github.com/ecosl-developers/ecosl/issues/21)
-    </note>
-    <note priority="medium" time="1325346655" done="1327156894">
-        backend: Mark a shopping list item as not bought. (https://github.com/ecosl-developers/ecosl/issues/31)
-        <comment>
-            Implemented
-        </comment>
     </note>
     <note priority="medium" time="1325346655">
         backend: Modify amount of an item in shopping list. (https://github.com/ecosl-developers/ecosl/issues/29)
